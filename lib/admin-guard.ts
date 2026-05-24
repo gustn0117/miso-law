@@ -8,7 +8,7 @@ export function isAdmin(): boolean {
 }
 
 export function loginAdmin(password: string): boolean {
-  const expected = process.env.ADMIN_PASSWORD || "changeme1234";
+  const expected = process.env.ADMIN_PASSWORD || "1234";
   if (password !== expected) return false;
   cookies().set(ADMIN_COOKIE, "1", {
     httpOnly: true,
