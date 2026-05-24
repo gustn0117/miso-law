@@ -824,7 +824,7 @@ textarea {
 }
 .practice-row {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
   align-items: center;
   gap: var(--s-5);
   padding: var(--s-6) 0;
@@ -841,7 +841,7 @@ textarea {
 }
 @media (min-width: 768px) {
   .practice-row {
-    grid-template-columns: 64px minmax(0, 1fr) 32px;
+    grid-template-columns: 64px 1fr;
     gap: var(--s-8);
     padding: var(--s-7) 0;
   }
@@ -856,6 +856,15 @@ textarea {
   font-variant-numeric: tabular-nums;
   align-self: start;
   padding-top: 8px;
+}
+/* Wrapper: body + arrow as a tight pair, capped width keeps arrow close */
+.practice-content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--s-6);
+  max-width: 720px;
+  min-width: 0;
 }
 .practice-body {
   display: flex;
@@ -969,14 +978,13 @@ textarea {
 .counter-num {
   font-family: var(--ff-display);
   font-weight: 700;
-  font-size: clamp(var(--t-3xl), 5.5vw, var(--t-5xl));
-  line-height: 0.96;
-  letter-spacing: -0.045em;
+  font-size: clamp(var(--t-2xl), 4.2vw, var(--t-4xl));
+  line-height: 1;
+  letter-spacing: -0.04em;
   color: rgb(var(--c-bg));
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: clip;
+  word-break: keep-all;
+  overflow-wrap: normal;
 }
 .sec:not(.sec-dark) .counter-num {
   color: rgb(var(--c-fg));
