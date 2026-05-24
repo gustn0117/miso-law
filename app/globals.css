@@ -841,7 +841,8 @@ textarea {
 }
 @media (min-width: 768px) {
   .practice-row {
-    grid-template-columns: 64px 1fr;
+    /* 메타 | 본문+화살표 묶음 | 우측 spacer */
+    grid-template-columns: 64px minmax(0, 680px) 1fr;
     gap: var(--s-8);
     padding: var(--s-7) 0;
   }
@@ -857,13 +858,12 @@ textarea {
   align-self: start;
   padding-top: 8px;
 }
-/* Wrapper: body + arrow as a tight pair, capped width keeps arrow close */
+/* Wrapper sits inside the 680px column; 1fr body + auto arrow */
 .practice-content {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--s-6);
-  max-width: 720px;
   min-width: 0;
 }
 .practice-body {
@@ -978,9 +978,9 @@ textarea {
 .counter-num {
   font-family: var(--ff-display);
   font-weight: 700;
-  font-size: clamp(var(--t-2xl), 4.2vw, var(--t-4xl));
+  font-size: clamp(var(--t-xl), 3.4vw, var(--t-3xl));
   line-height: 1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.035em;
   color: rgb(var(--c-bg));
   font-variant-numeric: tabular-nums;
   word-break: keep-all;
