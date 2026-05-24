@@ -2,6 +2,7 @@ import SiteLayout from "./components/SiteLayout";
 import AISearchBox from "./components/AISearchBox";
 import CategoryGrid from "./components/CategoryGrid";
 import MoneyBanner from "./components/MoneyBanner";
+import QuickMenu from "./components/QuickMenu";
 import { ArrowRight, ArrowUpRight } from "./components/icons";
 import Link from "next/link";
 import {
@@ -21,6 +22,8 @@ export default function HomePage() {
   const categories = listCategories();
   const recentCases = listAllCases().slice(0, 6);
   const shorts = listShorts().slice(0, 5);
+  const cafeUrl = getSetting("cafe_url") || "https://cafe.naver.com";
+  const shortsUrl = getSetting("shorts_url") || "https://www.youtube.com";
   const bannerTitle =
     getSetting("money_banner_title") || "금전 문제, 혼자 고민하지 마세요.";
   const bannerDesc =
@@ -82,6 +85,22 @@ export default function HomePage() {
 
         <div className="hero-scroll" aria-hidden>
           <span>SCROLL</span>
+        </div>
+      </section>
+
+      {/* =================================================================
+          1.5. QUICK MENU — 카페/쇼츠/사건사고/금전상담 (요청서 §2)
+          ================================================================= */}
+      <section className="sec-quick">
+        <div className="w-default">
+          <QuickMenu
+            items={[
+              { href: cafeUrl, label: "카페 바로가기", icon: "cafe", external: true },
+              { href: shortsUrl, label: "쇼츠 보기", icon: "shorts", external: true },
+              { href: "/cases", label: "사건 / 사고", icon: "cases" },
+              { href: "/category/recovery", label: "금전상담", icon: "money" },
+            ]}
+          />
         </div>
       </section>
 

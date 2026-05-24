@@ -430,3 +430,130 @@ export function categoryFromSlug(slug: string | null): Category | null {
   if (!slug) return null;
   return getCategoryBySlug(slug);
 }
+
+/* ============================================================
+   Conversational chat — multi-turn dialogue
+   ============================================================ */
+
+export type ChatMessage = {
+  role: "user" | "assistant" | "system";
+  content: string;
+};
+
+export type ChatReply = {
+  reply: string;
+  matched_category_slug: string | null;
+  source: "llm" | "keyword" | "off-topic" | "fallback";
+};
+
+const CHAT_SYSTEM_PROMPT = `당신은 '미소법률상담'의 1차 AI 상담사입니다. 변호사가 아닙니다.
+
+[역할]
+- 사용자의 법률 고민을 차분히 듣고, 카테고리를 분류하고, 즉시 취해야 할 액션을 안내합니다.
+- 직접 법률 자문 금지. 항상 "전문 상담이 필요합니다"로 마무리.
+- 8개 분야: 사기, 형사, 음주운전, 보이스피싱, 민사·돈문제, 회생·파산, 이혼·가사, 노동·퇴직금.
+
+[금지 표현]
+"무조건 승소", "100% 처벌", "반드시 돈을 돌려받", "확실히 무죄", "절대 처벌받지 않" 같은 단언은 절대 금지.
+대신: "검토될 수 있습니다", "초기 대응이 중요합니다", "관련 자료 확보가 필요합니다".
+
+[톤]
+- 차분하고 전문적. 마케팅 톤·이모지·과한 강조 금지.
+- 2~4문장으로 짧게. 불릿이 필요하면 "- "로 시작하는 1~3개 항목.
+- 한국어 존댓말. 사용자가 불안할 수 있으니 공감 한 문장 + 실제 조치 안내.
+
+[법률 외 질문]
+"본 서비스는 법률 상담 및 관련 사례 안내 서비스입니다. 법률·채무·사건·피해 관련 질문을 입력해 주세요." 한 문장만.
+
+[대화 흐름]
+- 첫 응답: 상황 정리 + 즉시 조치 1~2개 + 추가 정보 요청 질문.
+- 후속 응답: 받은 정보로 더 구체적 안내 + 필요 시 "/inquiry"로 상담 신청 권유.
+- 3~4턴 이상 깊어지면 "정확한 판단은 전문 상담이 필요합니다. 상담 신청을 통해 분야 전문가와 연결해 드립니다." 안내.`;
+
+function fallbackChatReply(userMessage: string): ChatReply {
+  if (isOffTopic(userMessage)) {
+    return {
+      reply:
+        "본 서비스는 법률 상담 및 관련 사례 안내 서비스입니다. 법률·채무·사건·피해 관련 질문을 입력해 주세요.",
+      matched_category_slug: null,
+      source: "off-topic",
+    };
+  }
+  const cat = matchCategory(userMessage);
+  if (cat) {
+    const def = categoryDefaultAnswer(cat);
+    const bullets = def.bullets.slice(0, 2).map((b) => `- ${b}`).join("\n");
+    return {
+      reply: `${def.summary}\n\n${bullets}\n\n더 정확한 안내가 필요하시면 '${cat.name}' 분야로 상담 신청을 도와드릴 수 있습니다.`,
+      matched_category_slug: cat.slug,
+      source: "keyword",
+    };
+  }
+  return {
+    reply:
+      "입력하신 내용만으로는 분야를 특정하기 어렵습니다. 사기·형사·음주운전·보이스피싱·민사·회생/파산·이혼·노동 중 가까운 상황을 조금 더 구체적으로 알려주실 수 있을까요? 예: '전세보증금을 못 받고 있어요', '음주운전 단속에 걸렸어요'.",
+    matched_category_slug: null,
+    source: "fallback",
+  };
+}
+
+export async function chatWithAI(
+  messages: ChatMessage[],
+): Promise<ChatReply> {
+  const last = messages[messages.length - 1];
+  if (!last || last.role !== "user" || !last.content.trim()) {
+    return {
+      reply: "메시지를 입력해 주세요.",
+      matched_category_slug: null,
+      source: "fallback",
+    };
+  }
+
+  const matched = matchCategory(last.content);
+  const fallback = fallbackChatReply(last.content);
+
+  const key = process.env.OPENAI_API_KEY;
+  if (!key) return fallback;
+
+  const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
+  try {
+    const payload = {
+      model,
+      temperature: 0.5,
+      max_tokens: 600,
+      messages: [
+        { role: "system", content: CHAT_SYSTEM_PROMPT },
+        ...messages
+          .filter((m) => m.role !== "system")
+          .slice(-10) // 최근 10턴만 유지
+          .map((m) => ({ role: m.role, content: m.content })),
+      ],
+    };
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok) {
+      console.warn("[ai/chat] OpenAI non-OK:", res.status);
+      return fallback;
+    }
+    const data = (await res.json()) as {
+      choices?: { message?: { content?: string } }[];
+    };
+    const text = data.choices?.[0]?.message?.content?.trim() || "";
+    if (!text) return fallback;
+    return {
+      reply: applyBanFilter(text),
+      matched_category_slug: matched?.slug ?? null,
+      source: "llm",
+    };
+  } catch (err) {
+    console.warn("[ai/chat] LLM error:", err);
+    return fallback;
+  }
+}

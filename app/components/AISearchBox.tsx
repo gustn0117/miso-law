@@ -30,7 +30,7 @@ export default function AISearchBox({
     const trimmed = query.trim();
     if (!trimmed) return;
     setLoading(true);
-    router.push(`/search?q=${encodeURIComponent(trimmed)}`);
+    router.push(`/chat?q=${encodeURIComponent(trimmed)}`);
   }
 
   function onSubmit(e: React.FormEvent) {
@@ -44,7 +44,7 @@ export default function AISearchBox({
         <input
           type="search"
           inputMode="search"
-          placeholder="어떤 상황인지 한 줄로 적어주세요."
+          placeholder="어떤 고민이 있으신가요?"
           aria-label="법률 고민 검색"
           value={q}
           onChange={(e) => setQ(e.target.value)}
