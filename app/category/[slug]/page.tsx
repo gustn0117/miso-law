@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteLayout from "../../components/SiteLayout";
 import LegalNotice from "../../components/LegalNotice";
+import { ArrowRight } from "../../components/icons";
 import {
   getCategoryBySlug,
   listCasesByCategory,
@@ -44,12 +45,7 @@ export default function CategoryPage({ params }: Props) {
             <Link href="/">홈</Link> ·{" "}
             <Link href="/cases">전체 사례</Link>
           </div>
-          <h1 style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ fontSize: 28 }} aria-hidden>
-              {cat.emoji}
-            </span>
-            {cat.name}
-          </h1>
+          <h1 className="page-title-with-icon">{cat.name}</h1>
           {cat.description && <p>{cat.description}</p>}
         </div>
       </div>
@@ -91,7 +87,7 @@ export default function CategoryPage({ params }: Props) {
                     href={`/inquiry?category=${cat.slug}&sub=${s.slug}`}
                     className="more"
                   >
-                    이 분야 상담 →
+                    이 분야 상담 <ArrowRight size={14} />
                   </Link>
                 </div>
                 {cases.length === 0 ? (

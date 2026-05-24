@@ -2,8 +2,8 @@ import SiteLayout from "./components/SiteLayout";
 import AISearchBox from "./components/AISearchBox";
 import CategoryGrid from "./components/CategoryGrid";
 import MoneyBanner from "./components/MoneyBanner";
-import QuickMenu from "./components/QuickMenu";
-import LegalNotice from "./components/LegalNotice";
+import Counter from "./components/Counter";
+import { ArrowRight, ArrowUpRight } from "./components/icons";
 import Link from "next/link";
 import {
   listCategories,
@@ -14,196 +14,249 @@ import {
 
 export const dynamic = "force-dynamic";
 
+function fmtDate(iso: string) {
+  return iso.slice(0, 10).replace(/-/g, ".");
+}
+
 export default function HomePage() {
   const categories = listCategories();
-  const recentCases = listAllCases().slice(0, 4);
-  const shorts = listShorts().slice(0, 4);
-  const cafeUrl = getSetting("cafe_url") || "https://cafe.naver.com";
-  const shortsUrl = getSetting("shorts_url") || "https://www.youtube.com";
+  const recentCases = listAllCases().slice(0, 6);
+  const shorts = listShorts().slice(0, 5);
   const bannerTitle =
     getSetting("money_banner_title") || "금전 문제, 혼자 고민하지 마세요.";
   const bannerDesc =
     getSetting("money_banner_desc") ||
-    "회생, 파산, 채무조정까지 전문가가 도와드립니다.";
+    "회생, 파산, 채무조정까지 — 전문가가 처음부터 끝까지 함께합니다.";
 
   return (
     <SiteLayout>
-      {/* === Hero: Cinematic full-bleed === */}
-      <section className="hero-cinematic">
-        <div className="container">
-          <div className="hero-eyebrow reveal">AI 법률 상담 · 2026</div>
+      {/* =================================================================
+          1. HERO — Full-bleed image, text bottom-left (guide §2-1, §6-1)
+          ================================================================= */}
+      <section className="hero">
+        <div className="hero-top">
+          <div className="w-wide">
+            <div className="hero-top-row">
+              <span className="ml">— Vol. 01 / 2026</span>
+              <span className="rule line-in d-1" aria-hidden />
+              <span className="ml">Miso Law · AI Legal Brief</span>
+            </div>
+          </div>
+        </div>
 
-          <h1 className="hero-headline reveal reveal-delay-1">
-            법률 고민,
-            <br />
-            <span className="hero-headline-accent">AI가 먼저 듣습니다.</span>
+        <div className="w-wide">
+          <h1 className="hero-h1">
+            <span className="line">
+              <span className="mask"><span className="d-1">정리되지</span></span>{" "}
+              <span className="mask"><span className="d-2">않은</span></span>
+            </span>
+            <span className="line ko">
+              <span className="mask"><span className="d-3">법률 고민,</span></span>
+            </span>
+            <span className="line ko">
+              <span className="mask"><span className="d-4">한 줄로 충분합니다.</span></span>
+            </span>
           </h1>
 
-          <p className="hero-subheadline reveal reveal-delay-2">
-            사기·형사·민사·이혼·회생까지. 상황을 입력하면 카테고리에 맞춰 맞춤
-            안내를 드립니다.
-          </p>
-
-          <div className="reveal reveal-delay-3">
-            <AISearchBox autoFocus />
-          </div>
-
-          <div className="trust-section reveal reveal-delay-4">
-            {[
-              { value: "12,000+", label: "누적 상담" },
-              { value: "8", label: "전문 분야" },
-              { value: "24h", label: "평균 응답" },
-            ].map((item) => (
-              <div key={item.label} className="trust-item">
-                <div className="trust-value">{item.value}</div>
-                <div className="trust-label">{item.label}</div>
-              </div>
-            ))}
+          <div className="hero-deck fade d-5">
+            <p className="hero-lede">
+              사기·형사·민사·이혼·회생까지 — 복잡한 상황을 한 줄로 입력하면
+              카테고리·핵심 포인트·다음 액션을 정리해 드리고, 분야 전문 상담으로
+              안전하게 이어드립니다.
+            </p>
+            <div className="hero-actions">
+              <Link href="/inquiry" className="btn btn-primary btn-lg">
+                무료 상담 신청
+                <span className="btn-icon"><ArrowRight size={18} /></span>
+              </Link>
+              <Link href="#stats" className="btn btn-lg">
+                서비스 살펴보기
+              </Link>
+            </div>
           </div>
         </div>
 
-        <div className="hero-scroll-cue" aria-hidden>
+        <div className="hero-scroll" aria-hidden>
           <span>SCROLL</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M6 9l6 6 6-6" />
-          </svg>
         </div>
       </section>
 
-      {/* === Quick Menu === */}
-      <section className="container" style={{ paddingTop: 24 }}>
-        <QuickMenu
-          items={[
-            {
-              href: cafeUrl,
-              label: "카페 바로가기",
-              icon: "cafe",
-              external: true,
-            },
-            {
-              href: shortsUrl,
-              label: "쇼츠 보기",
-              icon: "shorts",
-              external: true,
-            },
-            { href: "/cases", label: "사건/사고", icon: "cases" },
-            { href: "/category/recovery", label: "금전상담", icon: "money" },
-          ]}
-        />
+      {/* =================================================================
+          2. COUNTER — Dark section with big stats (guide §8-6)
+          ================================================================= */}
+      <section className="sec sec-dark" id="stats">
+        <div className="w-default">
+          <div className="counter-grid">
+            <div className="counter-intro">
+              <h2>
+                AI가 먼저 듣고, 사람이 정리합니다.
+              </h2>
+              <p>
+                자동 응답이 아닌, 운영자가 확인 후 영업일 기준 평균 24시간 안에
+                회신을 드립니다.
+              </p>
+            </div>
+
+            <div className="counter-list">
+              <div className="counter-cell">
+                <span className="counter-num">
+                  <Counter end={12000} suffix="+" />
+                </span>
+                <span className="counter-label">누적 상담</span>
+              </div>
+              <div className="counter-cell">
+                <span className="counter-num">
+                  <Counter end={8} format="padStart" padLength={2} />
+                </span>
+                <span className="counter-label">전문 분야</span>
+              </div>
+              <div className="counter-cell">
+                <span className="counter-num">
+                  <Counter end={24} format="none" />h
+                </span>
+                <span className="counter-label">평균 응답</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
-      {/* === Category Section === */}
-      <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <h2>
-              분야별 상담<span style={{ color: "var(--ink-mute)" }}>.</span>
-            </h2>
-            <p>상황에 맞는 카테고리를 선택하세요.</p>
-          </div>
+      {/* =================================================================
+          3. SEARCH BAND — Light section, the actual action
+          ================================================================= */}
+      <section className="sec">
+        <div className="w-default">
+          <header className="sec-head">
+            <h2>한 줄로 시작</h2>
+            <span className="sec-num">— Step 01</span>
+          </header>
+          <AISearchBox />
+        </div>
+      </section>
+
+      {/* =================================================================
+          4. PRACTICE INDEX — Light section, list (guide §8-4)
+          ================================================================= */}
+      <section className="sec">
+        <div className="w-default">
+          <header className="sec-head">
+            <h2>분야</h2>
+            <span className="sec-num">N° 01 — N° {String(categories.length).padStart(2, "0")}</span>
+          </header>
+
           <CategoryGrid categories={categories} />
         </div>
       </section>
 
-      {/* === Money Banner === */}
-      <section className="container" style={{ paddingBottom: 60 }}>
+      {/* =================================================================
+          5. NOTICE — Quiet statement
+          ================================================================= */}
+      <div className="w-default">
         <MoneyBanner title={bannerTitle} desc={bannerDesc} />
-      </section>
+      </div>
 
-      {/* === Recent Cases (Cinematic Dark) === */}
+      {/* =================================================================
+          6. CASES — Dark section, file index
+          ================================================================= */}
       {recentCases.length > 0 && (
-        <section className="section section-dark">
-          <div className="container">
-            <div className="section-head">
-              <h2>실제 상담 사례</h2>
-              <p>해결로 이어진 케이스를 살펴보세요.</p>
+        <section className="sec sec-dark">
+          <div className="w-default">
+            <header className="sec-head">
+              <h2>최근 사례</h2>
               <Link href="/cases" className="more">
-                전체 보기
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
+                전체 보기 <ArrowRight size={14} />
               </Link>
-            </div>
-            <div className="case-list">
+            </header>
+
+            <ul className="case-index" role="list">
               {recentCases.map((c) => (
-                <Link key={c.id} href={`/case/${c.id}`} className="case-card">
-                  <div className="tag">사례 #{c.id}</div>
-                  <div className="title">{c.title}</div>
-                  <div className="excerpt">{c.excerpt}</div>
-                  <div className="meta">
-                    <span>조회 {c.view_count}</span>
-                    <span>·</span>
-                    <span>{c.created_at.slice(0, 10)}</span>
-                  </div>
-                </Link>
+                <li key={c.id}>
+                  <Link href={`/case/${c.id}`} className="case-row">
+                    <div className="case-meta-col">
+                      <span className="case-date">{fmtDate(c.created_at)}</span>
+                      <span className="case-tag">사례 N° {String(c.id).padStart(3, "0")}</span>
+                    </div>
+                    <h3 className="case-title">{c.title}</h3>
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </section>
       )}
 
-      {/* === Shorts === */}
+      {/* =================================================================
+          7. SHORTS — Light section
+          ================================================================= */}
       {shorts.length > 0 && (
-        <section className="section">
-          <div className="container">
-            <div className="section-head">
-              <h2>1분 쇼츠</h2>
-              <p>짧고 쉽게, 핵심만.</p>
+        <section className="sec">
+          <div className="w-default">
+            <header className="sec-head">
+              <h2>쇼츠</h2>
               <Link href="/shorts" className="more">
-                전체 보기
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
+                전체 보기 <ArrowRight size={14} />
               </Link>
-            </div>
-            <div className="shorts-grid">
-              {shorts.map((s) => (
-                <a
-                  key={s.id}
-                  href={s.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="short-card"
-                >
-                  <div className="short-thumb">
-                    <span
-                      style={{
-                        position: "relative",
-                        zIndex: 1,
-                        padding: "0 8px",
-                      }}
-                    >
-                      {s.title}
+            </header>
+
+            <ol className="shorts-list">
+              {shorts.map((s, i) => (
+                <li key={s.id}>
+                  <a
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="short-row"
+                  >
+                    <span className="short-num">N° {String(i + 1).padStart(2, "0")}</span>
+                    <span className="short-title">{s.title}</span>
+                    <span className="short-runtime">
+                      01:00 <ArrowUpRight size={12} />
                     </span>
-                    <span className="play" aria-hidden>
-                      ▶
-                    </span>
-                  </div>
-                  <div className="body">{s.title}</div>
-                </a>
+                  </a>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         </section>
       )}
 
-      {/* === Legal Notice === */}
-      <section>
-        <LegalNotice />
+      {/* =================================================================
+          8. FINAL — Dark section, single statement
+          ================================================================= */}
+      <section className="final sec-dark" style={{ borderTopColor: "rgb(var(--c-bg) / 0.2)" }}>
+        <div className="w-default">
+          <h2 className="final-h" style={{ color: "rgb(var(--c-bg))" }}>
+            먼저 들어드리겠습니다.
+          </h2>
+          <div className="final-actions">
+            <Link
+              href="/inquiry"
+              className="btn btn-lg"
+              style={{
+                background: "rgb(var(--c-bg))",
+                color: "rgb(var(--c-fg))",
+                borderColor: "rgb(var(--c-bg))",
+              }}
+            >
+              무료 상담 신청
+              <span className="btn-icon"><ArrowRight size={18} /></span>
+            </Link>
+            <Link
+              href="/search"
+              className="btn btn-lg"
+              style={{
+                background: "transparent",
+                color: "rgb(var(--c-bg))",
+                borderColor: "rgb(var(--c-bg) / 0.4)",
+              }}
+            >
+              AI에게 먼저 묻기
+            </Link>
+            <span className="final-fine" style={{ color: "rgb(var(--c-bg) / 0.5)" }}>
+              무료 · 익명 가능 · 1분
+            </span>
+          </div>
+        </div>
       </section>
     </SiteLayout>
   );

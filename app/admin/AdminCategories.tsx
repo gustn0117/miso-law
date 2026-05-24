@@ -66,9 +66,9 @@ export default function AdminCategories({ categories, subsByCategory }: Props) {
         return (
           <div key={c.id} className="admin-card">
             <h3>
-              {c.emoji} {c.name}{" "}
+              {c.name}{" "}
               <span
-                style={{ fontSize: 13, color: "var(--ink-mute)", fontWeight: 500 }}
+                style={{ fontSize: 13, color: "var(--c-muted)", fontWeight: 500 }}
               >
                 /category/{c.slug}
               </span>

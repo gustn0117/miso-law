@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteLayout from "../../components/SiteLayout";
 import LegalNotice from "../../components/LegalNotice";
+import { ArrowRight } from "../../components/icons";
 import {
   getCaseById,
   getDb,
@@ -139,7 +140,7 @@ export default function CaseDetailPage({ params }: Props) {
                 <h2>관련 사례</h2>
                 {cat && (
                   <Link href={`/category/${cat.slug}`} className="more">
-                    카테고리 전체 →
+                    카테고리 전체 <ArrowRight size={14} />
                   </Link>
                 )}
               </div>

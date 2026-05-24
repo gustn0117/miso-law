@@ -4,17 +4,18 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Logo from "./Logo";
+import { ArrowRight, Menu, Close } from "./icons";
 
 type Props = {
   member: { id: number; name: string } | null;
 };
 
 const NAV = [
-  { href: "/", label: "홈" },
   { href: "/category/fraud", label: "사기" },
   { href: "/category/criminal", label: "형사" },
   { href: "/category/dui", label: "음주운전" },
   { href: "/category/recovery", label: "회생/파산" },
+  { href: "/cases", label: "사례" },
   { href: "/shorts", label: "쇼츠" },
 ];
 
@@ -33,16 +34,16 @@ export default function Header({ member }: Props) {
   }
 
   return (
-    <header className="site-header">
-      <div className="container header-inner">
+    <header className="masthead">
+      <div className="w-wide masthead-inner">
         <Logo />
 
-        <ul className="nav-menu">
+        <ul className="nav" role="navigation" aria-label="주 메뉴">
           {NAV.map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
-                className={pathname === item.href ? "active" : ""}
+                className={pathname === item.href ? "is-active" : ""}
               >
                 {item.label}
               </Link>
@@ -50,33 +51,23 @@ export default function Header({ member }: Props) {
           ))}
         </ul>
 
-        <div className="header-right">
+        <div className="masthead-right">
           {member ? (
             <>
-              <Link
-                href="/mypage"
-                style={{ color: "var(--ink-soft)", fontSize: 14 }}
-              >
-                {member.name}님
+              <Link href="/mypage" className="masthead-link">
+                {member.name}
               </Link>
               <button
                 type="button"
                 onClick={handleLogout}
-                style={{
-                  color: "var(--ink-soft)",
-                  fontSize: 14,
-                  background: "none",
-                  border: "none",
-                }}
+                className="masthead-link"
+                style={{ background: "transparent", border: 0 }}
               >
                 로그아웃
               </button>
             </>
           ) : (
-            <Link
-              href="/login"
-              style={{ color: "var(--ink-soft)", fontSize: 14 }}
-            >
+            <Link href="/login" className="masthead-link">
               로그인
             </Link>
           )}
@@ -87,41 +78,12 @@ export default function Header({ member }: Props) {
 
         <button
           type="button"
-          className="mobile-toggle"
+          className="masthead-mobile-toggle"
           aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? (
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
-          ) : (
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="4" x2="20" y1="12" y2="12" />
-              <line x1="4" x2="20" y1="6" y2="6" />
-              <line x1="4" x2="20" y1="18" y2="18" />
-            </svg>
-          )}
+          {open ? <Close size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
@@ -132,9 +94,6 @@ export default function Header({ member }: Props) {
               {item.label}
             </Link>
           ))}
-          <div
-            style={{ height: 1, background: "var(--line-soft)", margin: "8px 0" }}
-          />
           {member ? (
             <>
               <Link href="/mypage">마이페이지</Link>
@@ -145,8 +104,8 @@ export default function Header({ member }: Props) {
           ) : (
             <Link href="/login">로그인</Link>
           )}
-          <Link href="/inquiry" style={{ color: "var(--brand)" }}>
-            상담 신청
+          <Link href="/inquiry">
+            상담 신청 <ArrowRight size={18} />
           </Link>
         </nav>
       )}

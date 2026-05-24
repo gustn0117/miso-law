@@ -154,9 +154,29 @@ export default function AdminShorts({ shorts, categories }: Props) {
                         href={s.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        style={{ color: "var(--brand)" }}
+                        style={{
+                          color: "rgb(var(--c-fg))",
+                          textDecoration: "underline",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 6,
+                        }}
                       >
-                        새 창 보기 →
+                        새 창 보기
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden
+                        >
+                          <line x1="7" y1="17" x2="17" y2="7" />
+                          <polyline points="9 7 17 7 17 15" />
+                        </svg>
                       </a>
                     </td>
                     <td>{s.sort_order}</td>

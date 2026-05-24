@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ArrowRight } from "./icons";
 
 type Props = {
   defaultValue?: string;
@@ -39,11 +40,11 @@ export default function AISearchBox({
 
   return (
     <div>
-      <form className="ai-search-box" onSubmit={onSubmit} role="search">
+      <form className="search-line" onSubmit={onSubmit} role="search">
         <input
           type="search"
           inputMode="search"
-          placeholder="어떤 법률 고민이 있으신가요?"
+          placeholder="어떤 상황인지 한 줄로 적어주세요."
           aria-label="법률 고민 검색"
           value={q}
           onChange={(e) => setQ(e.target.value)}
@@ -51,15 +52,16 @@ export default function AISearchBox({
           maxLength={300}
         />
         <button type="submit" disabled={loading || !q.trim()}>
-          {loading ? "검색 중..." : "검색"}
+          {loading ? "분석 중" : "AI 안내"}
+          <span className="arrow"><ArrowRight size={16} /></span>
         </button>
       </form>
-      <div className="suggest-chips">
+
+      <div className="search-suggest" aria-label="추천 질문">
         {suggestions.map((s) => (
           <button
             key={s}
             type="button"
-            className="suggest-chip"
             onClick={() => {
               setQ(s);
               go(s);

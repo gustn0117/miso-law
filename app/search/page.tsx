@@ -3,6 +3,7 @@ import SiteLayout from "../components/SiteLayout";
 import AISearchBox from "../components/AISearchBox";
 import AIAnswerCard from "../components/AIAnswerCard";
 import LegalNotice from "../components/LegalNotice";
+import { ArrowRight } from "../components/icons";
 import { answerQuery } from "@/lib/ai";
 import {
   getCategoryBySlug,
@@ -51,9 +52,7 @@ export default async function SearchPage({
           <section className="container" style={{ paddingTop: 36 }}>
             <div className="section-head">
               <div>
-                <h2>
-                  {cat.emoji} {cat.name} 관련 안내
-                </h2>
+                <h2>{cat.name} 관련 안내</h2>
                 <p
                   style={{
                     margin: "4px 0 0",
@@ -65,7 +64,7 @@ export default async function SearchPage({
                 </p>
               </div>
               <Link href={`/category/${cat.slug}`} className="more">
-                카테고리 전체 보기 →
+                카테고리 전체 보기 <ArrowRight size={14} />
               </Link>
             </div>
 
@@ -99,9 +98,7 @@ export default async function SearchPage({
               <div className="case-list">
                 {cases.map((c) => (
                   <Link key={c.id} href={`/case/${c.id}`} className="case-card">
-                    <div className="tag">
-                      {cat.emoji} {cat.name}
-                    </div>
+                    <div className="tag">{cat.name}</div>
                     <div className="title">{c.title}</div>
                     <div className="excerpt">{c.excerpt}</div>
                     <div className="meta">
@@ -120,7 +117,7 @@ export default async function SearchPage({
               <div className="section-head">
                 <h2>관련 쇼츠</h2>
                 <Link href="/shorts" className="more">
-                  전체 쇼츠 →
+                  전체 쇼츠 <ArrowRight size={14} />
                 </Link>
               </div>
               <div className="shorts-grid">

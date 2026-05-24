@@ -31,9 +31,7 @@ export default function CasesPage() {
               const cat = catMap.get(c.category_id);
               return (
                 <Link key={c.id} href={`/case/${c.id}`} className="case-card">
-                  <div className="tag">
-                    {cat?.emoji} {cat?.name}
-                  </div>
+                  <div className="tag">{cat?.name}</div>
                   <div className="title">{c.title}</div>
                   <div className="excerpt">{c.excerpt}</div>
                   <div className="meta">
