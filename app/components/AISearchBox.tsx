@@ -42,13 +42,25 @@ export default function AISearchBox({
   return (
     <div>
       <form className="ai-search-box" onSubmit={onSubmit} role="search">
-        <span aria-hidden style={{ fontSize: 20, marginRight: 4 }}>
-          🔍
-        </span>
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="var(--ink-mute)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden
+          style={{ flexShrink: 0 }}
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.35-4.35" />
+        </svg>
         <input
           type="search"
           inputMode="search"
-          placeholder="어떤 고민이 있으신가요?"
+          placeholder="어떤 법률 고민이 있으신가요?"
           aria-label="법률 고민 검색"
           value={q}
           onChange={(e) => setQ(e.target.value)}
