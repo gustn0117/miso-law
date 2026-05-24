@@ -906,25 +906,31 @@ textarea {
 }
 @media (min-width: 768px) {
   .counter-grid {
-    grid-template-columns: 5fr 7fr;
-    gap: var(--s-16);
-    align-items: end;
+    grid-template-columns: 4fr 8fr;
+    gap: var(--s-12);
+    align-items: stretch;
   }
+}
+.counter-intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .counter-intro h2 {
   font-family: var(--ff-display);
   font-weight: 700;
-  font-size: clamp(var(--t-2xl), 4vw, var(--t-3xl));
-  line-height: 1.05;
-  letter-spacing: -0.035em;
+  font-size: clamp(var(--t-xl), 2.6vw, var(--t-2xl));
+  line-height: 1.2;
+  letter-spacing: -0.025em;
   margin: 0;
-  max-width: 14ch;
+  max-width: 22ch;
+  text-wrap: balance;
 }
 .counter-intro p {
   margin-top: var(--s-5);
-  font-size: var(--t-md);
+  font-size: var(--t-sm);
   line-height: 1.6;
-  color: rgb(var(--c-bg) / 0.7);
+  color: rgb(var(--c-bg) / 0.65);
   max-width: 32ch;
 }
 .sec:not(.sec-dark) .counter-intro p {
@@ -940,7 +946,7 @@ textarea {
 }
 @media (min-width: 600px) {
   .counter-list {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 .sec:not(.sec-dark) .counter-list {
@@ -949,10 +955,13 @@ textarea {
 }
 .counter-cell {
   background: rgb(var(--c-fg));
-  padding: var(--s-8) var(--s-2) var(--s-6);
+  padding: var(--s-8) var(--s-5) var(--s-6);
   display: flex;
   flex-direction: column;
-  gap: var(--s-3);
+  justify-content: space-between;
+  gap: var(--s-6);
+  min-width: 0;
+  min-height: 220px;
 }
 .sec:not(.sec-dark) .counter-cell {
   background: rgb(var(--c-bg));
@@ -960,11 +969,14 @@ textarea {
 .counter-num {
   font-family: var(--ff-display);
   font-weight: 700;
-  font-size: clamp(var(--t-4xl), 8vw, var(--t-6xl));
-  line-height: 0.94;
+  font-size: clamp(var(--t-3xl), 5.5vw, var(--t-5xl));
+  line-height: 0.96;
   letter-spacing: -0.045em;
   color: rgb(var(--c-bg));
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
 }
 .sec:not(.sec-dark) .counter-num {
   color: rgb(var(--c-fg));
@@ -976,6 +988,7 @@ textarea {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgb(var(--c-bg) / 0.55);
+  margin-top: 0;
 }
 .sec:not(.sec-dark) .counter-label {
   color: rgb(var(--c-muted));
