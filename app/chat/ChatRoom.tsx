@@ -49,6 +49,13 @@ export default function ChatRoom({ initialQuery }: { initialQuery?: string }) {
     setMessages(next);
     setInput("");
     setLoading(true);
+
+    const started = Date.now();
+    // 실제 사람이 생각하고 답변하는 느낌의 최소 표시 시간
+    //  - 첫 응답: 1500ms (인상적)
+    //  - 후속 응답: 1100ms
+    const minDelayMs = messages.length === 0 ? 1500 : 1100;
+
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
@@ -59,9 +66,20 @@ export default function ChatRoom({ initialQuery }: { initialQuery?: string }) {
       if (!res.ok) {
         throw new Error(data?.error || "응답 실패");
       }
+
+      // 최소 딜레이 보장 — 응답이 빨라도 typing 인디케이터를 잠시 유지
+      const elapsed = Date.now() - started;
+      const remain = Math.max(0, minDelayMs - elapsed);
+      if (remain > 0) {
+        await new Promise((r) => setTimeout(r, remain));
+      }
+
       setMatchedSlug(data.matched_category_slug ?? null);
       setMessages([...next, { role: "assistant", content: data.reply }]);
     } catch (e) {
+      const elapsed = Date.now() - started;
+      const remain = Math.max(0, 800 - elapsed);
+      if (remain > 0) await new Promise((r) => setTimeout(r, remain));
       const msg = e instanceof Error ? e.message : "일시적인 오류입니다";
       setError(msg);
     } finally {
