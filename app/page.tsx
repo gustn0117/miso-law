@@ -28,27 +28,27 @@ export default function HomePage() {
 
   return (
     <SiteLayout>
-      {/* Hero — Deep Navy */}
+      {/* Hero - Premium Dark */}
       <section className="ai-search-wrap">
         <div
           className="container"
-          style={{ paddingTop: 56, paddingBottom: 52 }}
+          style={{ paddingTop: 64, paddingBottom: 56 }}
         >
-          <div style={{ textAlign: "center", marginBottom: 32 }}>
+          <div style={{ textAlign: "center", marginBottom: 36 }}>
             <div
               style={{
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 6,
-                background: "rgba(201, 151, 42, 0.18)",
-                border: "1px solid rgba(201, 151, 42, 0.35)",
-                color: "#f0c96a",
-                padding: "5px 14px",
+                background: "rgba(184, 134, 11, 0.15)",
+                border: "1px solid rgba(184, 134, 11, 0.3)",
+                color: "#e6c875",
+                padding: "6px 16px",
                 borderRadius: 999,
-                fontSize: 12,
-                fontWeight: 700,
-                letterSpacing: "0.06em",
-                marginBottom: 20,
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: "0.08em",
+                marginBottom: 24,
                 textTransform: "uppercase",
               }}
             >
@@ -56,28 +56,29 @@ export default function HomePage() {
             </div>
             <h1
               style={{
-                fontSize: "clamp(26px, 5vw, 38px)",
-                margin: "0 0 12px",
+                fontSize: "clamp(28px, 5vw, 42px)",
+                margin: "0 0 16px",
                 color: "#ffffff",
                 fontWeight: 800,
                 letterSpacing: "-0.03em",
-                lineHeight: 1.2,
+                lineHeight: 1.15,
               }}
             >
               어떤 고민이 있으신가요?
             </h1>
             <p
               style={{
-                margin: 0,
-                color: "rgba(255, 255, 255, 0.65)",
+                margin: "0 auto",
+                maxWidth: 520,
+                color: "rgba(255, 255, 255, 0.6)",
                 fontSize: 15,
-                lineHeight: 1.7,
+                lineHeight: 1.75,
                 fontWeight: 400,
               }}
             >
-              사기·형사·음주운전·보이스피싱·민사·회생/파산·이혼·노동까지
+              사기, 형사, 음주운전, 보이스피싱, 민사, 회생/파산, 이혼, 노동까지
               <br />
-              상황을 입력하시면 AI가 1차 안내와 함께 관련 사례를 보여드립니다.
+              상황을 입력하시면 AI가 맞춤 안내를 드립니다.
             </p>
           </div>
           <AISearchBox autoFocus />
@@ -87,29 +88,26 @@ export default function HomePage() {
             style={{
               display: "flex",
               justifyContent: "center",
-              gap: 40,
-              marginTop: 36,
+              gap: 48,
+              marginTop: 40,
               flexWrap: "wrap",
-              borderTop: "1px solid rgba(255,255,255,0.12)",
-              paddingTop: 28,
+              borderTop: "1px solid rgba(255,255,255,0.1)",
+              paddingTop: 32,
             }}
           >
             {[
               { label: "누적 상담", value: "12,000+" },
               { label: "전문 분야", value: "8개" },
-              { label: "응답 시간", value: "24시간 이내" },
+              { label: "평균 응답", value: "24시간" },
             ].map((item) => (
-              <div
-                key={item.label}
-                style={{ textAlign: "center" }}
-              >
+              <div key={item.label} style={{ textAlign: "center" }}>
                 <div
                   style={{
-                    fontSize: 22,
+                    fontSize: 24,
                     fontWeight: 800,
                     color: "#fff",
                     letterSpacing: "-0.03em",
-                    lineHeight: 1.1,
+                    lineHeight: 1,
                   }}
                 >
                   {item.value}
@@ -117,8 +115,9 @@ export default function HomePage() {
                 <div
                   style={{
                     fontSize: 12,
-                    marginTop: 4,
-                    color: "rgba(255,255,255,0.55)",
+                    marginTop: 6,
+                    color: "rgba(255,255,255,0.5)",
+                    fontWeight: 500,
                     letterSpacing: "0.02em",
                   }}
                 >
@@ -131,33 +130,33 @@ export default function HomePage() {
       </section>
 
       {/* 머니 배너 + 빠른 메뉴 */}
-      <section className="container" style={{ paddingTop: 32 }}>
+      <section className="container" style={{ paddingTop: 36 }}>
         <MoneyBanner title={bannerTitle} desc={bannerDesc} />
-        <div style={{ marginTop: 16 }}>
+        <div style={{ marginTop: 20 }}>
           <QuickMenu
             items={[
-              { href: cafeUrl, label: "카페 바로가기", emoji: "💬", external: true },
-              { href: shortsUrl, label: "쇼츠 보기", emoji: "🎬", external: true },
-              { href: "/cases", label: "사건/사고", emoji: "📚" },
-              { href: "/category/recovery", label: "금전상담", emoji: "💰" },
+              { href: cafeUrl, label: "카페 바로가기", icon: "cafe", external: true },
+              { href: shortsUrl, label: "쇼츠 보기", icon: "shorts", external: true },
+              { href: "/cases", label: "사건/사고", icon: "cases" },
+              { href: "/category/recovery", label: "금전상담", icon: "money" },
             ]}
           />
         </div>
       </section>
 
       {/* 대분류 카테고리 */}
-      <section className="container" style={{ paddingTop: 48 }}>
+      <section className="container" style={{ paddingTop: 56 }}>
         <div className="section-head">
           <div>
             <h2>분야별 상담</h2>
             <p
               style={{
-                margin: "5px 0 0",
+                margin: "6px 0 0",
                 color: "var(--ink-mute)",
                 fontSize: 14,
               }}
             >
-              상황에 맞는 카테고리를 선택하시면 관련 사례와 안내를 보실 수 있습니다.
+              상황에 맞는 카테고리를 선택하세요
             </p>
           </div>
         </div>
@@ -166,7 +165,7 @@ export default function HomePage() {
 
       {/* 최근 사례 */}
       {recentCases.length > 0 && (
-        <section className="container" style={{ paddingTop: 48 }}>
+        <section className="container" style={{ paddingTop: 56 }}>
           <div className="section-head">
             <h2>최근 사례</h2>
             <Link href="/cases" className="more">
@@ -192,7 +191,7 @@ export default function HomePage() {
 
       {/* 쇼츠 */}
       {shorts.length > 0 && (
-        <section className="container" style={{ paddingTop: 48 }}>
+        <section className="container" style={{ paddingTop: 56 }}>
           <div className="section-head">
             <h2>1분 쇼츠</h2>
             <Link href="/shorts" className="more">
