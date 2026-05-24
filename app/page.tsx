@@ -31,38 +31,36 @@ export default function HomePage() {
   return (
     <SiteLayout>
       {/* =================================================================
-          1. HERO — Full-bleed image, text bottom-left (guide §2-1, §6-1)
+          1. HERO — Centered law-firm brand statement
           ================================================================= */}
       <section className="hero">
         <div className="hero-top">
           <div className="w-wide">
             <div className="hero-top-row">
-              <span className="ml">— Vol. 01 / 2026</span>
+              <span className="ml">Miso Legal Advisory</span>
               <span className="rule line-in d-1" aria-hidden />
-              <span className="ml">Miso Law · AI Legal Brief</span>
+              <span className="ml">Seoul · Case Intake</span>
             </div>
           </div>
         </div>
 
-        <div className="w-wide">
+        <div className="w-wide hero-inner">
+          <p className="hero-kicker fade d-1">Law Firm Standard</p>
+
           <h1 className="hero-h1">
-            <span className="line">
-              <span className="mask"><span className="d-1">정리되지</span></span>{" "}
-              <span className="mask"><span className="d-2">않은</span></span>
-            </span>
             <span className="line ko">
-              <span className="mask"><span className="d-3">법률 고민,</span></span>
-            </span>
-            <span className="line ko">
-              <span className="mask"><span className="d-4">한 줄로 충분합니다.</span></span>
+              <span className="mask"><span className="d-2">미소법률상담</span></span>
             </span>
           </h1>
 
-          <div className="hero-deck fade d-5">
+          <p className="hero-subtitle fade d-3">
+            법률 문제는 빠르게, 그러나 가볍지 않게.
+          </p>
+
+          <div className="hero-deck fade d-4">
             <p className="hero-lede">
-              사기·형사·민사·이혼·회생까지 — 복잡한 상황을 한 줄로 입력하면
-              카테고리·핵심 포인트·다음 액션을 정리해 드리고, 분야 전문 상담으로
-              안전하게 이어드립니다.
+              사기·형사·민사·이혼·회생까지, 흩어진 상황을 먼저 정리하고
+              필요한 절차와 상담 연결을 차분하게 안내합니다.
             </p>
             <div className="hero-actions">
               <Link href="/inquiry" className="btn btn-primary btn-lg">
@@ -72,6 +70,13 @@ export default function HomePage() {
               <Link href="#stats" className="btn btn-lg">
                 서비스 살펴보기
               </Link>
+            </div>
+            <div className="hero-proof" aria-label="주요 상담 분야">
+              <span>Fraud</span>
+              <span>Criminal</span>
+              <span>Civil</span>
+              <span>Family</span>
+              <span>Recovery</span>
             </div>
           </div>
         </div>

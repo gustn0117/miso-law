@@ -69,10 +69,10 @@ export default function Counter({
         : String(value);
 
   return (
-    <span ref={ref}>
-      {prefix}
-      {formatted}
-      {suffix}
+    <span ref={ref} className="counter-value">
+      {prefix && <span className="counter-prefix">{prefix}</span>}
+      <span className="counter-digits">{formatted}</span>
+      {suffix && <span className="counter-suffix">{suffix}</span>}
     </span>
   );
 }

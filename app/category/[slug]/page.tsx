@@ -50,15 +50,8 @@ export default function CategoryPage({ params }: Props) {
         </div>
       </div>
 
-      <section className="container" style={{ paddingTop: 28 }}>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 6,
-            marginBottom: 22,
-          }}
-        >
+      <section className="container category-content">
+        <div className="subnav-chips">
           {subs.map((s) => (
             <a
               key={s.id}
@@ -79,7 +72,7 @@ export default function CategoryPage({ params }: Props) {
               <div
                 key={s.id}
                 id={`sub-${s.slug}`}
-                style={{ marginBottom: 36, scrollMarginTop: 80 }}
+                className="category-section"
               >
                 <div className="section-head">
                   <h2>{s.name}</h2>
@@ -130,7 +123,7 @@ export default function CategoryPage({ params }: Props) {
 
         {/* 중분류 미지정 사례 */}
         {casesBySubId.has(null) && (
-          <div style={{ marginBottom: 36 }}>
+          <div className="category-section">
             <div className="section-head">
               <h2>기타 사례</h2>
             </div>
@@ -153,7 +146,7 @@ export default function CategoryPage({ params }: Props) {
       </section>
 
       {shorts.length > 0 && (
-        <section className="container" style={{ paddingTop: 16 }}>
+        <section className="container category-extra-section">
           <div className="section-head">
             <h2>관련 쇼츠</h2>
           </div>
@@ -181,7 +174,7 @@ export default function CategoryPage({ params }: Props) {
         </section>
       )}
 
-      <section className="container" style={{ paddingTop: 28 }}>
+      <section className="container category-cta-section">
         <div
           style={{
             background: "var(--brand-soft)",
