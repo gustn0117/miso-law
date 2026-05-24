@@ -10,13 +10,15 @@
    Pure white · pure black · single hairline. No color.
    ============================================================ */
 :root {
-  /* === Color (4 values, that's it) === */
-  --c-bg: 255 255 255;        /* #FFFFFF pure white */
-  --c-fg: 10 10 10;           /* #0A0A0A near-black */
-  --c-muted: 115 115 115;     /* #737373 mid-gray */
-  --c-faint: 181 181 181;     /* #B5B5B5 light gray */
-  --c-line: 229 229 229;      /* #E5E5E5 hairline */
-  --c-line-strong: 10 10 10;  /* same as fg, for emphasis rules */
+  /* === Color (warm off-white luxury palette) === */
+  --c-bg: 250 249 246;        /* #FAF9F6 warm off-white (덜 차가운 흰색) */
+  --c-bg-elev: 255 255 255;   /* #FFFFFF pure for elevated surfaces */
+  --c-fg: 18 18 20;           /* #121214 deep near-black (살짝 푸른 온도) */
+  --c-muted: 109 105 100;     /* #6D6964 warm gray */
+  --c-faint: 178 173 164;     /* #B2ADA4 light warm */
+  --c-line: 226 222 213;      /* #E2DED5 warm hairline */
+  --c-line-strong: 18 18 20;  /* same as fg */
+  --c-accent: 116 84 50;      /* #745432 subtle bronze (5% 미만 사용) */
 
   /* Compatibility aliases for existing inline styles/components. */
   --ink: rgb(var(--c-fg));
@@ -278,28 +280,36 @@ textarea {
 }
 .logo-link {
   display: inline-flex;
-  align-items: baseline;
-  gap: var(--s-2);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
   color: rgb(var(--c-fg));
-  font-family: var(--ff-display);
-  font-weight: 700;
-  font-size: var(--t-lg);
-  letter-spacing: -0.03em;
+  text-decoration: none;
+  line-height: 1;
 }
 .logo-link:hover { opacity: 1; }
-.logo-mark {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  background: rgb(var(--c-fg));
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-  margin-right: 6px;
+.logo-link:hover .logo-en { color: rgb(var(--c-fg)); }
+.logo-ko {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: var(--t-md);
+  letter-spacing: -0.025em;
+  color: rgb(var(--c-fg));
+  line-height: 1.1;
 }
-.logo-text-sub {
-  display: none; /* hide on premium minimal */
+.logo-en {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: rgb(var(--c-muted));
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+  transition: color 240ms var(--e-slow);
 }
+/* Legacy logo-mark (no longer used in JSX but kept for compat) */
+.logo-mark { display: none; }
+.logo-text-sub { display: none; }
 
 .nav {
   display: none;
@@ -982,12 +992,15 @@ textarea {
 }
 @media (min-width: 768px) {
   .practice-row {
-    /* 메타 | 본문+화살표 묶음 | 우측 spacer */
-    grid-template-columns: 64px minmax(0, 680px) 1fr;
-    gap: var(--s-8);
+    /* 메타 | 아이콘 | 본문+화살표 묶음 | 우측 spacer */
+    grid-template-columns: 64px 56px minmax(0, 600px) 1fr;
+    gap: var(--s-6);
     min-height: 104px;
     padding: var(--s-5) 0;
   }
+}
+@media (max-width: 767px) {
+  .practice-row { grid-template-columns: auto 1fr; }
 }
 
 .practice-num {
@@ -997,8 +1010,27 @@ textarea {
   color: rgb(var(--c-muted));
   letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
-  align-self: start;
-  padding-top: 8px;
+  align-self: center;
+}
+.practice-icon {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(var(--c-line));
+  background: rgb(var(--c-bg-elev));
+  color: rgb(var(--c-fg));
+  transition: all 320ms var(--e-slow);
+}
+.practice-row:hover .practice-icon {
+  background: rgb(var(--c-fg));
+  color: rgb(var(--c-bg));
+  border-color: rgb(var(--c-fg));
+  transform: rotate(-3deg);
+}
+@media (max-width: 767px) {
+  .practice-icon { display: none; }
 }
 /* Wrapper sits inside the 680px column; 1fr body + auto arrow */
 .practice-content {

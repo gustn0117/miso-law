@@ -2,7 +2,6 @@ import SiteLayout from "./components/SiteLayout";
 import AISearchBox from "./components/AISearchBox";
 import CategoryGrid from "./components/CategoryGrid";
 import MoneyBanner from "./components/MoneyBanner";
-import Counter from "./components/Counter";
 import { ArrowRight, ArrowUpRight } from "./components/icons";
 import Link from "next/link";
 import {
@@ -67,8 +66,8 @@ export default function HomePage() {
                 무료 상담 신청
                 <span className="btn-icon"><ArrowRight size={18} /></span>
               </Link>
-              <Link href="#stats" className="btn btn-lg">
-                서비스 살펴보기
+              <Link href="#search" className="btn btn-lg">
+                AI에게 먼저 묻기
               </Link>
             </div>
             <div className="hero-proof" aria-label="주요 상담 분야">
@@ -87,49 +86,9 @@ export default function HomePage() {
       </section>
 
       {/* =================================================================
-          2. COUNTER — Dark section with big stats (guide §8-6)
+          2. SEARCH BAND — Light section, the actual action
           ================================================================= */}
-      <section className="sec sec-dark" id="stats">
-        <div className="w-default">
-          <div className="counter-grid">
-            <div className="counter-intro">
-              <h2>
-                AI가 먼저 듣고, 사람이 정리합니다.
-              </h2>
-              <p>
-                자동 응답이 아닌, 운영자가 확인 후 영업일 기준 평균 24시간 안에
-                회신을 드립니다.
-              </p>
-            </div>
-
-            <div className="counter-list">
-              <div className="counter-cell">
-                <span className="counter-num">
-                  <Counter end={12000} suffix="+" />
-                </span>
-                <span className="counter-label">누적 상담</span>
-              </div>
-              <div className="counter-cell">
-                <span className="counter-num">
-                  <Counter end={8} format="padStart" padLength={2} />
-                </span>
-                <span className="counter-label">전문 분야</span>
-              </div>
-              <div className="counter-cell">
-                <span className="counter-num">
-                  <Counter end={24} format="none" />h
-                </span>
-                <span className="counter-label">평균 응답</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =================================================================
-          3. SEARCH BAND — Light section, the actual action
-          ================================================================= */}
-      <section className="sec">
+      <section className="sec" id="search">
         <div className="w-default">
           <header className="sec-head">
             <h2>한 줄로 시작</h2>
