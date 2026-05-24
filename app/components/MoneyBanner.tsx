@@ -13,7 +13,7 @@ export default function MoneyBanner({ title, desc }: Props) {
         <div className="title">{title}</div>
         <div className="desc">{desc}</div>
       </div>
-      <span className="btn">금전상담 바로가기 →</span>
+      <span className="btn">자세히 보기</span>
     </Link>
   );
 }

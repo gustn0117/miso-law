@@ -16,7 +16,6 @@ const NAV = [
   { href: "/category/dui", label: "음주운전" },
   { href: "/category/recovery", label: "회생/파산" },
   { href: "/shorts", label: "쇼츠" },
-  { href: "/cafe", label: "카페" },
 ];
 
 export default function Header({ member }: Props) {
@@ -24,7 +23,6 @@ export default function Header({ member }: Props) {
   const pathname = usePathname();
   const router = useRouter();
 
-  // 라우트 변경 시 자동으로 모바일 드로어 닫기
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
@@ -55,29 +53,35 @@ export default function Header({ member }: Props) {
         <div className="header-right">
           {member ? (
             <>
-              <Link href="/mypage" className="btn btn-ghost">
+              <Link
+                href="/mypage"
+                style={{ color: "var(--ink-soft)", fontSize: 14 }}
+              >
                 {member.name}님
               </Link>
               <button
                 type="button"
                 onClick={handleLogout}
-                className="btn btn-ghost"
+                style={{
+                  color: "var(--ink-soft)",
+                  fontSize: 14,
+                  background: "none",
+                  border: "none",
+                }}
               >
                 로그아웃
               </button>
             </>
           ) : (
-            <>
-              <Link href="/login" className="btn btn-ghost">
-                로그인
-              </Link>
-              <Link href="/signup" className="btn btn-outline">
-                회원가입
-              </Link>
-            </>
+            <Link
+              href="/login"
+              style={{ color: "var(--ink-soft)", fontSize: 14 }}
+            >
+              로그인
+            </Link>
           )}
-          <Link href="/inquiry" className="btn btn-primary">
-            빠른 상담 신청
+          <Link href="/inquiry" className="btn btn-primary btn-sm">
+            상담 신청
           </Link>
         </div>
 
@@ -89,12 +93,30 @@ export default function Header({ member }: Props) {
           onClick={() => setOpen((v) => !v)}
         >
           {open ? (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M18 6 6 18" />
               <path d="m6 6 12 12" />
             </svg>
           ) : (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <line x1="4" x2="20" y1="12" y2="12" />
               <line x1="4" x2="20" y1="6" y2="6" />
               <line x1="4" x2="20" y1="18" y2="18" />
@@ -111,22 +133,21 @@ export default function Header({ member }: Props) {
             </Link>
           ))}
           <div
-            style={{ height: 1, background: "var(--line)", margin: "8px 0" }}
+            style={{ height: 1, background: "var(--line-soft)", margin: "8px 0" }}
           />
           {member ? (
             <>
-              <Link href="/mypage">마이페이지 ({member.name}님)</Link>
+              <Link href="/mypage">마이페이지</Link>
               <button type="button" onClick={handleLogout}>
                 로그아웃
               </button>
             </>
           ) : (
-            <>
-              <Link href="/login">로그인</Link>
-              <Link href="/signup">회원가입</Link>
-            </>
+            <Link href="/login">로그인</Link>
           )}
-          <Link href="/inquiry">빠른 상담 신청</Link>
+          <Link href="/inquiry" style={{ color: "var(--brand)" }}>
+            상담 신청
+          </Link>
         </nav>
       )}
     </header>

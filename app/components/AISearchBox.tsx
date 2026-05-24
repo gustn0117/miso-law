@@ -13,9 +13,7 @@ const DEFAULT_SUGGESTIONS = [
   "보이스피싱 당한 것 같아요",
   "전세보증금을 못 받고 있어요",
   "음주운전 단속에 걸렸어요",
-  "임금이 체불되고 있어요",
   "개인회생을 알아보고 있어요",
-  "이혼을 준비 중인데 재산분할이 걱정돼요",
 ];
 
 export default function AISearchBox({
@@ -42,21 +40,6 @@ export default function AISearchBox({
   return (
     <div>
       <form className="ai-search-box" onSubmit={onSubmit} role="search">
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="var(--ink-mute)"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden
-          style={{ flexShrink: 0 }}
-        >
-          <circle cx="11" cy="11" r="8" />
-          <path d="m21 21-4.35-4.35" />
-        </svg>
         <input
           type="search"
           inputMode="search"
@@ -68,7 +51,7 @@ export default function AISearchBox({
           maxLength={300}
         />
         <button type="submit" disabled={loading || !q.trim()}>
-          {loading ? "검색 중..." : "AI 답변 받기"}
+          {loading ? "검색 중..." : "검색"}
         </button>
       </form>
       <div className="suggest-chips">

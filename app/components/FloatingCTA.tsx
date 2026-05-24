@@ -7,7 +7,7 @@ export default function FloatingCTA() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 320);
+    const onScroll = () => setVisible(window.scrollY > 400);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -20,12 +20,22 @@ export default function FloatingCTA() {
       <Link
         href="/inquiry"
         className="floating-cta"
-        aria-label="빠른 상담 신청하기"
+        aria-label="상담 신청하기"
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        상담 신청
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden
+        >
+          <path d="M5 12h14M12 5l7 7-7 7" />
         </svg>
-        빠른 상담 신청
       </Link>
     </div>
   );
