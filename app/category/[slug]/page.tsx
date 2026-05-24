@@ -33,7 +33,7 @@ export default function CategoryPage({ params }: Props) {
 
   return (
     <SiteLayout>
-      <div className="page-head">
+      <div className="page-head is-hero page-head--docs">
         <div className="container">
           <div
             style={{

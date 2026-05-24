@@ -9,7 +9,7 @@ export default function ShortsPage() {
 
   return (
     <SiteLayout>
-      <div className="page-head">
+      <div className="page-head is-hero page-head--docs">
         <div className="container">
           <h1>1분 쇼츠</h1>
           <p>실제 사례·법률 상식을 짧고 빠르게.</p>

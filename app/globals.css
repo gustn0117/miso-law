@@ -1654,6 +1654,81 @@ textarea {
 }
 
 /* ============================================================
+   Page-head cinematic variant — full-bleed image background
+   Apply via: className="page-head is-hero page-head--docs"
+   ============================================================ */
+.page-head.is-hero {
+  position: relative;
+  min-height: 380px;
+  padding: var(--s-24) 0 var(--s-12);
+  display: flex;
+  align-items: flex-end;
+  color: rgb(var(--c-bg));
+  background: rgb(var(--c-fg));
+  overflow: hidden;
+  isolation: isolate;
+  border-bottom: none;
+}
+.page-head.is-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 38%;
+  filter: grayscale(0.5) contrast(1.05) brightness(0.6);
+  transform: scale(1.03);
+  z-index: -2;
+}
+.page-head.is-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.45) 0%, rgba(10, 10, 10, 0.2) 30%, rgba(10, 10, 10, 0.85) 100%),
+    linear-gradient(105deg, rgba(10, 10, 10, 0.7) 0%, rgba(10, 10, 10, 0.3) 50%, transparent 80%);
+  z-index: -1;
+  pointer-events: none;
+}
+.page-head.is-hero > .container,
+.page-head.is-hero > .w-default,
+.page-head.is-hero > .w-wide {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+.page-head.is-hero h1,
+.page-head.is-hero .page-title-with-icon {
+  color: rgb(var(--c-bg));
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+}
+.page-head.is-hero p {
+  color: rgb(var(--c-bg) / 0.8);
+}
+.page-head.is-hero .ph-label,
+.page-head.is-hero a {
+  color: rgb(var(--c-bg) / 0.7);
+}
+.page-head.is-hero a:hover { color: rgb(var(--c-bg)); }
+
+/* image variants */
+.page-head--docs::before {
+  background-image: url("/images/page-docs-v1.jpg");
+}
+.page-head--contract::before {
+  background-image: url("/images/page-contract-v1.jpg");
+}
+.page-head--glass::before {
+  background-image: url("/images/hero-glass-v2.jpg");
+}
+
+@media (max-width: 767px) {
+  .page-head.is-hero {
+    min-height: 280px;
+    padding: var(--s-16) 0 var(--s-10);
+  }
+}
+
+/* ============================================================
    Admin (minimal restyle)
    ============================================================ */
 .admin-wrap {

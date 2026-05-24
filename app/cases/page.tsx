@@ -12,7 +12,7 @@ export default function CasesPage() {
 
   return (
     <SiteLayout>
-      <div className="page-head">
+      <div className="page-head is-hero page-head--docs">
         <div className="container">
           <h1>전체 사례</h1>
           <p>

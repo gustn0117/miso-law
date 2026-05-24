@@ -40,12 +40,12 @@ export default function CaseDetailPage({ params }: Props) {
 
   return (
     <SiteLayout>
-      <div className="page-head">
+      <div className="page-head is-hero page-head--docs">
         <div className="container">
           <div
             style={{
               fontSize: 13,
-              color: "var(--ink-mute)",
+              color: "rgb(var(--c-bg) / 0.7)",
               marginBottom: 6,
             }}
           >

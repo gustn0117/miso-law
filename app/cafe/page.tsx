@@ -11,7 +11,7 @@ export default function CafePage() {
 
   return (
     <SiteLayout>
-      <div className="page-head">
+      <div className="page-head is-hero page-head--contract">
         <div className="container">
           <h1>커뮤니티 · 카페</h1>
           <p>

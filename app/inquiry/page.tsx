@@ -19,7 +19,7 @@ export default function InquiryPage({
 
   return (
     <SiteLayout>
-      <div className="page-head">
+      <div className="page-head is-hero page-head--contract">
         <div className="container">
           <h1>상담 신청</h1>
           <p>
