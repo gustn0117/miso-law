@@ -28,23 +28,27 @@ export default function HomePage() {
 
   return (
     <SiteLayout>
-      {/* Hero Section - Apple Style */}
-      <section className="ai-search-wrap">
+      {/* === Hero: Cinematic full-bleed === */}
+      <section className="hero-cinematic">
         <div className="container">
-          <h1 className="hero-headline">
+          <div className="hero-eyebrow reveal">AI 법률 상담 · 2026</div>
+
+          <h1 className="hero-headline reveal reveal-delay-1">
             법률 고민,
             <br />
-            AI가 먼저 들어드립니다.
+            <span className="hero-headline-accent">AI가 먼저 듣습니다.</span>
           </h1>
-          <p className="hero-subheadline">
-            사기, 형사, 민사, 이혼, 회생까지. 상황을 입력하시면 AI가 맞춤 안내를
-            드립니다.
+
+          <p className="hero-subheadline reveal reveal-delay-2">
+            사기·형사·민사·이혼·회생까지. 상황을 입력하면 카테고리에 맞춰 맞춤
+            안내를 드립니다.
           </p>
 
-          <AISearchBox autoFocus />
+          <div className="reveal reveal-delay-3">
+            <AISearchBox autoFocus />
+          </div>
 
-          {/* Trust Stats */}
-          <div className="trust-section">
+          <div className="trust-section reveal reveal-delay-4">
             {[
               { value: "12,000+", label: "누적 상담" },
               { value: "8", label: "전문 분야" },
@@ -57,14 +61,16 @@ export default function HomePage() {
             ))}
           </div>
         </div>
+
+        <div className="hero-scroll-cue" aria-hidden>
+          <span>SCROLL</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </div>
       </section>
 
-      {/* Money Banner */}
-      <section className="container" style={{ paddingTop: 48 }}>
-        <MoneyBanner title={bannerTitle} desc={bannerDesc} />
-      </section>
-
-      {/* Quick Menu */}
+      {/* === Quick Menu === */}
       <section className="container" style={{ paddingTop: 24 }}>
         <QuickMenu
           items={[
@@ -86,24 +92,31 @@ export default function HomePage() {
         />
       </section>
 
-      {/* Category Section */}
+      {/* === Category Section === */}
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <h2>분야별 상담</h2>
-            <p>상황에 맞는 카테고리를 선택하세요</p>
+            <h2>
+              분야별 상담<span style={{ color: "var(--ink-mute)" }}>.</span>
+            </h2>
+            <p>상황에 맞는 카테고리를 선택하세요.</p>
           </div>
           <CategoryGrid categories={categories} />
         </div>
       </section>
 
-      {/* Recent Cases */}
+      {/* === Money Banner === */}
+      <section className="container" style={{ paddingBottom: 60 }}>
+        <MoneyBanner title={bannerTitle} desc={bannerDesc} />
+      </section>
+
+      {/* === Recent Cases (Cinematic Dark) === */}
       {recentCases.length > 0 && (
         <section className="section section-dark">
           <div className="container">
             <div className="section-head">
-              <h2>최근 사례</h2>
-              <p>실제 상담 사례를 확인해보세요</p>
+              <h2>실제 상담 사례</h2>
+              <p>해결로 이어진 케이스를 살펴보세요.</p>
               <Link href="/cases" className="more">
                 전체 보기
                 <svg
@@ -136,13 +149,13 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Shorts */}
+      {/* === Shorts === */}
       {shorts.length > 0 && (
         <section className="section">
           <div className="container">
             <div className="section-head">
               <h2>1분 쇼츠</h2>
-              <p>짧고 쉽게 알아보는 법률 상식</p>
+              <p>짧고 쉽게, 핵심만.</p>
               <Link href="/shorts" className="more">
                 전체 보기
                 <svg
@@ -188,8 +201,8 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Legal Notice */}
-      <section className="container">
+      {/* === Legal Notice === */}
+      <section>
         <LegalNotice />
       </section>
     </SiteLayout>
