@@ -497,6 +497,106 @@ function fallbackChatReply(userMessage: string): ChatReply {
   };
 }
 
+// === Provider implementations ============================================
+
+async function callGemini(
+  messages: ChatMessage[],
+): Promise<string | null> {
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) return null;
+  const model = process.env.GEMINI_MODEL || "gemini-1.5-flash";
+
+  // Gemini: role은 "user" | "model" — assistant는 model로 매핑
+  const contents = messages
+    .filter((m) => m.role !== "system")
+    .slice(-10)
+    .map((m) => ({
+      role: m.role === "assistant" ? "model" : "user",
+      parts: [{ text: m.content }],
+    }));
+
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: CHAT_SYSTEM_PROMPT }] },
+          contents,
+          generationConfig: {
+            temperature: 0.5,
+            maxOutputTokens: 800,
+          },
+          safetySettings: [
+            { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_ONLY_HIGH" },
+            { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_ONLY_HIGH" },
+            { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_ONLY_HIGH" },
+            { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_ONLY_HIGH" },
+          ],
+        }),
+        signal: AbortSignal.timeout(10000),
+      },
+    );
+    if (!res.ok) {
+      console.warn("[ai/chat] Gemini non-OK:", res.status, await res.text());
+      return null;
+    }
+    const data = (await res.json()) as {
+      candidates?: {
+        content?: { parts?: { text?: string }[] };
+      }[];
+    };
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
+    return text || null;
+  } catch (err) {
+    console.warn("[ai/chat] Gemini error:", err);
+    return null;
+  }
+}
+
+async function callOpenAI(
+  messages: ChatMessage[],
+): Promise<string | null> {
+  const key = process.env.OPENAI_API_KEY;
+  if (!key) return null;
+  const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
+  try {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model,
+        temperature: 0.5,
+        max_tokens: 600,
+        messages: [
+          { role: "system", content: CHAT_SYSTEM_PROMPT },
+          ...messages
+            .filter((m) => m.role !== "system")
+            .slice(-10)
+            .map((m) => ({ role: m.role, content: m.content })),
+        ],
+      }),
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok) {
+      console.warn("[ai/chat] OpenAI non-OK:", res.status);
+      return null;
+    }
+    const data = (await res.json()) as {
+      choices?: { message?: { content?: string } }[];
+    };
+    const text = data.choices?.[0]?.message?.content?.trim() || "";
+    return text || null;
+  } catch (err) {
+    console.warn("[ai/chat] OpenAI error:", err);
+    return null;
+  }
+}
+
 export async function chatWithAI(
   messages: ChatMessage[],
 ): Promise<ChatReply> {
@@ -512,48 +612,19 @@ export async function chatWithAI(
   const matched = matchCategory(last.content);
   const fallback = fallbackChatReply(last.content);
 
-  const key = process.env.OPENAI_API_KEY;
-  if (!key) return fallback;
-
-  const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
-  try {
-    const payload = {
-      model,
-      temperature: 0.5,
-      max_tokens: 600,
-      messages: [
-        { role: "system", content: CHAT_SYSTEM_PROMPT },
-        ...messages
-          .filter((m) => m.role !== "system")
-          .slice(-10) // 최근 10턴만 유지
-          .map((m) => ({ role: m.role, content: m.content })),
-      ],
-    };
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(8000),
-    });
-    if (!res.ok) {
-      console.warn("[ai/chat] OpenAI non-OK:", res.status);
-      return fallback;
-    }
-    const data = (await res.json()) as {
-      choices?: { message?: { content?: string } }[];
-    };
-    const text = data.choices?.[0]?.message?.content?.trim() || "";
-    if (!text) return fallback;
-    return {
-      reply: applyBanFilter(text),
-      matched_category_slug: matched?.slug ?? null,
-      source: "llm",
-    };
-  } catch (err) {
-    console.warn("[ai/chat] LLM error:", err);
-    return fallback;
+  // 우선순위: Gemini (무료) → OpenAI → keyword fallback
+  let text: string | null = null;
+  if (process.env.GEMINI_API_KEY) {
+    text = await callGemini(messages);
   }
+  if (!text && process.env.OPENAI_API_KEY) {
+    text = await callOpenAI(messages);
+  }
+  if (!text) return fallback;
+
+  return {
+    reply: applyBanFilter(text),
+    matched_category_slug: matched?.slug ?? null,
+    source: "llm",
+  };
 }
