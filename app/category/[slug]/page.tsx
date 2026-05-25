@@ -160,9 +160,13 @@ export default function CategoryPage({ params }: Props) {
                 className="short-card"
               >
                 <div className="short-thumb">
-                  <span style={{ position: "relative", zIndex: 1 }}>
-                    {s.title}
-                  </span>
+                  {s.thumbnail_url ? (
+                    <img src={s.thumbnail_url} alt="" loading="lazy" />
+                  ) : (
+                    <span style={{ position: "relative", zIndex: 1 }}>
+                      {s.title}
+                    </span>
+                  )}
                   <span className="play" aria-hidden>
                     ▶
                   </span>

@@ -2114,6 +2114,15 @@ textarea {
   letter-spacing: -0.015em;
   padding: var(--s-4);
   text-align: center;
+  overflow: hidden;
+}
+.short-thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .short-thumb .play {
   position: absolute;
