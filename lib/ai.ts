@@ -504,7 +504,7 @@ async function callGemini(
 ): Promise<string | null> {
   const key = process.env.GEMINI_API_KEY;
   if (!key) return null;
-  const model = process.env.GEMINI_MODEL || "gemini-1.5-flash";
+  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
   // Gemini: role은 "user" | "model" — assistant는 model로 매핑
   const contents = messages
