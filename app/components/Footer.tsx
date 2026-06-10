@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="w-wide">
         <div className="colophon-top">
           <div>
-            <div className="colophon-brand">미소법률상담</div>
+            <div className="colophon-brand">미소 법률 · 금융 상담</div>
             <p className="colophon-disclaimer">
               본 플랫폼은 법률·금융 정보를 제공하고 상담 연결을 지원하는
               서비스입니다. 직접 법률 자문을 제공하지 않으며, 정확한 판단은
@@ -47,7 +47,7 @@ export default function Footer() {
         </div>
 
         <div className="colophon-bottom">
-          <span>© {year} 미소법률상담</span>
+          <span>© {year} 미소 법률 · 금융 상담</span>
           <span>SEOUL</span>
         </div>
       </div>

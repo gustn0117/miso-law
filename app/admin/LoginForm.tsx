@@ -57,7 +57,7 @@ export default function LoginForm() {
             textAlign: "center",
           }}
         >
-          미소법률상담 관리자
+          미소 법률 · 금융 상담 관리자
         </h1>
         <p
           style={{

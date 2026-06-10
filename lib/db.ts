@@ -3,7 +3,7 @@ import path from "path";
 import fs from "fs";
 
 // =============================================================
-// 미소법률상담 — better-sqlite3 영속 DB
+// 미소 법률 · 금융 상담 — better-sqlite3 영속 DB
 // =============================================================
 
 const DATA_DIR = path.join(process.cwd(), "data");

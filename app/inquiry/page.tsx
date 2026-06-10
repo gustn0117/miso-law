@@ -21,7 +21,7 @@ export default function InquiryPage({
     <SiteLayout>
       <div className="page-head is-hero page-head--contract">
         <div className="container">
-          <h1>상담 신청</h1>
+          <h1>무료 법률상담 신청</h1>
           <p>
             담당자가 확인 후 입력하신 번호로 연락드립니다. 전화 연결이 원활할 수
             있도록 연락을 받아주세요.
@@ -39,6 +39,7 @@ export default function InquiryPage({
           defaultName={member?.name}
           defaultPhone={member?.phone}
           defaultEmail={member?.email || ""}
+          submitLabel="무료 법률상담 신청"
         />
         <LegalNotice />
       </div>

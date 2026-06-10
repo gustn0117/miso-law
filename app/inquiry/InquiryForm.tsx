@@ -19,18 +19,29 @@ export default function InquiryForm({
   defaultName,
   defaultPhone,
   defaultEmail,
+  lockedCategorySlug,
+  contentLabel = "간단한 내용",
+  contentPlaceholder = "상황을 간단히 적어 주세요. (피해 시점, 금액, 진행 상황 등)",
+  contentHelp,
+  submitLabel = "상담 신청하기",
 }: {
   categories: Cat[];
   defaultCategorySlug?: string;
   defaultName?: string;
   defaultPhone?: string;
   defaultEmail?: string;
+  /** 지정 시 카테고리 select 숨김 + 해당 slug로 고정 (사용자가 변경 불가) */
+  lockedCategorySlug?: string;
+  contentLabel?: string;
+  contentPlaceholder?: string;
+  contentHelp?: string;
+  submitLabel?: string;
 }) {
   const [form, setForm] = useState({
     name: defaultName || "",
     phone: defaultPhone || "",
     email: defaultEmail || "",
-    category_slug: defaultCategorySlug || "",
+    category_slug: lockedCategorySlug || defaultCategorySlug || "",
     content: "",
     source: "",
     agree: false,
@@ -83,7 +94,7 @@ export default function InquiryForm({
         name: "",
         phone: "",
         email: "",
-        category_slug: defaultCategorySlug || "",
+        category_slug: lockedCategorySlug || defaultCategorySlug || "",
         content: "",
         source: "",
         agree: false,
@@ -228,42 +239,45 @@ export default function InquiryForm({
             required
           />
         </div>
-        <div>
-          <label className="form-label form-required" htmlFor="iq-category">
-            상담 분야
-          </label>
-          <select
-            id="iq-category"
-            className="form-input"
-            value={form.category_slug}
-            onChange={(e) => update("category_slug", e.target.value)}
-            required
-          >
-            <option value="">분야를 선택해 주세요</option>
-            {categories.map((c) => (
-              <option key={c.slug} value={c.slug}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {!lockedCategorySlug && (
+          <div>
+            <label className="form-label form-required" htmlFor="iq-category">
+              상담 분야
+            </label>
+            <select
+              id="iq-category"
+              className="form-input"
+              value={form.category_slug}
+              onChange={(e) => update("category_slug", e.target.value)}
+              required
+            >
+              <option value="">분야를 선택해 주세요</option>
+              {categories.map((c) => (
+                <option key={c.slug} value={c.slug}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         <div style={{ gridColumn: "1 / -1" }}>
           <label className="form-label form-required" htmlFor="iq-content">
-            간단한 내용
+            {contentLabel}
           </label>
           <textarea
             id="iq-content"
             className="form-input"
             value={form.content}
             onChange={(e) => update("content", e.target.value)}
-            placeholder="상황을 간단히 적어 주세요. (피해 시점, 금액, 진행 상황 등)"
+            placeholder={contentPlaceholder}
             rows={6}
             maxLength={4000}
             style={{ resize: "vertical", minHeight: 120 }}
             required
           />
           <div className="form-help">
-            {form.content.length} / 4000자 — 자세할수록 정확한 안내가 가능합니다.
+            {form.content.length} / 4000자 —{" "}
+            {contentHelp || "자세할수록 정확한 안내가 가능합니다."}
           </div>
         </div>
         <div>
@@ -327,7 +341,7 @@ export default function InquiryForm({
           disabled={status.kind === "loading" || !isValid}
           style={{ flex: 1, minHeight: 50, fontSize: 16 }}
         >
-          {status.kind === "loading" ? "접수 중..." : "상담 신청하기"}
+          {status.kind === "loading" ? "접수 중..." : submitLabel}
         </button>
       </div>
 

@@ -66,7 +66,11 @@ export default function HomePage() {
             </p>
             <div className="hero-actions">
               <Link href="/inquiry" className="btn btn-primary btn-lg">
-                무료 상담 신청
+                무료 법률상담 신청
+                <span className="btn-icon"><ArrowRight size={18} /></span>
+              </Link>
+              <Link href="/inquiry/money" className="btn btn-primary btn-lg">
+                무료 금전상담 신청
                 <span className="btn-icon"><ArrowRight size={18} /></span>
               </Link>
               <Link href="#search" className="btn btn-lg">
@@ -98,7 +102,7 @@ export default function HomePage() {
               { href: cafeUrl, label: "카페 바로가기", icon: "cafe", external: true },
               { href: shortsUrl, label: "쇼츠 보기", icon: "shorts", external: true },
               { href: "/cases", label: "사건 / 사고", icon: "cases" },
-              { href: "/category/recovery", label: "금전상담", icon: "money" },
+              { href: "/inquiry/money", label: "금전상담", icon: "money" },
             ]}
           />
         </div>
