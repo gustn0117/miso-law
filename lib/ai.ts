@@ -443,7 +443,7 @@ export type ChatMessage = {
 export type ChatReply = {
   reply: string;
   matched_category_slug: string | null;
-  source: "llm" | "keyword" | "off-topic" | "fallback";
+  source: "admin_set" | "llm" | "keyword" | "off-topic" | "fallback";
 };
 
 const CHAT_SYSTEM_PROMPT = `당신은 '미소 법률 · 금융 상담'의 1차 AI 상담사입니다. 변호사가 아닙니다.
@@ -611,6 +611,35 @@ export async function chatWithAI(
 
   const matched = matchCategory(last.content);
   const fallback = fallbackChatReply(last.content);
+
+  // §11 — 첫 사용자 발화일 때만 관리자 답변 세트(ai_answers) 우선 매칭.
+  // 후속 대화는 LLM이 맥락 이어가도록 둠.
+  const userTurnCount = messages.filter((m) => m.role === "user").length;
+  if (userTurnCount === 1) {
+    const admin = findAIAnswerByQuery(last.content);
+    if (admin) {
+      let bullets: string[] = [];
+      try {
+        bullets = JSON.parse(admin.bullets) as string[];
+      } catch {}
+      const lines: string[] = [applyBanFilter(admin.summary)];
+      if (bullets.length > 0) {
+        lines.push("");
+        for (const b of bullets) {
+          lines.push(`- ${applyBanFilter(String(b))}`);
+        }
+      }
+      lines.push("");
+      lines.push(
+        "더 정확한 안내가 필요하시면 상담 신청을 도와드릴 수 있습니다.",
+      );
+      return {
+        reply: lines.join("\n"),
+        matched_category_slug: admin.category_slug,
+        source: "admin_set",
+      };
+    }
+  }
 
   // 우선순위: Gemini (무료) → OpenAI → keyword fallback
   let text: string | null = null;
