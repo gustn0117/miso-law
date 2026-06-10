@@ -2549,11 +2549,16 @@ textarea {
 .review-form-row { display: flex; flex-direction: column; gap: var(--s-2); }
 .review-form-actions { display: flex; justify-content: flex-end; }
 
-.review-list { margin-top: var(--s-8); }
+.review-list { margin-top: var(--s-4); }
 .review-list-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
   padding-bottom: var(--s-4);
   border-bottom: 1px solid rgb(var(--c-line));
   margin-bottom: var(--s-6);
+  flex-wrap: wrap;
 }
 .review-list-head h2 {
   font-family: var(--ff-display);
@@ -2561,6 +2566,26 @@ textarea {
   font-size: var(--t-lg);
   letter-spacing: -0.02em;
   margin: 0;
+}
+.review-list-write-link {
+  font-family: var(--ff-body);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: rgb(var(--c-fg));
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  transition: opacity 200ms var(--e-slow);
+}
+.review-list-write-link:hover { opacity: 0.6; }
+
+.review-write-head {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: var(--t-xl);
+  letter-spacing: -0.025em;
+  margin: 0 0 var(--s-4);
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid rgb(var(--c-fg));
 }
 
 .review-items {

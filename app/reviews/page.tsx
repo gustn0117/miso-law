@@ -47,32 +47,18 @@ export default function ReviewsPage() {
       </div>
 
       <div className="container" style={{ paddingTop: 24, maxWidth: 880 }}>
-        {/* 작성 영역 */}
-        {member ? (
-          <ReviewForm categories={categories} memberName={member.name} />
-        ) : (
-          <div className="review-login-prompt">
-            <strong>후기 작성은 회원만 가능합니다.</strong>
-            <div className="review-login-actions">
-              <Link href="/login?next=/reviews" className="btn btn-primary">
-                로그인
-              </Link>
-              <Link href="/signup" className="btn btn-ghost">
-                회원가입
-              </Link>
-            </div>
-          </div>
-        )}
-
-        {/* 목록 */}
+        {/* 목록 — 먼저 노출 */}
         <section className="review-list" aria-label="후기 목록">
           <header className="review-list-head">
             <h2>총 {reviews.length}개의 후기</h2>
+            <a href="#write" className="review-list-write-link">
+              후기 작성하기 ↓
+            </a>
           </header>
 
           {reviews.length === 0 ? (
             <div className="empty-state">
-              아직 등록된 후기가 없습니다. 첫 후기를 남겨주세요.
+              아직 등록된 후기가 없습니다. 아래에서 첫 후기를 남겨주세요.
             </div>
           ) : (
             <ul className="review-items">
@@ -96,6 +82,30 @@ export default function ReviewsPage() {
                 </li>
               ))}
             </ul>
+          )}
+        </section>
+
+        {/* 작성 영역 — 목록 아래로 */}
+        <section
+          id="write"
+          aria-label="후기 작성"
+          style={{ marginTop: "var(--s-16)", scrollMarginTop: "100px" }}
+        >
+          <h2 className="review-write-head">후기 작성</h2>
+          {member ? (
+            <ReviewForm categories={categories} memberName={member.name} />
+          ) : (
+            <div className="review-login-prompt">
+              <strong>후기 작성은 회원만 가능합니다.</strong>
+              <div className="review-login-actions">
+                <Link href="/login?next=/reviews" className="btn btn-primary">
+                  로그인
+                </Link>
+                <Link href="/signup" className="btn btn-ghost">
+                  회원가입
+                </Link>
+              </div>
+            </div>
           )}
         </section>
 
