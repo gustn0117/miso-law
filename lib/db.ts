@@ -137,6 +137,21 @@ export function getDb(): Database.Database {
       value TEXT NOT NULL,
       updated_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
     );
+
+    -- 실제 상담 이용 후기 (회원만 작성)
+    CREATE TABLE IF NOT EXISTS reviews (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      member_id INTEGER NOT NULL,
+      title TEXT NOT NULL,
+      content TEXT NOT NULL,
+      rating INTEGER NOT NULL DEFAULT 5,
+      category_slug TEXT,
+      status TEXT NOT NULL DEFAULT '게시',
+      created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+      FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_reviews_created ON reviews(created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_reviews_status ON reviews(status);
   `);
 
   // -----------------------------------------------------------
@@ -421,6 +436,8 @@ export type {
   Inquiry,
   Member,
   InquiryStatus,
+  Review,
+  ReviewWithAuthor,
 } from "./db-types";
 export { INQUIRY_STATUSES } from "./db-types";
 import type {
@@ -433,6 +450,8 @@ import type {
   Inquiry,
   Member,
   InquiryStatus,
+  Review,
+  ReviewWithAuthor,
 } from "./db-types";
 
 // ----- Categories -----
@@ -857,4 +876,64 @@ export function getInquiryStats(): {
       .get() as { c: number }
   ).c;
   return { total, newCount, todayCount };
+}
+
+// ----- Reviews (회원 후기) -----
+export function listReviews(limit = 100): ReviewWithAuthor[] {
+  return getDb()
+    .prepare(
+      `SELECT r.*, m.name AS author_name
+       FROM reviews r
+       LEFT JOIN members m ON m.id = r.member_id
+       WHERE r.status = '게시'
+       ORDER BY r.created_at DESC
+       LIMIT ?`,
+    )
+    .all(limit) as ReviewWithAuthor[];
+}
+
+export function getReview(id: number): ReviewWithAuthor | null {
+  return (
+    (getDb()
+      .prepare(
+        `SELECT r.*, m.name AS author_name
+         FROM reviews r LEFT JOIN members m ON m.id = r.member_id
+         WHERE r.id = ?`,
+      )
+      .get(id) as ReviewWithAuthor | undefined) || null
+  );
+}
+
+export function insertReview(input: {
+  member_id: number;
+  title: string;
+  content: string;
+  rating?: number;
+  category_slug?: string | null;
+}): number {
+  const r = getDb()
+    .prepare(
+      `INSERT INTO reviews(member_id, title, content, rating, category_slug)
+       VALUES (?, ?, ?, ?, ?)`,
+    )
+    .run(
+      input.member_id,
+      input.title,
+      input.content,
+      Math.max(1, Math.min(5, Number(input.rating) || 5)),
+      input.category_slug ?? null,
+    );
+  return Number(r.lastInsertRowid);
+}
+
+export function deleteReview(id: number, memberId?: number): boolean {
+  // memberId가 지정되면 본인 글만 삭제 (admin은 memberId 없이 호출 가능)
+  const sql = memberId
+    ? "DELETE FROM reviews WHERE id = ? AND member_id = ?"
+    : "DELETE FROM reviews WHERE id = ?";
+  const params = memberId ? [id, memberId] : [id];
+  const r = getDb()
+    .prepare(sql)
+    .run(...params);
+  return r.changes > 0;
 }

@@ -97,7 +97,7 @@ export default function HomePage() {
             items={[
               { href: cafeUrl, label: "카페 바로가기", icon: "cafe", external: true },
               { href: shortsUrl, label: "쇼츠 보기", icon: "shorts", external: true },
-              { href: "/cases", label: "상담후기", icon: "cases" },
+              { href: "/reviews", label: "상담후기", icon: "cases" },
               { href: "/inquiry/money", label: "금전상담", icon: "money" },
             ]}
           />

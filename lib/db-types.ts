@@ -85,3 +85,18 @@ export const INQUIRY_STATUSES = [
   "종결",
 ] as const;
 export type InquiryStatus = (typeof INQUIRY_STATUSES)[number];
+
+export type Review = {
+  id: number;
+  member_id: number;
+  title: string;
+  content: string;
+  rating: number;
+  category_slug: string | null;
+  status: string;
+  created_at: string;
+};
+
+export type ReviewWithAuthor = Review & {
+  author_name: string | null;
+};
