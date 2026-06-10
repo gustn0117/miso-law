@@ -1,7 +1,6 @@
 import SiteLayout from "./components/SiteLayout";
 import AISearchBox from "./components/AISearchBox";
 import CategoryGrid from "./components/CategoryGrid";
-import MoneyBanner from "./components/MoneyBanner";
 import QuickMenu from "./components/QuickMenu";
 import { ArrowRight, ArrowUpRight } from "./components/icons";
 import Link from "next/link";
@@ -22,13 +21,10 @@ export default function HomePage() {
   const categories = listCategories();
   const recentCases = listAllCases().slice(0, 6);
   const shorts = listShorts().slice(0, 5);
-  const cafeUrl = getSetting("cafe_url") || "https://cafe.naver.com";
+  const cafeUrl =
+    getSetting("cafe_url") ||
+    "https://cafe.naver.com/MyCafeIntro.nhn?clubid=31738518";
   const shortsUrl = getSetting("shorts_url") || "https://www.youtube.com";
-  const bannerTitle =
-    getSetting("money_banner_title") || "금전 문제, 혼자 고민하지 마세요.";
-  const bannerDesc =
-    getSetting("money_banner_desc") ||
-    "회생, 파산, 채무조정까지 — 전문가가 처음부터 끝까지 함께합니다.";
 
   return (
     <SiteLayout>
@@ -51,7 +47,7 @@ export default function HomePage() {
 
           <h1 className="hero-h1">
             <span className="line ko">
-              <span className="mask"><span className="d-2">미소법률상담</span></span>
+              <span className="mask"><span className="d-2">미소 법률 · 금융 상담</span></span>
             </span>
           </h1>
 
@@ -101,7 +97,7 @@ export default function HomePage() {
             items={[
               { href: cafeUrl, label: "카페 바로가기", icon: "cafe", external: true },
               { href: shortsUrl, label: "쇼츠 보기", icon: "shorts", external: true },
-              { href: "/cases", label: "사건 / 사고", icon: "cases" },
+              { href: "/cases", label: "상담후기", icon: "cases" },
               { href: "/inquiry/money", label: "금전상담", icon: "money" },
             ]}
           />
@@ -127,7 +123,7 @@ export default function HomePage() {
       <section className="sec">
         <div className="w-default">
           <header className="sec-head">
-            <h2>분야</h2>
+            <h2>사건 / 사고 사례</h2>
             <span className="sec-num">N° 01 — N° {String(categories.length).padStart(2, "0")}</span>
           </header>
 
@@ -136,14 +132,7 @@ export default function HomePage() {
       </section>
 
       {/* =================================================================
-          5. NOTICE — Quiet statement
-          ================================================================= */}
-      <div className="w-default">
-        <MoneyBanner title={bannerTitle} desc={bannerDesc} />
-      </div>
-
-      {/* =================================================================
-          6. CASES — Dark section, file index
+          5. CASES — Dark section, file index
           ================================================================= */}
       {recentCases.length > 0 && (
         <section className="sec sec-dark">
@@ -225,11 +214,23 @@ export default function HomePage() {
                 borderColor: "rgb(var(--c-bg))",
               }}
             >
-              무료 상담 신청
+              무료 법률상담 신청
               <span className="btn-icon"><ArrowRight size={18} /></span>
             </Link>
             <Link
-              href="/search"
+              href="/inquiry/money"
+              className="btn btn-lg"
+              style={{
+                background: "rgb(var(--c-bg))",
+                color: "rgb(var(--c-fg))",
+                borderColor: "rgb(var(--c-bg))",
+              }}
+            >
+              무료 금전상담 신청
+              <span className="btn-icon"><ArrowRight size={18} /></span>
+            </Link>
+            <Link
+              href="/chat"
               className="btn btn-lg"
               style={{
                 background: "transparent",
