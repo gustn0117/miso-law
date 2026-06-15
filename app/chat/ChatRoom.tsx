@@ -12,6 +12,7 @@ const SUGGESTIONS = [
   "전세보증금을 못 받고 있어요",
   "음주운전 단속에 걸렸어요",
   "개인회생을 알아보고 있어요",
+  "대출 연체로 막막한데 어떻게 해야 하나요",
 ];
 
 export default function ChatRoom({ initialQuery }: { initialQuery?: string }) {
