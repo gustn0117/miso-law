@@ -24,7 +24,8 @@ export default function HomePage() {
   const cafeUrl =
     getSetting("cafe_url") ||
     "https://cafe.naver.com/MyCafeIntro.nhn?clubid=31738518";
-  const shortsUrl = getSetting("shorts_url") || "https://www.youtube.com";
+  const shortsUrl =
+    getSetting("shorts_url") || "https://blog.naver.com/miso-law";
 
   return (
     <SiteLayout>
