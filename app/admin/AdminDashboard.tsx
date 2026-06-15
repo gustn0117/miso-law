@@ -20,6 +20,7 @@ import AdminAIAnswers from "./AdminAIAnswers";
 import AdminBanned from "./AdminBanned";
 import AdminMembers from "./AdminMembers";
 import AdminSettings from "./AdminSettings";
+import AdminNotifier from "./AdminNotifier";
 
 type Props = {
   categories: Category[];
@@ -32,6 +33,7 @@ type Props = {
   members: Member[];
   settings: Record<string, string>;
   stats: { total: number; newCount: number; todayCount: number };
+  latestInquiryId: number;
 };
 
 const TABS = [
@@ -60,6 +62,7 @@ export default function AdminDashboard(props: Props) {
 
   return (
     <div className="admin-wrap">
+      <AdminNotifier initialLatestId={props.latestInquiryId} />
       <div className="admin-header">
         <h1>미소 법률 · 금융 상담 관리자</h1>
         <button type="button" className="btn btn-ghost" onClick={logout}>

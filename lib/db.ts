@@ -715,6 +715,17 @@ export function listInquiries(): Inquiry[] {
     .prepare("SELECT * FROM inquiries ORDER BY created_at DESC")
     .all() as Inquiry[];
 }
+export function listInquiriesSince(sinceId: number): Inquiry[] {
+  return getDb()
+    .prepare("SELECT * FROM inquiries WHERE id > ? ORDER BY id DESC LIMIT 20")
+    .all(sinceId) as Inquiry[];
+}
+export function getLatestInquiryId(): number {
+  const r = getDb()
+    .prepare("SELECT COALESCE(MAX(id), 0) AS m FROM inquiries")
+    .get() as { m: number };
+  return r.m;
+}
 export function listInquiriesByMember(memberId: number): Inquiry[] {
   return getDb()
     .prepare(

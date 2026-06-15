@@ -34,6 +34,7 @@ export default function AdminPage() {
     listAllSettings().map((s) => [s.key, s.value]),
   );
   const stats = getInquiryStats();
+  const latestInquiryId = inquiries[0]?.id ?? 0;
 
   return (
     <AdminDashboard
@@ -47,6 +48,7 @@ export default function AdminPage() {
       members={members}
       settings={settings}
       stats={stats}
+      latestInquiryId={latestInquiryId}
     />
   );
 }
