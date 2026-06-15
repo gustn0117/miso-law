@@ -23,29 +23,57 @@ export default function ShortsPage() {
           </div>
         ) : (
           <div className="shorts-grid">
-            {shorts.map((s) => (
-              <a
-                key={s.id}
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="short-card"
-              >
-                <div className="short-thumb">
-                  {s.thumbnail_url ? (
-                    <img src={s.thumbnail_url} alt="" />
-                  ) : (
-                    <span style={{ position: "relative", zIndex: 1 }}>
-                      {s.title}
+            {shorts.map((s) => {
+              // 자체 호스팅 영상이 있으면 video 태그로 사이트 내에서 재생,
+              // 없으면 외부 URL(YouTube 등)을 새 창으로 엶
+              if (s.video_path) {
+                return (
+                  <div key={s.id} className="short-card">
+                    <div className="short-thumb">
+                      <video
+                        src={s.video_path}
+                        poster={s.thumbnail_url || undefined}
+                        controls
+                        preload="metadata"
+                        playsInline
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          background: "rgb(var(--c-fg))",
+                        }}
+                      />
+                    </div>
+                    <div className="body">{s.title}</div>
+                  </div>
+                );
+              }
+              return (
+                <a
+                  key={s.id}
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="short-card"
+                >
+                  <div className="short-thumb">
+                    {s.thumbnail_url ? (
+                      <img src={s.thumbnail_url} alt="" loading="lazy" />
+                    ) : (
+                      <span style={{ position: "relative", zIndex: 1 }}>
+                        {s.title}
+                      </span>
+                    )}
+                    <span className="play" aria-hidden>
+                      ▶
                     </span>
-                  )}
-                  <span className="play" aria-hidden>
-                    ▶
-                  </span>
-                </div>
-                <div className="body">{s.title}</div>
-              </a>
-            ))}
+                  </div>
+                  <div className="body">{s.title}</div>
+                </a>
+              );
+            })}
           </div>
         )}
         <LegalNotice />

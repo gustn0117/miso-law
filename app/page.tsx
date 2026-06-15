@@ -24,8 +24,7 @@ export default function HomePage() {
   const cafeUrl =
     getSetting("cafe_url") ||
     "https://cafe.naver.com/MyCafeIntro.nhn?clubid=31738518";
-  const shortsUrl =
-    getSetting("shorts_url") || "https://blog.naver.com/miso-law";
+  // 쇼츠는 내부 쇼츠 게시판으로 (사용자 요청 — 외부 블로그 연동 해제)
 
   return (
     <SiteLayout>
@@ -97,7 +96,7 @@ export default function HomePage() {
           <QuickMenu
             items={[
               { href: cafeUrl, label: "카페 바로가기", icon: "cafe", external: true },
-              { href: shortsUrl, label: "쇼츠 보기", icon: "shorts", external: true },
+              { href: "/shorts", label: "쇼츠 보기", icon: "shorts" },
               { href: "/reviews", label: "상담후기", icon: "cases" },
               { href: "/inquiry/money", label: "금전상담", icon: "money" },
             ]}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Case, Category, Subcategory } from "@/lib/db-types";
 
@@ -17,6 +17,7 @@ const EMPTY = {
   title: "",
   excerpt: "",
   body: "",
+  image_url: "",
   published: 1,
 };
 
@@ -29,6 +30,30 @@ export default function AdminCases({ cases, categories, subsByCategory }: Props)
   const [busy, setBusy] = useState(false);
   const [editing, setEditing] = useState<typeof EMPTY>(EMPTY);
   const [filterCat, setFilterCat] = useState<number | "all">("all");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
+  function onImageFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0] || null;
+    if (!f) {
+      setImageFile(null);
+      setImagePreview(null);
+      return;
+    }
+    if (f.size > 5 * 1024 * 1024) {
+      alert("이미지는 5MB 이하여야 합니다.");
+      if (imageInputRef.current) imageInputRef.current.value = "";
+      return;
+    }
+    setImageFile(f);
+    setImagePreview(URL.createObjectURL(f));
+  }
+  function clearImage() {
+    setImageFile(null);
+    setImagePreview(null);
+    if (imageInputRef.current) imageInputRef.current.value = "";
+  }
 
   const subs = editing.category_id
     ? subsByCategory[editing.category_id] || []
@@ -52,11 +77,14 @@ export default function AdminCases({ cases, categories, subsByCategory }: Props)
       title: c.title,
       excerpt: c.excerpt || "",
       body: c.body,
+      image_url: c.image_url || "",
       published: c.published,
     });
+    clearImage();
   }
   function cancel() {
     setEditing(EMPTY);
+    clearImage();
   }
 
   async function save() {
@@ -68,22 +96,45 @@ export default function AdminCases({ cases, categories, subsByCategory }: Props)
     try {
       const payload = {
         category_id: editing.category_id,
-        subcategory_id: editing.subcategory_id === "" ? null : editing.subcategory_id,
+        subcategory_id:
+          editing.subcategory_id === "" ? null : editing.subcategory_id,
         title: editing.title,
         excerpt: editing.excerpt,
         body: editing.body,
+        image_url: editing.image_url,
         published: !!editing.published,
       };
-      const url = "/api/admin/cases";
-      const method = editing.id ? "PATCH" : "POST";
-      const body = editing.id
-        ? JSON.stringify({ id: editing.id, ...payload })
-        : JSON.stringify(payload);
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body,
-      });
+
+      let res: Response;
+      if (editing.id) {
+        // 수정 — 기존 JSON PATCH (image_url 갱신은 URL 입력만 지원)
+        res = await fetch("/api/admin/cases", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: editing.id, ...payload }),
+        });
+      } else if (imageFile) {
+        // 신규 + 파일 첨부 — multipart
+        const fd = new FormData();
+        fd.set("category_id", String(payload.category_id));
+        if (payload.subcategory_id !== null)
+          fd.set("subcategory_id", String(payload.subcategory_id));
+        fd.set("title", payload.title);
+        fd.set("excerpt", payload.excerpt);
+        fd.set("body", payload.body);
+        fd.set("published", payload.published ? "1" : "0");
+        fd.set("image_file", imageFile);
+        if (payload.image_url) fd.set("image_url", payload.image_url);
+        res = await fetch("/api/admin/cases", { method: "POST", body: fd });
+      } else {
+        // 신규 + URL만 — JSON POST
+        res = await fetch("/api/admin/cases", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+      }
+
       const data = await res.json();
       if (!res.ok || !data.ok) {
         alert(data.error || "저장 실패");
@@ -212,6 +263,129 @@ export default function AdminCases({ cases, categories, subsByCategory }: Props)
             placeholder={`마크다운 일부 지원:\n## 소제목\n- 불릿\n1. 번호\n\n빈 줄로 단락 구분.`}
           />
         </div>
+        {/* 대표 이미지 — 파일 업로드 또는 외부 URL (수정 시에는 URL만) */}
+        <div
+          style={{
+            marginTop: 12,
+            padding: 12,
+            border: "1px solid rgb(var(--c-line))",
+            background: "rgb(var(--c-bg))",
+            display: "grid",
+            gridTemplateColumns: editing.id ? "1fr" : "auto 1fr 1fr",
+            gap: 12,
+            alignItems: "center",
+          }}
+        >
+          {!editing.id && (
+            <div>
+              <label
+                className="form-label"
+                style={{ marginBottom: 6, display: "block" }}
+              >
+                대표 이미지
+              </label>
+              {imagePreview ? (
+                <div style={{ position: "relative", width: 120, height: 90 }}>
+                  <img
+                    src={imagePreview}
+                    alt="preview"
+                    style={{
+                      width: 120,
+                      height: 90,
+                      objectFit: "cover",
+                      border: "1px solid rgb(var(--c-line))",
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={clearImage}
+                    style={{
+                      position: "absolute",
+                      top: -8,
+                      right: -8,
+                      width: 22,
+                      height: 22,
+                      borderRadius: "50%",
+                      background: "rgb(var(--c-fg))",
+                      color: "rgb(var(--c-bg))",
+                      border: 0,
+                      cursor: "pointer",
+                      fontSize: 14,
+                      lineHeight: 1,
+                    }}
+                  >
+                    ×
+                  </button>
+                </div>
+              ) : editing.image_url ? (
+                <img
+                  src={editing.image_url}
+                  alt=""
+                  style={{
+                    width: 120,
+                    height: 90,
+                    objectFit: "cover",
+                    border: "1px solid rgb(var(--c-line))",
+                  }}
+                />
+              ) : (
+                <div
+                  style={{
+                    width: 120,
+                    height: 90,
+                    border: "1px dashed rgb(var(--c-line))",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 11,
+                    color: "rgb(var(--c-muted))",
+                  }}
+                >
+                  미리보기
+                </div>
+              )}
+            </div>
+          )}
+          {!editing.id && (
+            <div>
+              <label
+                className="form-label"
+                style={{ marginBottom: 6, display: "block" }}
+              >
+                파일 업로드 <span style={{ color: "rgb(var(--c-muted))" }}>(JPG/PNG/WEBP · 5MB↓)</span>
+              </label>
+              <input
+                ref={imageInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={onImageFile}
+                style={{ fontSize: 13 }}
+              />
+            </div>
+          )}
+          <div>
+            <label
+              className="form-label"
+              style={{ marginBottom: 6, display: "block" }}
+            >
+              {editing.id
+                ? "이미지 URL (수정은 외부 URL만 가능)"
+                : "또는 외부 URL"}
+            </label>
+            <input
+              className="form-input"
+              placeholder="https://..."
+              value={editing.image_url}
+              onChange={(e) =>
+                setEditing((s) => ({ ...s, image_url: e.target.value }))
+              }
+              maxLength={500}
+              disabled={!editing.id && !!imageFile}
+              style={!editing.id && imageFile ? { opacity: 0.5 } : undefined}
+            />
+          </div>
+        </div>
+
         <div style={{ marginTop: 14, display: "flex", gap: 8 }}>
           <button
             type="button"

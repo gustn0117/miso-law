@@ -6,8 +6,11 @@ import { ArrowRight, ArrowUpRight } from "../components/icons";
 export const dynamic = "force-dynamic";
 
 export default function CafePage() {
-  const cafeUrl = getSetting("cafe_url") || "https://cafe.naver.com";
-  const kakaoUrl = getSetting("kakao_url") || "https://pf.kakao.com";
+  const cafeUrl =
+    getSetting("cafe_url") ||
+    "https://cafe.naver.com/MyCafeIntro.nhn?clubid=31738518";
+  const blogUrl =
+    getSetting("blog_url") || "https://blog.naver.com/miso-law";
 
   return (
     <SiteLayout>
@@ -15,7 +18,8 @@ export default function CafePage() {
         <div className="container">
           <h1>커뮤니티 · 카페</h1>
           <p>
-            실시간 사례 공유와 회원 후기는 외부 카페에서 확인하실 수 있습니다.
+            실시간 사례 공유와 회원 후기는 외부 카페·블로그에서 확인하실 수
+            있습니다.
           </p>
         </div>
       </div>
@@ -41,15 +45,15 @@ export default function CafePage() {
           </li>
           <li>
             <a
-              href={kakaoUrl}
+              href={blogUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="practice-row"
             >
               <span className="practice-num">N° 02</span>
-              <span className="practice-name">카카오톡 채널</span>
+              <span className="practice-name">네이버 블로그</span>
               <span className="practice-desc">
-                빠른 1:1 문의는 카카오톡 채널로
+                칼럼·사례 분석·실무 가이드
               </span>
               <span className="practice-arrow">
                 <ArrowUpRight size={20} />

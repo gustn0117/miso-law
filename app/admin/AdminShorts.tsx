@@ -22,8 +22,11 @@ export default function AdminShorts({ shorts, categories }: Props) {
   });
   const [thumbFile, setThumbFile] = useState<File | null>(null);
   const [thumbPreview, setThumbPreview] = useState<string | null>(null);
+  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [videoFileName, setVideoFileName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
 
   function onFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] || null;
@@ -33,8 +36,8 @@ export default function AdminShorts({ shorts, categories }: Props) {
       setThumbPreview(null);
       return;
     }
-    if (file.size > 2 * 1024 * 1024) {
-      setError("이미지는 2MB 이하여야 합니다.");
+    if (file.size > 5 * 1024 * 1024) {
+      setError("썸네일은 5MB 이하여야 합니다.");
       setThumbFile(null);
       setThumbPreview(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -50,18 +53,49 @@ export default function AdminShorts({ shorts, categories }: Props) {
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
+  function onVideoFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0] || null;
+    setError(null);
+    if (!file) {
+      setVideoFile(null);
+      setVideoFileName(null);
+      return;
+    }
+    if (file.size > 50 * 1024 * 1024) {
+      setError("영상은 50MB 이하여야 합니다.");
+      setVideoFile(null);
+      setVideoFileName(null);
+      if (videoInputRef.current) videoInputRef.current.value = "";
+      return;
+    }
+    setVideoFile(file);
+    setVideoFileName(
+      `${file.name} · ${(file.size / (1024 * 1024)).toFixed(1)}MB`,
+    );
+  }
+
+  function clearVideo() {
+    setVideoFile(null);
+    setVideoFileName(null);
+    if (videoInputRef.current) videoInputRef.current.value = "";
+  }
+
   async function add(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    if (!form.title.trim() || !form.url.trim()) {
-      setError("제목과 URL을 입력해 주세요.");
+    if (!form.title.trim()) {
+      setError("제목을 입력해 주세요.");
+      return;
+    }
+    if (!form.url.trim() && !videoFile) {
+      setError("외부 URL 또는 영상 파일 중 하나는 필수입니다.");
       return;
     }
     setBusy(true);
     try {
-      // 파일이 있으면 multipart, 없으면 JSON (기존 호환)
+      // 파일(썸네일 또는 영상) 있으면 multipart, 없으면 JSON
       let res: Response;
-      if (thumbFile) {
+      if (thumbFile || videoFile) {
         const fd = new FormData();
         fd.set("title", form.title);
         fd.set("url", form.url);
@@ -69,7 +103,8 @@ export default function AdminShorts({ shorts, categories }: Props) {
           fd.set("category_id", String(form.category_id));
         }
         fd.set("sort_order", String(form.sort_order));
-        fd.set("thumbnail_file", thumbFile);
+        if (thumbFile) fd.set("thumbnail_file", thumbFile);
+        if (videoFile) fd.set("video_file", videoFile);
         if (form.thumbnail_url) fd.set("thumbnail_url", form.thumbnail_url);
         res = await fetch("/api/admin/shorts", { method: "POST", body: fd });
       } else {
@@ -91,6 +126,7 @@ export default function AdminShorts({ shorts, categories }: Props) {
           sort_order: 0,
         });
         clearThumb();
+        clearVideo();
         router.refresh();
       }
     } catch (e) {
@@ -278,6 +314,60 @@ export default function AdminShorts({ shorts, categories }: Props) {
               style={thumbFile ? { opacity: 0.5 } : undefined}
             />
           </div>
+        </div>
+
+        {/* 영상 파일 업로드 (50MB) — 외부 URL 대신 자체 호스팅 */}
+        <div
+          style={{
+            marginTop: 12,
+            padding: 12,
+            border: "1px solid rgb(var(--c-line))",
+            background: "rgb(var(--c-bg))",
+            display: "grid",
+            gridTemplateColumns: "1fr auto",
+            gap: 12,
+            alignItems: "center",
+          }}
+        >
+          <div>
+            <label
+              className="form-label"
+              style={{ marginBottom: 6, display: "block" }}
+            >
+              영상 파일 업로드{" "}
+              <span style={{ color: "rgb(var(--c-muted))" }}>
+                (MP4/WEBM/MOV/M4V · 50MB↓ · 9:16 권장)
+              </span>
+            </label>
+            <input
+              ref={videoInputRef}
+              type="file"
+              accept="video/mp4,video/webm,video/quicktime,video/x-m4v"
+              onChange={onVideoFile}
+              style={{ fontSize: 13 }}
+            />
+            {videoFileName && (
+              <div
+                style={{
+                  marginTop: 6,
+                  fontSize: 12,
+                  color: "rgb(var(--c-muted))",
+                }}
+              >
+                선택됨: {videoFileName}
+              </div>
+            )}
+          </div>
+          {videoFile && (
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={clearVideo}
+              style={{ minHeight: 36, padding: "6px 14px" }}
+            >
+              제거
+            </button>
+          )}
         </div>
 
         {error && (

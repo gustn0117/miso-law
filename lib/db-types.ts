@@ -25,6 +25,7 @@ export type Case = {
   title: string;
   excerpt: string | null;
   body: string;
+  image_url: string | null;
   published: number;
   view_count: number;
   created_at: string;
@@ -36,6 +37,7 @@ export type Short = {
   title: string;
   url: string;
   thumbnail_url: string | null;
+  video_path: string | null;
   sort_order: number;
   created_at: string;
 };

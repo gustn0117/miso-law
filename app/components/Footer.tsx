@@ -32,7 +32,7 @@ export default function Footer() {
               <li><Link href="/inquiry">상담 신청</Link></li>
               <li><Link href="/cases">사례 모음</Link></li>
               <li><Link href="/shorts">1분 쇼츠</Link></li>
-              <li><Link href="/cafe">카페·카톡</Link></li>
+              <li><Link href="/cafe">카페 · 블로그</Link></li>
             </ul>
           </div>
 

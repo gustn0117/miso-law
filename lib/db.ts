@@ -155,6 +155,19 @@ export function getDb(): Database.Database {
   `);
 
   // -----------------------------------------------------------
+  // 마이그레이션 — 신규 컬럼 (idempotent: 이미 있으면 throw → silently swallow)
+  // -----------------------------------------------------------
+  const addColumnIfMissing = (table: string, column: string, def: string) => {
+    try {
+      db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${def}`);
+    } catch {
+      // 이미 존재 — 무시
+    }
+  };
+  addColumnIfMissing("cases", "image_url", "TEXT");
+  addColumnIfMissing("shorts", "video_path", "TEXT");
+
+  // -----------------------------------------------------------
   // 시드 데이터 (최초 1회)
   // -----------------------------------------------------------
   const seeded = db
@@ -516,11 +529,12 @@ export function insertCase(input: {
   title: string;
   excerpt: string | null;
   body: string;
+  image_url?: string | null;
   published?: number;
 }) {
   const res = getDb()
     .prepare(
-      "INSERT INTO cases(category_id, subcategory_id, title, excerpt, body, published) VALUES (?, ?, ?, ?, ?, ?)",
+      "INSERT INTO cases(category_id, subcategory_id, title, excerpt, body, image_url, published) VALUES (?, ?, ?, ?, ?, ?, ?)",
     )
     .run(
       input.category_id,
@@ -528,6 +542,7 @@ export function insertCase(input: {
       input.title,
       input.excerpt,
       input.body,
+      input.image_url ?? null,
       input.published ?? 1,
     );
   return Number(res.lastInsertRowid);
@@ -540,6 +555,7 @@ export function updateCase(
     title: string;
     excerpt: string | null;
     body: string;
+    image_url: string | null;
     published: number;
   }>,
 ) {
@@ -577,17 +593,19 @@ export function insertShort(input: {
   title: string;
   url: string;
   thumbnail_url?: string | null;
+  video_path?: string | null;
   sort_order?: number;
 }) {
   const res = getDb()
     .prepare(
-      "INSERT INTO shorts(category_id, title, url, thumbnail_url, sort_order) VALUES (?, ?, ?, ?, ?)",
+      "INSERT INTO shorts(category_id, title, url, thumbnail_url, video_path, sort_order) VALUES (?, ?, ?, ?, ?, ?)",
     )
     .run(
       input.category_id,
       input.title,
       input.url,
       input.thumbnail_url ?? null,
+      input.video_path ?? null,
       input.sort_order ?? 0,
     );
   return Number(res.lastInsertRowid);

@@ -77,6 +77,20 @@ export default function CaseDetailPage({ params }: Props) {
           maxWidth: 820,
         }}
       >
+        {c.image_url && (
+          <figure style={{ margin: "0 0 24px" }}>
+            <img
+              src={c.image_url}
+              alt=""
+              style={{
+                width: "100%",
+                maxHeight: 480,
+                objectFit: "cover",
+                border: "1px solid rgb(var(--c-line))",
+              }}
+            />
+          </figure>
+        )}
         {c.excerpt && (
           <div
             style={{
