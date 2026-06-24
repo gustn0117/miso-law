@@ -53,7 +53,7 @@ export default function AISearchBox({
           maxLength={300}
         />
         <button type="submit" disabled={loading || !q.trim()}>
-          {loading ? "분석 중" : "AI 안내"}
+          {loading ? "분석 중" : "답변 보기"}
           <span className="arrow"><ArrowRight size={16} /></span>
         </button>
       </form>

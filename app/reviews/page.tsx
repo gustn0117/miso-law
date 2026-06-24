@@ -8,7 +8,7 @@ import { getCurrentMember } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "실제 상담 이용 후기 · 미소 법률 · 금융 상담",
+  title: "실제 상담 이용 후기 · 미소 법률 · 대출 상담",
   description:
     "회원들이 직접 남긴 실제 상담 이용 후기. 솔직한 만족도와 경험을 확인해보세요.",
 };

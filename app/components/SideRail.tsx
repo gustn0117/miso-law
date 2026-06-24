@@ -35,7 +35,7 @@ export default function SideRail() {
         <div
           style={{ fontSize: 12, color: "var(--ink-mute)", marginBottom: 6 }}
         >
-          금전 문제
+          대출 문제
         </div>
         <div
           style={{ fontWeight: 800, color: "var(--brand)", marginBottom: 10 }}

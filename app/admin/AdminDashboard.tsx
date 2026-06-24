@@ -64,7 +64,7 @@ export default function AdminDashboard(props: Props) {
     <div className="admin-wrap">
       <AdminNotifier initialLatestId={props.latestInquiryId} />
       <div className="admin-header">
-        <h1>미소 법률 · 금융 상담 관리자</h1>
+        <h1>미소 법률 · 대출 상담 관리자</h1>
         <button type="button" className="btn btn-ghost" onClick={logout}>
           로그아웃
         </button>

@@ -4,7 +4,7 @@ import ChatRoom from "./ChatRoom";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "AI 상담 · 미소 법률 · 금융 상담",
+  title: "AI 상담 · 미소 법률 · 대출 상담",
   description:
     "법률 고민을 한 줄로 입력하면 AI가 카테고리·핵심 포인트·다음 액션을 정리해 드립니다.",
 };

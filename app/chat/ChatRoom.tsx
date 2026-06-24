@@ -222,9 +222,9 @@ export default function ChatRoom({ initialQuery }: { initialQuery?: string }) {
             type="submit"
             className="chat-send"
             disabled={loading || !input.trim()}
-            aria-label="전송"
+            aria-label="답변 보기"
           >
-            {loading ? "분석 중" : "전송"}
+            {loading ? "분석 중" : "답변 보기"}
             <ArrowRight size={16} />
           </button>
         </form>

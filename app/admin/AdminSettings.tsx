@@ -24,11 +24,11 @@ const FIELDS: { key: string; label: string; help?: string; type?: "url" | "text"
   },
   {
     key: "money_banner_title",
-    label: "메인 금전상담 배너 제목",
+    label: "메인 대출상담 배너 제목",
   },
   {
     key: "money_banner_desc",
-    label: "메인 금전상담 배너 설명",
+    label: "메인 대출상담 배너 설명",
   },
 ];
 

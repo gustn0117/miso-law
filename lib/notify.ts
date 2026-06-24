@@ -32,7 +32,7 @@ export async function notifyNewInquiry(input: InquiryNotifyInput): Promise<void>
       secure: Number(SMTP_PORT || 587) === 465,
       auth: { user: SMTP_USER, pass: SMTP_PASS },
     });
-    const subject = `[미소 법률 · 금융 상담] 신규 상담 접수 #${input.id} — ${input.name}`;
+    const subject = `[미소 법률 · 대출 상담] 신규 상담 접수 #${input.id} — ${input.name}`;
     const text = [
       `상담 신청이 접수되었습니다.`,
       ``,

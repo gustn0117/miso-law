@@ -47,7 +47,7 @@ export default function HomePage() {
 
           <h1 className="hero-h1">
             <span className="line ko">
-              <span className="mask"><span className="d-2">미소 법률 · 금융 상담</span></span>
+              <span className="mask"><span className="d-2">미소 법률 · 대출 상담</span></span>
             </span>
           </h1>
 
@@ -66,11 +66,11 @@ export default function HomePage() {
                 <span className="btn-icon"><ArrowRight size={18} /></span>
               </Link>
               <Link href="/inquiry/money" className="btn btn-primary btn-lg">
-                무료 금전상담 신청
+                무료 대출상담 신청
                 <span className="btn-icon"><ArrowRight size={18} /></span>
               </Link>
               <Link href="#search" className="btn btn-lg">
-                AI에게 먼저 묻기
+                나의 사례 우선 진단하기
               </Link>
             </div>
             <div className="hero-proof" aria-label="주요 상담 분야">
@@ -89,7 +89,7 @@ export default function HomePage() {
       </section>
 
       {/* =================================================================
-          1.5. QUICK MENU — 카페/쇼츠/사건사고/금전상담 (요청서 §2)
+          1.5. QUICK MENU — 카페/쇼츠/사건사고/대출상담 (요청서 §2)
           ================================================================= */}
       <section className="sec-quick">
         <div className="w-default">
@@ -98,7 +98,7 @@ export default function HomePage() {
               { href: cafeUrl, label: "카페 바로가기", icon: "cafe", external: true },
               { href: "/shorts", label: "쇼츠 보기", icon: "shorts" },
               { href: "/reviews", label: "상담후기", icon: "cases" },
-              { href: "/inquiry/money", label: "금전상담", icon: "money" },
+              { href: "/inquiry/money", label: "대출상담", icon: "money" },
             ]}
           />
         </div>
@@ -226,7 +226,7 @@ export default function HomePage() {
                 borderColor: "rgb(var(--c-bg))",
               }}
             >
-              무료 금전상담 신청
+              무료 대출상담 신청
               <span className="btn-icon"><ArrowRight size={18} /></span>
             </Link>
             <Link
@@ -238,7 +238,7 @@ export default function HomePage() {
                 borderColor: "rgb(var(--c-bg) / 0.4)",
               }}
             >
-              AI에게 먼저 묻기
+              나의 사례 우선 진단하기
             </Link>
             <span className="final-fine" style={{ color: "rgb(var(--c-bg) / 0.5)" }}>
               무료 · 익명 가능 · 1분

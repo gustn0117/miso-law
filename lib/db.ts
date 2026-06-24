@@ -3,7 +3,7 @@ import path from "path";
 import fs from "fs";
 
 // =============================================================
-// 미소 법률 · 금융 상담 — better-sqlite3 영속 DB
+// 미소 법률 · 대출 상담 — better-sqlite3 영속 DB
 // =============================================================
 
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -192,7 +192,7 @@ export function getDb(): Database.Database {
   );
   insertSetting.run(
     "money_banner_title",
-    "금전 문제로 막막하시다면 — 무료 상담 받아보세요",
+    "대출 문제로 막막하시다면 — 무료 상담 받아보세요",
   );
   insertSetting.run(
     "money_banner_desc",
@@ -227,7 +227,7 @@ const SEED_CATEGORIES: SeedCategory[] = [
       { slug: "secondhand", name: "중고거래 사기" },
       { slug: "voice-phishing", name: "보이스피싱" },
       { slug: "loan", name: "대출사기" },
-      { slug: "acquaintance", name: "지인 금전사기" },
+      { slug: "acquaintance", name: "지인 대출사기" },
       { slug: "etc", name: "기타 사기 사건" },
     ],
   },
