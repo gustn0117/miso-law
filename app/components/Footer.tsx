@@ -46,9 +46,45 @@ export default function Footer() {
           </div>
         </div>
 
+        <div className="colophon-biz" aria-label="사업자 정보">
+          <div className="colophon-biz-eyebrow">
+            <span>BUSINESS REGISTRATION</span>
+            <span aria-hidden>·</span>
+            <span>대부중개업등록증</span>
+          </div>
+          <dl className="colophon-biz-grid">
+            <div>
+              <dt>등록번호</dt>
+              <dd className="num">2026-인천남동-0002</dd>
+            </div>
+            <div>
+              <dt>등록유효기간</dt>
+              <dd className="num">2026.04.23 — 2029.04.23</dd>
+            </div>
+            <div>
+              <dt>상호</dt>
+              <dd>국민대출대부중개</dd>
+            </div>
+            <div>
+              <dt>대표자</dt>
+              <dd>김학찬</dd>
+            </div>
+            <div className="span-2">
+              <dt>소재지</dt>
+              <dd>인천광역시 남동구 구월로336번길 60, 1층 일부 (만수동)</dd>
+            </div>
+            <div>
+              <dt>전화번호</dt>
+              <dd className="num">
+                <a href="tel:01098857010">010-9885-7010</a>
+              </dd>
+            </div>
+          </dl>
+        </div>
+
         <div className="colophon-bottom">
           <span>© {year} 미소 법률 · 대출 상담</span>
-          <span>SEOUL</span>
+          <span>SEOUL · INCHEON</span>
         </div>
       </div>
     </footer>

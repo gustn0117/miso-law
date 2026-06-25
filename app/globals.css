@@ -1498,6 +1498,88 @@ textarea {
   letter-spacing: -0.005em;
 }
 .colophon-links a:hover { opacity: 0.6; }
+
+/* Business registration block — editorial KV table */
+.colophon-biz {
+  margin-top: var(--s-16);
+  padding-top: var(--s-10);
+  border-top: 1px solid rgb(var(--c-line));
+}
+.colophon-biz-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-family: var(--ff-body);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(var(--c-muted));
+  margin-bottom: var(--s-6);
+}
+.colophon-biz-eyebrow span[aria-hidden] {
+  opacity: 0.5;
+  letter-spacing: 0;
+}
+.colophon-biz-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-4) var(--s-10);
+  margin: 0;
+  padding: 0;
+}
+@media (min-width: 640px) {
+  .colophon-biz-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 960px) {
+  .colophon-biz-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.colophon-biz-grid > div {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  align-items: baseline;
+  gap: var(--s-3);
+  padding-block: var(--s-2);
+  border-top: 1px solid rgb(var(--c-line) / 0.6);
+}
+.colophon-biz-grid > div.span-2 {
+  grid-column: span 1;
+}
+@media (min-width: 960px) {
+  .colophon-biz-grid > div.span-2 {
+    grid-column: span 2;
+  }
+}
+.colophon-biz-grid dt {
+  font-family: var(--ff-body);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgb(var(--c-muted));
+}
+.colophon-biz-grid dd {
+  margin: 0;
+  font-family: var(--ff-body);
+  font-size: var(--t-sm);
+  color: rgb(var(--c-fg));
+  letter-spacing: -0.005em;
+}
+.colophon-biz-grid dd.num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+.colophon-biz-grid dd a {
+  color: inherit;
+  border-bottom: 1px solid rgb(var(--c-line));
+  transition: opacity 150ms ease;
+}
+.colophon-biz-grid dd a:hover { opacity: 0.65; }
+
 .colophon-bottom {
   margin-top: var(--s-16);
   padding-top: var(--s-4);
