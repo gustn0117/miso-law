@@ -1,5 +1,9 @@
-// 상담 접수 시 운영자 알림. SMTP env가 모두 설정된 경우에만 실제로 동작.
-// nodemailer를 동적 import로 가져와 의존성을 옵션화한다.
+// 상담 접수 시 운영자 알림.
+// - 이메일(SMTP_*): SMTP env가 모두 설정된 경우에만 발송 (nodemailer 동적 import)
+// - SMS(SOLAPI_*): SOLAPI env가 모두 설정된 경우에만 발송 (lib/sms)
+// 두 채널은 병렬(Promise.allSettled)로 발송되며 하나가 실패해도 다른 하나는 진행됨.
+
+import { sendAdminInquirySms } from "./sms";
 
 type InquiryNotifyInput = {
   id: number;
@@ -11,12 +15,11 @@ type InquiryNotifyInput = {
   source?: string | null;
 };
 
-export async function notifyNewInquiry(input: InquiryNotifyInput): Promise<void> {
+async function sendEmail(input: InquiryNotifyInput): Promise<void> {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM, SMTP_TO } =
     process.env;
   if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !SMTP_FROM || !SMTP_TO) {
-    // SMTP 미설정 — 조용히 스킵 (관리자 페이지의 '신규접수' 카드로 확인)
-    return;
+    return; // SMTP 미설정 — 조용히 스킵
   }
   try {
     const mod = await import("nodemailer").catch(() => null);
@@ -54,4 +57,18 @@ export async function notifyNewInquiry(input: InquiryNotifyInput): Promise<void>
   } catch (err) {
     console.error("[notify] sendMail error:", err);
   }
+}
+
+export async function notifyNewInquiry(
+  input: InquiryNotifyInput,
+): Promise<void> {
+  await Promise.allSettled([
+    sendEmail(input),
+    sendAdminInquirySms({
+      id: input.id,
+      name: input.name,
+      phone: input.phone,
+      category: input.category_slug,
+    }),
+  ]);
 }
