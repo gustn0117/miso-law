@@ -46,12 +46,30 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="colophon-biz" aria-label="사업자 정보">
-          <div className="colophon-biz-eyebrow">
-            <span>BUSINESS REGISTRATION</span>
-            <span aria-hidden>·</span>
-            <span>대부중개업등록증</span>
-          </div>
+        <details className="colophon-biz">
+          <summary aria-label="사업자 정보 펼치기/접기">
+            <span className="colophon-biz-eyebrow">
+              <span>BUSINESS REGISTRATION</span>
+              <span aria-hidden>·</span>
+              <span>대부중개업등록증</span>
+            </span>
+            <span className="colophon-biz-toggle" aria-hidden>
+              <span className="colophon-biz-toggle-label" />
+              <svg
+                className="colophon-biz-chevron"
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 4.5L6 7.5L9 4.5" />
+              </svg>
+            </span>
+          </summary>
           <dl className="colophon-biz-grid">
             <div>
               <dt>등록번호</dt>
@@ -80,7 +98,7 @@ export default function Footer() {
               </dd>
             </div>
           </dl>
-        </div>
+        </details>
 
         <div className="colophon-bottom">
           <span>© {year} 미소 법률 · 대출 상담</span>
