@@ -978,3 +978,24 @@ export function deleteReview(id: number, memberId?: number): boolean {
     .run(...params);
   return r.changes > 0;
 }
+
+// 관리자용 — 상태 무관 전체 후기 (숨김 포함)
+export function listAllReviews(limit = 500): ReviewWithAuthor[] {
+  return getDb()
+    .prepare(
+      `SELECT r.*, m.name AS author_name
+       FROM reviews r
+       LEFT JOIN members m ON m.id = r.member_id
+       ORDER BY r.created_at DESC
+       LIMIT ?`,
+    )
+    .all(limit) as ReviewWithAuthor[];
+}
+
+// 관리자용 — 후기 상태 변경 (게시 / 숨김)
+export function setReviewStatus(id: number, status: "게시" | "숨김"): boolean {
+  const r = getDb()
+    .prepare("UPDATE reviews SET status = ? WHERE id = ?")
+    .run(status, id);
+  return r.changes > 0;
+}

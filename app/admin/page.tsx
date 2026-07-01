@@ -5,6 +5,7 @@ import {
   getInquiryStats,
   listAIAnswers,
   listAllCases,
+  listAllReviews,
   listAllSettings,
   listBannedWords,
   listCategories,
@@ -30,6 +31,7 @@ export default function AdminPage() {
   const aiAnswers = listAIAnswers();
   const banned = listBannedWords();
   const members = listMembers();
+  const reviews = listAllReviews();
   const settings = Object.fromEntries(
     listAllSettings().map((s) => [s.key, s.value]),
   );
@@ -46,6 +48,7 @@ export default function AdminPage() {
       aiAnswers={aiAnswers}
       banned={banned}
       members={members}
+      reviews={reviews}
       settings={settings}
       stats={stats}
       latestInquiryId={latestInquiryId}

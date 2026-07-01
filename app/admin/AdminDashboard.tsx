@@ -9,12 +9,14 @@ import type {
   Category,
   Inquiry,
   Member,
+  ReviewWithAuthor,
   Short,
   Subcategory,
 } from "@/lib/db-types";
 import AdminInquiries from "./AdminInquiries";
 import AdminCategories from "./AdminCategories";
 import AdminCases from "./AdminCases";
+import AdminReviews from "./AdminReviews";
 import AdminShorts from "./AdminShorts";
 import AdminAIAnswers from "./AdminAIAnswers";
 import AdminBanned from "./AdminBanned";
@@ -31,6 +33,7 @@ type Props = {
   aiAnswers: AIAnswer[];
   banned: BannedWord[];
   members: Member[];
+  reviews: ReviewWithAuthor[];
   settings: Record<string, string>;
   stats: { total: number; newCount: number; todayCount: number };
   latestInquiryId: number;
@@ -40,6 +43,7 @@ const TABS = [
   { key: "stat", label: "대시보드" },
   { key: "inquiries", label: "상담 신청" },
   { key: "cases", label: "사례글" },
+  { key: "reviews", label: "후기글" },
   { key: "categories", label: "카테고리" },
   { key: "ai", label: "AI 답변" },
   { key: "shorts", label: "쇼츠" },
@@ -106,6 +110,9 @@ export default function AdminDashboard(props: Props) {
           categories={props.categories}
           subsByCategory={props.subsByCategory}
         />
+      )}
+      {tab === "reviews" && (
+        <AdminReviews reviews={props.reviews} categories={props.categories} />
       )}
       {tab === "categories" && (
         <AdminCategories
