@@ -1621,6 +1621,158 @@ textarea {
   margin: 0;
 }
 
+/* Wizard — 스텝 진행 UI */
+.job-wizard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-6);
+  padding: var(--s-8) var(--s-6);
+  border: 1px solid rgb(var(--c-line));
+  background: rgb(var(--c-bg));
+  min-height: 460px;
+}
+.job-wizard-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid rgb(var(--c-line));
+}
+.job-wizard-step {
+  font-family: var(--ff-body);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(var(--c-muted));
+  font-variant-numeric: tabular-nums;
+}
+.job-wizard-progress {
+  display: flex;
+  gap: 6px;
+}
+.job-wizard-dot {
+  width: 20px;
+  height: 2px;
+  background: rgb(var(--c-line));
+  transition: background 240ms var(--e-slow);
+}
+.job-wizard-dot.is-on { background: rgb(var(--c-fg)); }
+
+.job-wizard-title {
+  font-family: var(--ff-display);
+  font-size: clamp(1.4rem, 3.6vw, 1.95rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.job-wizard-body { display: flex; flex-direction: column; gap: var(--s-3); }
+
+/* Radio choice list — 사진 참고: 세로 나열 + 우측 체크 아이콘 */
+.job-choice {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.job-choice > li { border-bottom: 1px solid rgb(var(--c-line) / 0.6); }
+.job-choice-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding: 18px 4px;
+  cursor: pointer;
+  font-family: var(--ff-body);
+  font-size: var(--t-md);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: rgb(var(--c-muted));
+  transition: color 200ms var(--e-slow), padding-left 240ms var(--e-slow);
+}
+.job-choice-item > input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0; height: 0;
+}
+.job-choice-item > span { flex: 1; }
+.job-choice-check {
+  color: rgb(var(--c-line));
+  transition: color 240ms var(--e-slow), transform 240ms var(--e-slow);
+  flex-shrink: 0;
+}
+.job-choice-item:hover {
+  color: rgb(var(--c-fg));
+  padding-left: 8px;
+}
+.job-choice-item:hover .job-choice-check {
+  color: rgb(var(--c-muted));
+}
+.job-choice-item.is-selected {
+  color: rgb(var(--c-fg));
+  padding-left: 12px;
+  font-weight: 600;
+}
+.job-choice-item.is-selected .job-choice-check {
+  color: rgb(var(--c-fg));
+  transform: scale(1.1);
+}
+.job-choice-item.is-selected::before {
+  content: "";
+  position: relative;
+  display: block;
+  width: 3px;
+  height: 20px;
+  background: rgb(var(--c-fg));
+  margin-left: -12px;
+  margin-right: 8px;
+}
+
+.job-wizard-textarea {
+  font-family: var(--ff-body);
+  font-size: var(--t-md);
+  padding: 18px 20px;
+  border: 1px solid rgb(var(--c-line));
+  background: rgb(var(--c-bg));
+  color: rgb(var(--c-fg));
+  border-radius: 0;
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.5;
+  transition: border-color 200ms var(--e-slow);
+  width: 100%;
+}
+.job-wizard-textarea:focus {
+  outline: none;
+  border-color: rgb(var(--c-fg));
+}
+
+.job-wizard-contact { display: flex; flex-direction: column; gap: var(--s-4); }
+
+.job-wizard-hint {
+  text-align: center;
+  font-size: var(--t-sm);
+  color: rgb(var(--c-muted));
+  padding-top: var(--s-2);
+}
+
+.job-wizard-nav {
+  display: flex;
+  gap: var(--s-3);
+  margin-top: auto;
+  padding-top: var(--s-4);
+}
+.job-wizard-next {
+  flex: 1;
+  min-height: 56px;
+}
+
 .job-form { display: flex; flex-direction: column; gap: var(--s-4); }
 .job-form-row {
   display: grid;
