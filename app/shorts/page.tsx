@@ -1,6 +1,11 @@
 import SiteLayout from "../components/SiteLayout";
 import { listShorts } from "@/lib/db";
 import LegalNotice from "../components/LegalNotice";
+import {
+  extractYouTubeId,
+  extractYouTubePlaylistId,
+  buildYouTubeEmbedUrl,
+} from "@/lib/embed";
 
 export const dynamic = "force-dynamic";
 
@@ -24,8 +29,7 @@ export default function ShortsPage() {
         ) : (
           <div className="shorts-grid">
             {shorts.map((s) => {
-              // 자체 호스팅 영상이 있으면 video 태그로 사이트 내에서 재생,
-              // 없으면 외부 URL(YouTube 등)을 새 창으로 엶
+              // 1) 자체 호스팅 영상 → <video>로 사이트 내 재생
               if (s.video_path) {
                 return (
                   <div key={s.id} className="short-card">
@@ -50,6 +54,37 @@ export default function ShortsPage() {
                   </div>
                 );
               }
+              // 2) YouTube URL → iframe으로 사이트 내 재생 (새창 X)
+              const ytId = extractYouTubeId(s.url);
+              if (ytId) {
+                const src = buildYouTubeEmbedUrl(
+                  ytId,
+                  extractYouTubePlaylistId(s.url),
+                );
+                return (
+                  <div key={s.id} className="short-card">
+                    <div className="short-thumb">
+                      <iframe
+                        src={src}
+                        title={s.title}
+                        loading="lazy"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          width: "100%",
+                          height: "100%",
+                          border: 0,
+                        }}
+                      />
+                    </div>
+                    <div className="body">{s.title}</div>
+                  </div>
+                );
+              }
+              // 3) 그 외 외부 URL → 새 창 (기존 fallback 유지)
               return (
                 <a
                   key={s.id}
