@@ -83,7 +83,7 @@ export default function TabbedInquiry({
           className={`inquiry-tab ${tab === "job" ? "is-active" : ""}`}
           onClick={() => selectTab("job")}
         >
-          재택알바 신청
+          고액 알바/부업 신청
         </button>
       </div>
 

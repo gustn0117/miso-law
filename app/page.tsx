@@ -70,7 +70,7 @@ export default function HomePage() {
                   무료 대출상담 신청
                   <span className="btn-icon"><ArrowRight size={18} /></span>
                 </span>
-                <span className="btn-sub">고액 재택알바 알아보기</span>
+                <span className="btn-sub">고액 재택알바/부업 알아보기</span>
               </Link>
               <Link href="#search" className="btn btn-lg">
                 나의 사례 우선 진단하기
@@ -101,7 +101,7 @@ export default function HomePage() {
               { href: cafeUrl, label: "카페 바로가기", icon: "cafe", external: true },
               { href: "/shorts", label: "쇼츠 보기", icon: "shorts" },
               { href: "/reviews", label: "상담후기", icon: "cases" },
-              { href: "/inquiry/money?tab=job", label: "재택알바문의", icon: "money" },
+              { href: "/inquiry/money?tab=job", label: "재택알바/부업 문의", icon: "money" },
             ]}
           />
         </div>
@@ -233,7 +233,7 @@ export default function HomePage() {
                 무료 대출상담 신청
                 <span className="btn-icon"><ArrowRight size={18} /></span>
               </span>
-              <span className="btn-sub">고액 재택알바 알아보기</span>
+              <span className="btn-sub">고액 재택알바/부업 알아보기</span>
             </Link>
             <Link
               href="/chat"
