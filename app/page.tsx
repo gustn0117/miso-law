@@ -101,7 +101,7 @@ export default function HomePage() {
               { href: cafeUrl, label: "카페 바로가기", icon: "cafe", external: true },
               { href: "/shorts", label: "쇼츠 보기", icon: "shorts" },
               { href: "/reviews", label: "상담후기", icon: "cases" },
-              { href: "/inquiry/money", label: "재택알바문의", icon: "money" },
+              { href: "/inquiry/money?tab=job", label: "재택알바문의", icon: "money" },
             ]}
           />
         </div>

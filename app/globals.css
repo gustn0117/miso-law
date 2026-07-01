@@ -1531,12 +1531,69 @@ textarea {
 .colophon-links a:hover { opacity: 0.6; }
 
 /* ============================================================
-   Job Inquiry Section — 재택알바 신청 (money 페이지 하단)
+   Inquiry Tabs — 대출 / 재택알바 폼 스위처
+   ============================================================ */
+.inquiry-tabs {
+  display: flex;
+  gap: var(--s-8);
+  border-bottom: 1px solid rgb(var(--c-line));
+  margin-bottom: var(--s-8);
+  padding-bottom: 0;
+  position: relative;
+}
+.inquiry-tab {
+  position: relative;
+  padding: var(--s-4) 2px;
+  font-family: var(--ff-body);
+  font-size: var(--t-md);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: rgb(var(--c-muted));
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 200ms var(--e-slow);
+  white-space: nowrap;
+}
+.inquiry-tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: transparent;
+  transition: background 240ms var(--e-slow), height 240ms var(--e-slow);
+}
+.inquiry-tab:hover:not(.is-active) {
+  color: rgb(var(--c-fg) / 0.75);
+}
+.inquiry-tab.is-active {
+  color: rgb(var(--c-fg));
+}
+.inquiry-tab.is-active::after {
+  background: rgb(var(--c-fg));
+  height: 3px;
+}
+.inquiry-tab:focus-visible {
+  outline: none;
+  color: rgb(var(--c-fg));
+}
+.inquiry-tab:focus-visible::after {
+  background: rgb(var(--c-fg));
+  height: 3px;
+}
+@media (max-width: 480px) {
+  .inquiry-tabs { gap: var(--s-6); }
+  .inquiry-tab { font-size: var(--t-sm); }
+}
+
+/* ============================================================
+   Job Inquiry Section — 재택알바 신청 (탭 패널 내부)
    ============================================================ */
 .job-section {
-  margin-top: var(--s-16);
-  padding-top: var(--s-10);
-  padding-bottom: var(--s-16);
+  padding-top: var(--s-4);
+  padding-bottom: var(--s-8);
 }
 .job-rule {
   width: 100%;
