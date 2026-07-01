@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteLayout from "../../components/SiteLayout";
 import LegalNotice from "../../components/LegalNotice";
-import { ArrowRight } from "../../components/icons";
+import { ArrowRight, ArrowUpRight } from "../../components/icons";
 import {
   getCaseById,
   getDb,
@@ -64,6 +64,58 @@ export default function CaseDetailPage({ params }: Props) {
             )}
           </div>
           <h1>{c.title}</h1>
+          {(c.case_no || c.result) && (
+            <div
+              style={{
+                marginTop: 12,
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                gap: 10,
+              }}
+            >
+              {c.case_no &&
+                (c.case_url ? (
+                  <a
+                    href={c.case_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 4,
+                      fontSize: 14,
+                      color: "rgb(var(--c-bg) / 0.85)",
+                      textDecoration: "none",
+                    }}
+                  >
+                    {c.case_no}
+                    <ArrowUpRight size={14} />
+                  </a>
+                ) : (
+                  <span style={{ fontSize: 14, color: "rgb(var(--c-bg) / 0.7)" }}>
+                    {c.case_no}
+                  </span>
+                ))}
+              {c.result && (
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    padding: "3px 11px",
+                    fontSize: 12.5,
+                    fontWeight: 600,
+                    letterSpacing: "0.02em",
+                    color: "rgb(var(--c-bg))",
+                    border: "1px solid rgb(var(--c-bg) / 0.45)",
+                    borderRadius: 999,
+                  }}
+                >
+                  {c.result}
+                </span>
+              )}
+            </div>
+          )}
           <div
             style={{
               marginTop: 8,

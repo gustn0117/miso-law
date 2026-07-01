@@ -82,6 +82,10 @@ async function handleMultipart(req: NextRequest) {
     image_url = urlField || null;
   }
 
+  const case_no = sanitize(String(form.get("case_no") ?? ""), 120);
+  const case_url = sanitizeUrl(String(form.get("case_url") ?? ""), 500);
+  const result = sanitize(String(form.get("result") ?? ""), 40);
+
   const id = insertCase({
     category_id,
     subcategory_id,
@@ -89,6 +93,9 @@ async function handleMultipart(req: NextRequest) {
     excerpt: excerpt || null,
     body: body_text,
     image_url,
+    case_no: case_no || null,
+    case_url: case_url || null,
+    result: result || null,
     published,
   });
   return NextResponse.json(ok({ id, image_url }));
@@ -122,6 +129,9 @@ async function handleJson(req: NextRequest) {
   if (!body_text)
     return NextResponse.json(fail("본문을 입력해 주세요."), { status: 400 });
   const image_url = sanitizeUrl(body.image_url, 500);
+  const case_no = sanitize(body.case_no, 120);
+  const case_url = sanitizeUrl(body.case_url, 500);
+  const result = sanitize(body.result, 40);
   const id = insertCase({
     category_id,
     subcategory_id,
@@ -129,6 +139,9 @@ async function handleJson(req: NextRequest) {
     excerpt: excerpt || null,
     body: body_text,
     image_url: image_url || null,
+    case_no: case_no || null,
+    case_url: case_url || null,
+    result: result || null,
     published,
   });
   return NextResponse.json(ok({ id }));
@@ -179,6 +192,15 @@ export async function PATCH(req: NextRequest) {
     }
     if (body.image_url !== undefined) {
       patch.image_url = sanitizeUrl(body.image_url, 500) || null;
+    }
+    if (body.case_no !== undefined) {
+      patch.case_no = sanitize(body.case_no, 120) || null;
+    }
+    if (body.case_url !== undefined) {
+      patch.case_url = sanitizeUrl(body.case_url, 500) || null;
+    }
+    if (body.result !== undefined) {
+      patch.result = sanitize(body.result, 40) || null;
     }
     updateCase(id, patch);
     return NextResponse.json(ok());

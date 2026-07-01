@@ -3,6 +3,7 @@
 import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Case, Category, Subcategory } from "@/lib/db-types";
+import { CASE_RESULTS } from "@/lib/case-results";
 
 type Props = {
   cases: Case[];
@@ -18,6 +19,9 @@ const EMPTY = {
   excerpt: "",
   body: "",
   image_url: "",
+  case_no: "",
+  case_url: "",
+  result: "",
   published: 1,
 };
 
@@ -33,6 +37,8 @@ export default function AdminCases({ cases, categories, subsByCategory }: Props)
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
+  // 처리결과: 프리셋에 없는 값이면 "직접 입력" 모드
+  const [resultCustom, setResultCustom] = useState(false);
 
   function onImageFile(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0] || null;
@@ -68,6 +74,7 @@ export default function AdminCases({ cases, categories, subsByCategory }: Props)
       ...EMPTY,
       category_id: categories[0]?.id || 0,
     });
+    setResultCustom(false);
   }
   function startEdit(c: Case) {
     setEditing({
@@ -78,12 +85,19 @@ export default function AdminCases({ cases, categories, subsByCategory }: Props)
       excerpt: c.excerpt || "",
       body: c.body,
       image_url: c.image_url || "",
+      case_no: c.case_no || "",
+      case_url: c.case_url || "",
+      result: c.result || "",
       published: c.published,
     });
+    setResultCustom(
+      !!c.result && !CASE_RESULTS.includes(c.result as (typeof CASE_RESULTS)[number]),
+    );
     clearImage();
   }
   function cancel() {
     setEditing(EMPTY);
+    setResultCustom(false);
     clearImage();
   }
 
@@ -102,6 +116,9 @@ export default function AdminCases({ cases, categories, subsByCategory }: Props)
         excerpt: editing.excerpt,
         body: editing.body,
         image_url: editing.image_url,
+        case_no: editing.case_no,
+        case_url: editing.case_url,
+        result: editing.result,
         published: !!editing.published,
       };
 
@@ -125,6 +142,9 @@ export default function AdminCases({ cases, categories, subsByCategory }: Props)
         fd.set("published", payload.published ? "1" : "0");
         fd.set("image_file", imageFile);
         if (payload.image_url) fd.set("image_url", payload.image_url);
+        if (payload.case_no) fd.set("case_no", payload.case_no);
+        if (payload.case_url) fd.set("case_url", payload.case_url);
+        if (payload.result) fd.set("result", payload.result);
         res = await fetch("/api/admin/cases", { method: "POST", body: fd });
       } else {
         // 신규 + URL만 — JSON POST
@@ -383,6 +403,84 @@ export default function AdminCases({ cases, categories, subsByCategory }: Props)
               disabled={!editing.id && !!imageFile}
               style={!editing.id && imageFile ? { opacity: 0.5 } : undefined}
             />
+          </div>
+        </div>
+
+        {/* 판례 정보 — 사건번호 / 원문 링크 / 처리결과 (모두 선택) */}
+        <div
+          style={{
+            marginTop: 12,
+            padding: 12,
+            border: "1px solid rgb(var(--c-line))",
+            background: "rgb(var(--c-bg))",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr",
+            gap: 12,
+            alignItems: "start",
+          }}
+        >
+          <div>
+            <label className="form-label">사건번호 (선택)</label>
+            <input
+              className="form-input"
+              placeholder="예: 대법원 2023다307116"
+              value={editing.case_no}
+              onChange={(e) =>
+                setEditing((s) => ({ ...s, case_no: e.target.value }))
+              }
+              maxLength={120}
+            />
+          </div>
+          <div>
+            <label className="form-label">
+              사건 링크 <span style={{ color: "rgb(var(--c-muted))" }}>(선택)</span>
+            </label>
+            <input
+              className="form-input"
+              placeholder="https://..."
+              value={editing.case_url}
+              onChange={(e) =>
+                setEditing((s) => ({ ...s, case_url: e.target.value }))
+              }
+              maxLength={500}
+            />
+          </div>
+          <div>
+            <label className="form-label">처리결과 (선택)</label>
+            <select
+              className="form-input"
+              value={resultCustom ? "__custom__" : editing.result}
+              onChange={(e) => {
+                const v = e.target.value;
+                if (v === "__custom__") {
+                  setResultCustom(true);
+                  setEditing((s) => ({ ...s, result: "" }));
+                } else {
+                  setResultCustom(false);
+                  setEditing((s) => ({ ...s, result: v }));
+                }
+              }}
+            >
+              <option value="">(없음)</option>
+              {CASE_RESULTS.map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+              <option value="__custom__">직접 입력…</option>
+            </select>
+            {resultCustom && (
+              <input
+                className="form-input"
+                style={{ marginTop: 8 }}
+                placeholder="처리결과 직접 입력"
+                value={editing.result}
+                onChange={(e) =>
+                  setEditing((s) => ({ ...s, result: e.target.value }))
+                }
+                maxLength={40}
+              />
+            )}
           </div>
         </div>
 

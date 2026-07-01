@@ -26,6 +26,9 @@ export type Case = {
   excerpt: string | null;
   body: string;
   image_url: string | null;
+  case_no: string | null;
+  case_url: string | null;
+  result: string | null;
   published: number;
   view_count: number;
   created_at: string;

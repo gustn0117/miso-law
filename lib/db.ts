@@ -165,6 +165,9 @@ export function getDb(): Database.Database {
     }
   };
   addColumnIfMissing("cases", "image_url", "TEXT");
+  addColumnIfMissing("cases", "case_no", "TEXT");
+  addColumnIfMissing("cases", "case_url", "TEXT");
+  addColumnIfMissing("cases", "result", "TEXT");
   addColumnIfMissing("shorts", "video_path", "TEXT");
 
   // -----------------------------------------------------------
@@ -530,11 +533,14 @@ export function insertCase(input: {
   excerpt: string | null;
   body: string;
   image_url?: string | null;
+  case_no?: string | null;
+  case_url?: string | null;
+  result?: string | null;
   published?: number;
 }) {
   const res = getDb()
     .prepare(
-      "INSERT INTO cases(category_id, subcategory_id, title, excerpt, body, image_url, published) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO cases(category_id, subcategory_id, title, excerpt, body, image_url, case_no, case_url, result, published) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     )
     .run(
       input.category_id,
@@ -543,6 +549,9 @@ export function insertCase(input: {
       input.excerpt,
       input.body,
       input.image_url ?? null,
+      input.case_no ?? null,
+      input.case_url ?? null,
+      input.result ?? null,
       input.published ?? 1,
     );
   return Number(res.lastInsertRowid);
@@ -556,6 +565,9 @@ export function updateCase(
     excerpt: string | null;
     body: string;
     image_url: string | null;
+    case_no: string | null;
+    case_url: string | null;
+    result: string | null;
     published: number;
   }>,
 ) {
