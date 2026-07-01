@@ -11,6 +11,7 @@ import {
   listShortsByCategory,
 } from "@/lib/db";
 import type { Category } from "@/lib/db";
+import { detectEmbed, buildYouTubeEmbedUrl } from "@/lib/embed";
 
 export const dynamic = "force-dynamic";
 
@@ -208,7 +209,7 @@ export default function CaseDetailPage({ params }: Props) {
   );
 }
 
-// ----- 본문 렌더링 (간이 마크다운: ##, -, 빈줄) -----
+// ----- 본문 렌더링 (간이 마크다운: ##, -, 빈줄 + YouTube/iframe 임베드) -----
 function CaseBody({ body }: { body: string }) {
   const blocks = body.split(/\n\s*\n/);
   return (
@@ -221,6 +222,34 @@ function CaseBody({ body }: { body: string }) {
     >
       {blocks.map((block, i) => {
         const trimmed = block.trim();
+
+        // 임베드 우선 처리 — YouTube URL 자체 or <iframe> 붙여넣기
+        const embed = detectEmbed(trimmed);
+        if (embed.kind === "youtube") {
+          const src = buildYouTubeEmbedUrl(embed.videoId, embed.listId);
+          return (
+            <div key={i} className="case-embed">
+              <iframe
+                src={src}
+                title="YouTube 영상"
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+          );
+        }
+        if (embed.kind === "iframe") {
+          return (
+            <div
+              key={i}
+              className="case-embed"
+              dangerouslySetInnerHTML={{ __html: embed.html }}
+            />
+          );
+        }
+
         if (trimmed.startsWith("## ")) {
           return (
             <h2
