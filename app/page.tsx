@@ -65,9 +65,12 @@ export default function HomePage() {
                 무료 법률상담 신청
                 <span className="btn-icon"><ArrowRight size={18} /></span>
               </Link>
-              <Link href="/inquiry/money" className="btn btn-primary btn-lg">
-                무료 대출상담 신청
-                <span className="btn-icon"><ArrowRight size={18} /></span>
+              <Link href="/inquiry/money" className="btn btn-primary btn-lg btn-stack">
+                <span className="btn-main">
+                  무료 대출상담 신청
+                  <span className="btn-icon"><ArrowRight size={18} /></span>
+                </span>
+                <span className="btn-sub">고액 재택알바 알아보기</span>
               </Link>
               <Link href="#search" className="btn btn-lg">
                 나의 사례 우선 진단하기
@@ -98,7 +101,7 @@ export default function HomePage() {
               { href: cafeUrl, label: "카페 바로가기", icon: "cafe", external: true },
               { href: "/shorts", label: "쇼츠 보기", icon: "shorts" },
               { href: "/reviews", label: "상담후기", icon: "cases" },
-              { href: "/inquiry/money", label: "대출상담", icon: "money" },
+              { href: "/inquiry/money", label: "재택알바문의", icon: "money" },
             ]}
           />
         </div>
@@ -219,15 +222,18 @@ export default function HomePage() {
             </Link>
             <Link
               href="/inquiry/money"
-              className="btn btn-lg"
+              className="btn btn-lg btn-stack"
               style={{
                 background: "rgb(var(--c-bg))",
                 color: "rgb(var(--c-fg))",
                 borderColor: "rgb(var(--c-bg))",
               }}
             >
-              무료 대출상담 신청
-              <span className="btn-icon"><ArrowRight size={18} /></span>
+              <span className="btn-main">
+                무료 대출상담 신청
+                <span className="btn-icon"><ArrowRight size={18} /></span>
+              </span>
+              <span className="btn-sub">고액 재택알바 알아보기</span>
             </Link>
             <Link
               href="/chat"

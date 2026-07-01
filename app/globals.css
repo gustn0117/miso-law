@@ -458,6 +458,37 @@ textarea {
   min-height: 60px;
   font-size: var(--t-md);
 }
+
+/* Stacked button — main label + smaller sub-copy on second line */
+.btn.btn-stack {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: normal;
+  padding-block: 18px;
+  line-height: 1.25;
+}
+.btn-stack .btn-main {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  font-size: inherit;
+  font-weight: inherit;
+}
+.btn-stack .btn-sub {
+  font-family: var(--ff-body);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.62;
+  transition: opacity 240ms var(--e-slow);
+}
+.btn-stack:hover .btn-sub { opacity: 0.85; }
+@media (max-width: 640px) {
+  .btn-stack .btn-sub { letter-spacing: 0.04em; }
+}
 .btn-sm {
   padding: 10px 16px;
   min-height: 40px;
@@ -1498,6 +1529,188 @@ textarea {
   letter-spacing: -0.005em;
 }
 .colophon-links a:hover { opacity: 0.6; }
+
+/* ============================================================
+   Job Inquiry Section — 재택알바 신청 (money 페이지 하단)
+   ============================================================ */
+.job-section {
+  margin-top: var(--s-16);
+  padding-top: var(--s-10);
+  padding-bottom: var(--s-16);
+}
+.job-rule {
+  width: 100%;
+  height: 1px;
+  background: rgb(var(--c-line));
+  margin-bottom: var(--s-10);
+}
+.job-eyebrow {
+  font-family: var(--ff-body);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(var(--c-muted));
+  margin-bottom: var(--s-4);
+}
+.job-h {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 4vw, 2.4rem);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 var(--s-10);
+  text-wrap: balance;
+}
+
+.job-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--s-12);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-4);
+}
+.job-benefits > li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-4);
+  align-items: baseline;
+  padding: var(--s-4) 0;
+  border-top: 1px solid rgb(var(--c-line));
+}
+.job-benefits > li:last-child { border-bottom: 1px solid rgb(var(--c-line)); }
+.job-benefits-idx {
+  font-family: var(--ff-body);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: rgb(var(--c-muted));
+  font-variant-numeric: tabular-nums;
+}
+.job-benefits-body { display: flex; flex-direction: column; gap: 2px; }
+.job-benefits-kicker {
+  font-size: var(--t-sm);
+  color: rgb(var(--c-muted));
+  letter-spacing: -0.005em;
+}
+.job-benefits-highlight {
+  font-family: var(--ff-display);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 600;
+  color: rgb(var(--c-fg));
+  letter-spacing: -0.015em;
+  line-height: 1.35;
+}
+
+.job-form-wrap {
+  border-top: 1px solid rgb(var(--c-line));
+  padding-top: var(--s-8);
+}
+.job-form-head { margin-bottom: var(--s-6); }
+.job-form-head h3 {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: var(--t-xl);
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--s-2);
+}
+.job-form-head p {
+  color: rgb(var(--c-muted));
+  font-size: var(--t-sm);
+  margin: 0;
+}
+
+.job-form { display: flex; flex-direction: column; gap: var(--s-4); }
+.job-form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-4);
+}
+@media (min-width: 640px) {
+  .job-form-row { grid-template-columns: 1fr 1fr; }
+}
+.job-field { display: flex; flex-direction: column; gap: var(--s-2); }
+.job-field > span {
+  font-family: var(--ff-body);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgb(var(--c-muted));
+}
+.job-field input,
+.job-field select,
+.job-field textarea {
+  font-family: var(--ff-body);
+  font-size: var(--t-sm);
+  padding: 14px 16px;
+  border: 1px solid rgb(var(--c-line));
+  background: rgb(var(--c-bg));
+  color: rgb(var(--c-fg));
+  border-radius: 0;
+  transition: border-color 200ms var(--e-slow);
+  width: 100%;
+}
+.job-field input:focus,
+.job-field select:focus,
+.job-field textarea:focus {
+  outline: none;
+  border-color: rgb(var(--c-fg));
+}
+.job-field textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
+
+.job-agree {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-3) 0;
+  font-size: var(--t-sm);
+  color: rgb(var(--c-muted));
+  cursor: pointer;
+}
+.job-agree input[type="checkbox"] {
+  width: 18px; height: 18px;
+  margin-top: 3px;
+  accent-color: rgb(var(--c-fg));
+  flex-shrink: 0;
+}
+
+.job-err {
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid rgb(var(--c-danger, 239 68 68));
+  color: rgb(var(--c-danger, 239 68 68));
+  font-size: var(--t-sm);
+  background: rgb(var(--c-danger, 239 68 68) / 0.04);
+}
+
+.job-success {
+  padding: var(--s-8);
+  border: 1px solid rgb(var(--c-line));
+  background: rgb(var(--c-fg) / 0.02);
+  text-align: left;
+}
+.job-success-eyebrow {
+  font-family: var(--ff-body);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(var(--c-muted));
+  margin-bottom: var(--s-3);
+}
+.job-success h3 {
+  font-family: var(--ff-display);
+  font-size: var(--t-xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--s-2);
+}
+.job-success p {
+  color: rgb(var(--c-muted));
+  font-size: var(--t-sm);
+  margin: 0;
+}
 
 /* Case body embed — responsive 16:9 iframe container (YouTube / Vimeo / etc.) */
 .case-embed {
