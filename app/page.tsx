@@ -99,7 +99,7 @@ export default function HomePage() {
           <QuickMenu
             items={[
               { href: cafeUrl, label: "카페 바로가기", icon: "cafe", external: true },
-              { href: "/shorts", label: "쇼츠 보기", icon: "shorts" },
+              { href: "/shorts", label: "사건관련 쇼츠보기", icon: "shorts" },
               { href: "/reviews", label: "상담후기", icon: "cases" },
               { href: "/inquiry/money?tab=job", label: "재택알바/부업 문의", icon: "money" },
             ]}
