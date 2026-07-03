@@ -2,12 +2,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteLayout from "../../components/SiteLayout";
 import LegalNotice from "../../components/LegalNotice";
+import ShortCard from "../../components/ShortCard";
 import { ArrowRight } from "../../components/icons";
 import {
   getCategoryBySlug,
   listCasesByCategory,
   listCasesBySubcategory,
-  listShortsByCategory,
+  listRelatedShorts,
   listSubcategories,
 } from "@/lib/db";
 
@@ -21,7 +22,7 @@ export default function CategoryPage({ params }: Props) {
 
   const subs = listSubcategories(cat.id);
   const allCases = listCasesByCategory(cat.id, 50);
-  const shorts = listShortsByCategory(cat.id);
+  const shorts = listRelatedShorts(cat.id);
 
   // 중분류별로 사례 그룹화
   const casesBySubId = new Map<number | null, typeof allCases>();
@@ -152,27 +153,7 @@ export default function CategoryPage({ params }: Props) {
           </div>
           <div className="shorts-grid">
             {shorts.map((s) => (
-              <a
-                key={s.id}
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="short-card"
-              >
-                <div className="short-thumb">
-                  {s.thumbnail_url ? (
-                    <img src={s.thumbnail_url} alt="" loading="lazy" />
-                  ) : (
-                    <span style={{ position: "relative", zIndex: 1 }}>
-                      {s.title}
-                    </span>
-                  )}
-                  <span className="play" aria-hidden>
-                    ▶
-                  </span>
-                </div>
-                <div className="body">{s.title}</div>
-              </a>
+              <ShortCard key={s.id} short={s} />
             ))}
           </div>
         </section>

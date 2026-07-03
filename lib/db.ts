@@ -593,14 +593,7 @@ export function listShorts(): Short[] {
     .prepare("SELECT * FROM shorts ORDER BY sort_order, id")
     .all() as Short[];
 }
-export function listShortsByCategory(categoryId: number): Short[] {
-  return getDb()
-    .prepare(
-      "SELECT * FROM shorts WHERE category_id = ? OR category_id IS NULL ORDER BY sort_order, id LIMIT 4",
-    )
-    .all(categoryId) as Short[];
-}
-// 사례 상세 "관련 쇼츠" — 대분류(categoryId) 일치 우선, 전체공용(NULL) 다음,
+// 사례 상세·카테고리·검색 "관련 쇼츠" — 대분류(categoryId) 일치 우선, 전체공용(NULL) 다음,
 // 그래도 모자라면 최근 쇼츠로 채워 섹션이 비지 않도록 백필한다.
 export function listRelatedShorts(categoryId: number, limit = 4): Short[] {
   return getDb()

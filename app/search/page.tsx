@@ -3,12 +3,13 @@ import SiteLayout from "../components/SiteLayout";
 import AISearchBox from "../components/AISearchBox";
 import AIAnswerCard from "../components/AIAnswerCard";
 import LegalNotice from "../components/LegalNotice";
+import ShortCard from "../components/ShortCard";
 import { ArrowRight } from "../components/icons";
 import { answerQuery } from "@/lib/ai";
 import {
   getCategoryBySlug,
   listCasesByCategory,
-  listShortsByCategory,
+  listRelatedShorts,
   listSubcategories,
 } from "@/lib/db";
 
@@ -25,7 +26,7 @@ export default async function SearchPage({
     ? getCategoryBySlug(answer.matched_category_slug)
     : null;
   const cases = cat ? listCasesByCategory(cat.id, 6) : [];
-  const shorts = cat ? listShortsByCategory(cat.id) : [];
+  const shorts = cat ? listRelatedShorts(cat.id) : [];
   const subs = cat ? listSubcategories(cat.id) : [];
 
   return (
@@ -122,27 +123,7 @@ export default async function SearchPage({
               </div>
               <div className="shorts-grid">
                 {shorts.map((s) => (
-                  <a
-                    key={s.id}
-                    href={s.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="short-card"
-                  >
-                    <div className="short-thumb">
-                      {s.thumbnail_url ? (
-                        <img src={s.thumbnail_url} alt="" loading="lazy" />
-                      ) : (
-                        <span style={{ position: "relative", zIndex: 1 }}>
-                          {s.title}
-                        </span>
-                      )}
-                      <span className="play" aria-hidden>
-                        ▶
-                      </span>
-                    </div>
-                    <div className="body">{s.title}</div>
-                  </a>
+                  <ShortCard key={s.id} short={s} />
                 ))}
               </div>
             </section>
