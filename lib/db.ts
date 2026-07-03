@@ -600,6 +600,24 @@ export function listShortsByCategory(categoryId: number): Short[] {
     )
     .all(categoryId) as Short[];
 }
+// 사례 상세 "관련 쇼츠" — 대분류(categoryId) 일치 우선, 전체공용(NULL) 다음,
+// 그래도 모자라면 최근 쇼츠로 채워 섹션이 비지 않도록 백필한다.
+export function listRelatedShorts(categoryId: number, limit = 4): Short[] {
+  return getDb()
+    .prepare(
+      `SELECT * FROM shorts
+       ORDER BY
+         CASE
+           WHEN category_id = ? THEN 0
+           WHEN category_id IS NULL THEN 1
+           ELSE 2
+         END ASC,
+         sort_order ASC,
+         id DESC
+       LIMIT ?`,
+    )
+    .all(categoryId, limit) as Short[];
+}
 export function insertShort(input: {
   category_id: number | null;
   title: string;
