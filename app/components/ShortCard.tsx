@@ -21,11 +21,16 @@ const FILL_STYLE = {
 export default function ShortCard({ short: s }: { short: Short }) {
   // 1) 업로드 영상
   if (s.video_path) {
+    // 썸네일(poster)이 없을 때 모바일에서 재생 전 검은 화면이 뜨는 문제 방지 —
+    // #t=0.1 로 첫 프레임을 seek/렌더해 미리보기로 노출. poster가 있으면 그쪽이 우선.
+    const videoSrc = s.thumbnail_url
+      ? s.video_path
+      : `${s.video_path}#t=0.1`;
     return (
       <div className="short-card">
         <div className="short-thumb">
           <video
-            src={s.video_path}
+            src={videoSrc}
             poster={s.thumbnail_url || undefined}
             controls
             preload="metadata"
