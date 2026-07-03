@@ -55,6 +55,15 @@ export function Close({ size = 22, className, strokeWidth = 1.6 }: IconProps) {
   );
 }
 
+export function Search({ size = 20, className, strokeWidth = 1.6 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" className={className} strokeWidth={strokeWidth} {...base}>
+      <circle cx="11" cy="11" r="7" />
+      <line x1="20" y1="20" x2="16.05" y2="16.05" />
+    </svg>
+  );
+}
+
 /* ─────────────────────────────────────────────
    Practice areas — line-art, stroke 1.4, 28×28 base
    ───────────────────────────────────────────── */

@@ -1,14 +1,23 @@
 import SiteLayout from "../components/SiteLayout";
-import Link from "next/link";
 import { listAllCases, listCategories } from "@/lib/db";
 import LegalNotice from "../components/LegalNotice";
+import CasesSearch, { type CaseListItem } from "./CasesSearch";
 
 export const dynamic = "force-dynamic";
 
 export default function CasesPage() {
-  const cases = listAllCases().filter((c) => c.published === 1);
   const cats = listCategories();
   const catMap = new Map(cats.map((c) => [c.id, c]));
+  const cases: CaseListItem[] = listAllCases()
+    .filter((c) => c.published === 1)
+    .map((c) => ({
+      id: c.id,
+      title: c.title,
+      excerpt: c.excerpt,
+      categoryName: catMap.get(c.category_id)?.name ?? "",
+      viewCount: c.view_count,
+      createdAt: c.created_at,
+    }));
 
   return (
     <SiteLayout>
@@ -26,23 +35,7 @@ export default function CasesPage() {
         {cases.length === 0 ? (
           <div className="empty-state">아직 등록된 사례가 없습니다.</div>
         ) : (
-          <div className="case-list">
-            {cases.map((c) => {
-              const cat = catMap.get(c.category_id);
-              return (
-                <Link key={c.id} href={`/case/${c.id}`} className="case-card">
-                  <div className="tag">{cat?.name}</div>
-                  <div className="title">{c.title}</div>
-                  <div className="excerpt">{c.excerpt}</div>
-                  <div className="meta">
-                    <span>조회 {c.view_count}</span>
-                    <span>·</span>
-                    <span>{c.created_at.slice(0, 10)}</span>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+          <CasesSearch cases={cases} />
         )}
         <LegalNotice />
       </div>

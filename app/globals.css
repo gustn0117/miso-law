@@ -2567,6 +2567,73 @@ textarea {
   padding-bottom: 2px;
 }
 
+/* Cases page — inline keyword filter (client-side) */
+.cases-search {
+  margin-bottom: var(--s-10);
+}
+.cases-search__field {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--s-3);
+  border-bottom: 2px solid rgb(var(--c-fg));
+  padding: var(--s-3) 0;
+  transition: border-color 200ms var(--e-slow);
+}
+.cases-search__icon {
+  color: rgb(var(--c-muted));
+  transition: color 200ms var(--e-slow);
+}
+.cases-search__field:focus-within .cases-search__icon {
+  color: rgb(var(--c-fg));
+}
+.cases-search__field input {
+  background: transparent;
+  border: 0;
+  outline: 0;
+  min-width: 0;
+  width: 100%;
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: clamp(var(--t-md), 2.4vw, var(--t-xl));
+  letter-spacing: -0.03em;
+  color: rgb(var(--c-fg));
+  padding: var(--s-2) 0;
+}
+.cases-search__field input::placeholder {
+  color: rgb(var(--c-fg) / 0.3);
+  font-weight: 400;
+}
+/* 커스텀 지우기 버튼을 쓰므로 브라우저 기본 X 버튼은 숨김 */
+.cases-search__field input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.cases-search__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  background: transparent;
+  border: 0;
+  color: rgb(var(--c-muted));
+  cursor: pointer;
+  transition: color 180ms var(--e-slow);
+}
+.cases-search__clear:hover,
+.cases-search__clear:focus-visible {
+  color: rgb(var(--c-fg));
+}
+.cases-search__count {
+  margin: var(--s-4) 0 0;
+  font-family: var(--ff-body);
+  font-size: var(--t-sm);
+  letter-spacing: -0.005em;
+  color: rgb(var(--c-muted));
+}
+
 .case-card {
   background: rgb(var(--c-bg));
   border: 1px solid rgb(var(--c-line));
