@@ -152,6 +152,19 @@ export function getDb(): Database.Database {
     );
     CREATE INDEX IF NOT EXISTS idx_reviews_created ON reviews(created_at DESC);
     CREATE INDEX IF NOT EXISTS idx_reviews_status ON reviews(status);
+
+    -- 비밀번호 찾기(재설정) 요청 — 회원이 남기면 관리자가 초기화 처리
+    CREATE TABLE IF NOT EXISTS password_reset_requests (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      member_id INTEGER,
+      name TEXT,
+      phone TEXT,
+      email TEXT,
+      status TEXT NOT NULL DEFAULT '신규',
+      created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+      FOREIGN KEY(member_id) REFERENCES members(id) ON DELETE SET NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_prr_created ON password_reset_requests(created_at DESC);
   `);
 
   // -----------------------------------------------------------
@@ -454,6 +467,7 @@ export type {
   InquiryStatus,
   Review,
   ReviewWithAuthor,
+  PasswordResetRequest,
 } from "./db-types";
 export { INQUIRY_STATUSES } from "./db-types";
 import type {
@@ -468,6 +482,7 @@ import type {
   InquiryStatus,
   Review,
   ReviewWithAuthor,
+  PasswordResetRequest,
 } from "./db-types";
 
 // ----- Categories -----
@@ -833,6 +848,15 @@ export function getMemberByPhone(phone: string): Member | null {
       | undefined) || null
   );
 }
+export function getMemberByEmail(email: string): Member | null {
+  return (
+    (getDb()
+      .prepare(
+        "SELECT * FROM members WHERE email = ? ORDER BY id LIMIT 1",
+      )
+      .get(email) as Member | undefined) || null
+  );
+}
 export function getMemberById(id: number): Member | null {
   return (
     (getDb().prepare("SELECT * FROM members WHERE id = ?").get(id) as
@@ -861,6 +885,11 @@ export function insertMember(input: {
 export function deleteMember(id: number) {
   getDb().prepare("DELETE FROM members WHERE id = ?").run(id);
 }
+export function updateMemberPassword(id: number, passwordHash: string) {
+  getDb()
+    .prepare("UPDATE members SET password_hash = ? WHERE id = ?")
+    .run(passwordHash, id);
+}
 
 // ----- Sessions -----
 export function createSession(token: string, memberId: number, expiresAt: string) {
@@ -882,6 +911,57 @@ export function getSessionMember(token: string): Member | null {
 }
 export function deleteSession(token: string) {
   getDb().prepare("DELETE FROM member_sessions WHERE token = ?").run(token);
+}
+/** 특정 회원의 모든 세션 무효화 (비번 초기화/변경 시 사용). except 토큰은 유지. */
+export function deleteMemberSessions(memberId: number, exceptToken?: string) {
+  if (exceptToken) {
+    getDb()
+      .prepare(
+        "DELETE FROM member_sessions WHERE member_id = ? AND token != ?",
+      )
+      .run(memberId, exceptToken);
+  } else {
+    getDb()
+      .prepare("DELETE FROM member_sessions WHERE member_id = ?")
+      .run(memberId);
+  }
+}
+
+// ----- Password reset requests -----
+export function insertPasswordResetRequest(input: {
+  member_id: number | null;
+  name: string | null;
+  phone: string | null;
+  email: string | null;
+}) {
+  const res = getDb()
+    .prepare(
+      "INSERT INTO password_reset_requests(member_id, name, phone, email) VALUES (?, ?, ?, ?)",
+    )
+    .run(input.member_id, input.name, input.phone, input.email);
+  return Number(res.lastInsertRowid);
+}
+export function listPasswordResetRequests(): PasswordResetRequest[] {
+  return getDb()
+    .prepare("SELECT * FROM password_reset_requests ORDER BY id DESC")
+    .all() as PasswordResetRequest[];
+}
+export function getPasswordResetRequest(
+  id: number,
+): PasswordResetRequest | null {
+  return (
+    (getDb()
+      .prepare("SELECT * FROM password_reset_requests WHERE id = ?")
+      .get(id) as PasswordResetRequest | undefined) || null
+  );
+}
+export function updatePasswordResetRequestStatus(id: number, status: string) {
+  getDb()
+    .prepare("UPDATE password_reset_requests SET status = ? WHERE id = ?")
+    .run(status, id);
+}
+export function deletePasswordResetRequest(id: number) {
+  getDb().prepare("DELETE FROM password_reset_requests WHERE id = ?").run(id);
 }
 
 // ----- App Settings -----

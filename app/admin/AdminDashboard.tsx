@@ -9,6 +9,7 @@ import type {
   Category,
   Inquiry,
   Member,
+  PasswordResetRequest,
   ReviewWithAuthor,
   Short,
   Subcategory,
@@ -33,6 +34,7 @@ type Props = {
   aiAnswers: AIAnswer[];
   banned: BannedWord[];
   members: Member[];
+  resetRequests: PasswordResetRequest[];
   reviews: ReviewWithAuthor[];
   settings: Record<string, string>;
   stats: { total: number; newCount: number; todayCount: number };
@@ -130,7 +132,12 @@ export default function AdminDashboard(props: Props) {
         <AdminShorts shorts={props.shorts} categories={props.categories} />
       )}
       {tab === "banned" && <AdminBanned items={props.banned} />}
-      {tab === "members" && <AdminMembers members={props.members} />}
+      {tab === "members" && (
+        <AdminMembers
+          members={props.members}
+          resetRequests={props.resetRequests}
+        />
+      )}
       {tab === "settings" && <AdminSettings settings={props.settings} />}
     </div>
   );

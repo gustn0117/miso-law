@@ -1,5 +1,6 @@
 import SiteLayout from "../components/SiteLayout";
 import LegalNotice from "../components/LegalNotice";
+import AccountSecurity from "./AccountSecurity";
 import { getCurrentMember } from "@/lib/auth";
 import { listInquiriesByMember } from "@/lib/db";
 import { redirect } from "next/navigation";
@@ -110,6 +111,11 @@ export default function MyPage() {
             </table>
           </div>
         )}
+
+        <div className="section-head" style={{ marginTop: 40 }}>
+          <h2>계정 설정</h2>
+        </div>
+        <AccountSecurity />
 
         <LegalNotice />
       </div>

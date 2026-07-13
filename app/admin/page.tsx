@@ -11,6 +11,7 @@ import {
   listCategories,
   listInquiries,
   listMembers,
+  listPasswordResetRequests,
   listShorts,
   listSubcategories,
 } from "@/lib/db";
@@ -31,6 +32,7 @@ export default function AdminPage() {
   const aiAnswers = listAIAnswers();
   const banned = listBannedWords();
   const members = listMembers();
+  const resetRequests = listPasswordResetRequests();
   const reviews = listAllReviews();
   const settings = Object.fromEntries(
     listAllSettings().map((s) => [s.key, s.value]),
@@ -48,6 +50,7 @@ export default function AdminPage() {
       aiAnswers={aiAnswers}
       banned={banned}
       members={members}
+      resetRequests={resetRequests}
       reviews={reviews}
       settings={settings}
       stats={stats}

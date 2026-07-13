@@ -32,6 +32,17 @@ function generateToken(): string {
   return randomBytes(32).toString("hex");
 }
 
+// 임시 비밀번호: 혼동되기 쉬운 문자(0,O,o,1,l,I) 제외한 8자리 영숫자
+export function generateTempPassword(length = 8): string {
+  const alphabet = "23456789ABCDEFGHJKMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz";
+  const bytes = randomBytes(length);
+  let out = "";
+  for (let i = 0; i < length; i++) {
+    out += alphabet[bytes[i] % alphabet.length];
+  }
+  return out;
+}
+
 export function loginMember(memberId: number) {
   const token = generateToken();
   const expires = new Date();

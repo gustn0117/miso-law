@@ -105,3 +105,13 @@ export type Review = {
 export type ReviewWithAuthor = Review & {
   author_name: string | null;
 };
+
+export type PasswordResetRequest = {
+  id: number;
+  member_id: number | null;
+  name: string | null;
+  phone: string | null;
+  email: string | null;
+  status: string;
+  created_at: string;
+};

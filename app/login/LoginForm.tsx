@@ -99,6 +99,14 @@ export default function LoginForm() {
           회원가입
         </Link>
       </div>
+      <div style={{ marginTop: 8, textAlign: "center" }}>
+        <Link
+          href="/find-password"
+          style={{ color: "var(--ink-mute)", fontSize: 13 }}
+        >
+          비밀번호를 잊으셨나요?
+        </Link>
+      </div>
     </form>
   );
 }

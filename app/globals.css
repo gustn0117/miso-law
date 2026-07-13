@@ -2395,6 +2395,46 @@ textarea {
   padding: var(--s-6);
   margin-bottom: var(--s-5);
 }
+/* 임시 비밀번호 안내 배너 (어드민 초기화) */
+.temp-pw {
+  border: 2px solid rgb(var(--c-fg));
+  background: rgb(var(--c-fg) / 0.03);
+}
+.temp-pw__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-bottom: var(--s-3);
+}
+.temp-pw__head strong {
+  font-family: var(--ff-display);
+  font-size: var(--t-md);
+  letter-spacing: -0.02em;
+}
+.temp-pw__desc {
+  margin: 0 0 var(--s-4);
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: rgb(var(--c-muted));
+}
+.temp-pw__value {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+.temp-pw__value code {
+  font-family: var(--ff-display), ui-monospace, monospace;
+  font-size: var(--t-xl);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 8px 16px;
+  border: 1px dashed rgb(var(--c-fg) / 0.4);
+  background: rgb(var(--c-bg));
+  user-select: all;
+}
+
 .admin-table {
   width: 100%;
   border-collapse: collapse;
