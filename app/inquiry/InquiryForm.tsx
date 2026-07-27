@@ -18,7 +18,6 @@ export default function InquiryForm({
   defaultCategorySlug,
   defaultName,
   defaultPhone,
-  defaultEmail,
   lockedCategorySlug,
   contentLabel = "간단한 내용",
   contentPlaceholder = "상황을 간단히 적어 주세요. (피해 시점, 금액, 진행 상황 등)",
@@ -29,7 +28,6 @@ export default function InquiryForm({
   defaultCategorySlug?: string;
   defaultName?: string;
   defaultPhone?: string;
-  defaultEmail?: string;
   /** 지정 시 카테고리 select 숨김 + 해당 slug로 고정 (사용자가 변경 불가) */
   lockedCategorySlug?: string;
   contentLabel?: string;
@@ -40,7 +38,6 @@ export default function InquiryForm({
   const [form, setForm] = useState({
     name: defaultName || "",
     phone: defaultPhone || "",
-    email: defaultEmail || "",
     category_slug: lockedCategorySlug || defaultCategorySlug || "",
     content: "",
     source: "",
@@ -52,7 +49,6 @@ export default function InquiryForm({
     return (
       form.name.trim().length > 0 &&
       form.phone.replace(/[^0-9]/g, "").length >= 10 &&
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim()) &&
       !!form.category_slug &&
       form.content.trim().length >= 5 &&
       form.agree
@@ -93,7 +89,6 @@ export default function InquiryForm({
       setForm({
         name: "",
         phone: "",
-        email: "",
         category_slug: lockedCategorySlug || defaultCategorySlug || "",
         content: "",
         source: "",
@@ -223,22 +218,6 @@ export default function InquiryForm({
           />
           <div className="form-help">담당자가 이 번호로 연락드립니다.</div>
         </div>
-        <div>
-          <label className="form-label form-required" htmlFor="iq-email">
-            이메일
-          </label>
-          <input
-            id="iq-email"
-            className="form-input"
-            type="email"
-            value={form.email}
-            onChange={(e) => update("email", e.target.value)}
-            placeholder="example@email.com"
-            maxLength={100}
-            autoComplete="email"
-            required
-          />
-        </div>
         {!lockedCategorySlug && (
           <div>
             <label className="form-label form-required" htmlFor="iq-category">
@@ -327,9 +306,12 @@ export default function InquiryForm({
           />
           <span>
             <strong>(필수) 개인정보 수집·이용 동의</strong> — 수집 항목: 이름,
-            휴대폰 번호, 이메일, 상담 내용, 유입경로. 이용 목적: 상담 연결 및
-            안내. 보관 기간: 상담 종결 후 6개월. 본 플랫폼은 법률/대출 정보를
-            제공하고 상담 연결을 지원하며, 직접 법률 자문을 제공하지 않습니다.
+            휴대폰 번호, 상담 내용, 유입경로. 이용 목적: 상담 연결 및 안내.
+            보관 기간: 상담 종결 후 6개월. 본 플랫폼은 법률/대출 정보를
+            제공하고 상담 연결을 지원하며, 직접 법률 자문을 제공하지 않습니다.{" "}
+            <Link href="/privacy" style={{ textDecoration: "underline" }}>
+              개인정보처리방침 보기
+            </Link>
           </span>
         </label>
       </div>

@@ -17,10 +17,7 @@ export default function AIAnswerCard({ query, answer }: Props) {
   return (
     <div className="ai-answer">
       <h2>
-        <span className="ai-answer-icon" aria-hidden>
-          AI
-        </span>
-        AI 1차 안내
+        1차 안내
         <span className="ai-tag">미소봇</span>
       </h2>
       <div

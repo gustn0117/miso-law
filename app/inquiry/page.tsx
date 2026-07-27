@@ -38,7 +38,6 @@ export default function InquiryPage({
           defaultCategorySlug={searchParams.category}
           defaultName={member?.name}
           defaultPhone={member?.phone}
-          defaultEmail={member?.email || ""}
           submitLabel="무료 법률상담 신청"
         />
         <LegalNotice />

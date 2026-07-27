@@ -28,10 +28,14 @@ function mask(name: string | null): string {
 export default function ReviewsPage() {
   const member = getCurrentMember();
   const reviews = listReviews(100);
-  const categories = listCategories().map((c) => ({
+  const baseCategories = listCategories().map((c) => ({
     slug: c.slug,
     name: c.name,
   }));
+  // 후기 분야 선택지에는 카테고리 외 "대출"도 노출 (DB 카테고리에 없으면 추가)
+  const categories = baseCategories.some((c) => c.slug === "loan")
+    ? baseCategories
+    : [...baseCategories, { slug: "loan", name: "대출" }];
   const catMap = new Map(categories.map((c) => [c.slug, c.name]));
 
   return (

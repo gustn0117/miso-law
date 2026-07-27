@@ -106,7 +106,7 @@ export default function ChatRoom({ initialQuery }: { initialQuery?: string }) {
       <div className="chat-rail">
         <div>
           <div className="chat-rail-label">SESSION</div>
-          <h2 className="chat-rail-title">AI 1차 상담</h2>
+          <h2 className="chat-rail-title">1차 상담</h2>
           <p className="chat-rail-desc">
             상황을 자유롭게 적어주세요. 카테고리·핵심 포인트·다음 액션을 정리해
             드립니다. 정확한 판단은 전문 상담이 필요합니다.
@@ -230,7 +230,7 @@ export default function ChatRoom({ initialQuery }: { initialQuery?: string }) {
         </form>
 
         <p className="chat-fineprint">
-          AI 1차 안내 · 직접 법률 자문 아님 · Shift+Enter 줄바꿈 · Enter 전송
+          1차 안내 · 직접 법률 자문 아님 · Shift+Enter 줄바꿈 · Enter 전송
         </p>
       </div>
     </div>

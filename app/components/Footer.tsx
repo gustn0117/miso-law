@@ -102,6 +102,13 @@ export default function Footer() {
 
         <div className="colophon-bottom">
           <span>© {year} 미소 법률 · 대출 상담</span>
+          <nav className="colophon-policy" aria-label="약관 및 정책">
+            <Link href="/privacy" className="is-strong">
+              개인정보처리방침
+            </Link>
+            <span aria-hidden>·</span>
+            <Link href="/terms">이용약관</Link>
+          </nav>
           <span>SEOUL · INCHEON</span>
         </div>
       </div>

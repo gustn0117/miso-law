@@ -28,14 +28,12 @@ type Props = {
   categories: Category[];
   defaultName?: string;
   defaultPhone?: string;
-  defaultEmail?: string;
 };
 
 export default function TabbedInquiry({
   categories,
   defaultName,
   defaultPhone,
-  defaultEmail = "",
 }: Props) {
   const params = useSearchParams();
   const router = useRouter();
@@ -102,7 +100,6 @@ export default function TabbedInquiry({
             submitLabel="무료 대출상담 신청"
             defaultName={defaultName}
             defaultPhone={defaultPhone}
-            defaultEmail={defaultEmail}
           />
         </div>
       ) : (

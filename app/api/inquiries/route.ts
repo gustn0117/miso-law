@@ -41,9 +41,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(fail("올바른 휴대폰 번호를 입력해 주세요."), {
         status: 400,
       });
-    if (!email)
-      return NextResponse.json(fail("이메일을 입력해 주세요."), { status: 400 });
-    if (!isValidEmail(email))
+    // 이메일은 선택 항목 — 값이 있을 때만 형식 검증
+    if (email && !isValidEmail(email))
       return NextResponse.json(fail("올바른 이메일 형식이 아닙니다."), {
         status: 400,
       });
@@ -70,7 +69,7 @@ export async function POST(req: NextRequest) {
       member_id: member?.id ?? null,
       name,
       phone,
-      email,
+      email: email || null,
       category_slug,
       content,
       source: source || null,

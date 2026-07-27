@@ -40,7 +40,6 @@ export default function MoneyInquiryPage() {
             categories={categories}
             defaultName={member?.name}
             defaultPhone={member?.phone}
-            defaultEmail={member?.email || ""}
           />
         </Suspense>
         <LegalNotice />

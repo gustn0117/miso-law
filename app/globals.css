@@ -2545,6 +2545,74 @@ textarea {
   letter-spacing: 0;
 }
 
+.colophon-policy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.colophon-policy a {
+  color: rgb(var(--c-muted));
+  text-decoration: none;
+  transition: color 0.18s var(--e-firm);
+}
+.colophon-policy a:hover {
+  color: rgb(var(--c-fg));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.colophon-policy a.is-strong {
+  font-weight: 600;
+}
+
+/* ============================================================
+   정책 문서 (개인정보처리방침 · 이용약관)
+   ============================================================ */
+.policy-doc {
+  font-family: var(--ff-body);
+  padding-bottom: var(--s-24);
+  max-width: 65ch;
+}
+.policy-doc section + section {
+  margin-top: var(--s-12);
+}
+.policy-doc h2 {
+  font-family: var(--ff-body);
+  font-size: var(--t-md);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: rgb(var(--c-fg));
+  margin: 0 0 var(--s-3);
+  padding-bottom: var(--s-2);
+  border-bottom: 1px solid rgb(var(--c-line));
+}
+.policy-doc p {
+  margin: 0 0 var(--s-3);
+  font-size: var(--t-sm);
+  line-height: 1.8;
+  color: rgb(var(--c-muted));
+  text-wrap: pretty;
+}
+.policy-doc ul {
+  margin: 0 0 var(--s-3);
+  padding-left: 1.1em;
+  display: grid;
+  gap: var(--s-2);
+}
+.policy-doc li {
+  font-size: var(--t-sm);
+  line-height: 1.75;
+  color: rgb(var(--c-muted));
+}
+.policy-doc strong {
+  color: rgb(var(--c-fg));
+  font-weight: 600;
+}
+.policy-doc a {
+  color: rgb(var(--c-fg));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* ============================================================
    Floating CTA
    ============================================================ */
