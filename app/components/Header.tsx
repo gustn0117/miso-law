@@ -1,10 +1,11 @@
 "use client";
 
+import { List, X } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Logo from "./Logo";
-import { ArrowRight, Menu, Close } from "./icons";
+import { ArrowRight } from "./icons";
 
 type Props = {
   member: { id: number; name: string } | null;
@@ -83,7 +84,7 @@ export default function Header({ member }: Props) {
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? <Close size={22} /> : <Menu size={22} />}
+          {open ? <X size={30} weight="bold" /> : <List size={32} weight="bold" />}
         </button>
       </div>
 

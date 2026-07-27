@@ -1,6 +1,7 @@
 import SiteLayout from "./components/SiteLayout";
 import AISearchBox from "./components/AISearchBox";
 import CategoryGrid from "./components/CategoryGrid";
+import MobileConsultationHero from "./components/MobileConsultationHero";
 import QuickMenu from "./components/QuickMenu";
 import { ArrowRight, ArrowUpRight } from "./components/icons";
 import Link from "next/link";
@@ -32,7 +33,9 @@ export default function HomePage() {
           1. HERO — Centered law-firm brand statement
           ================================================================= */}
       <section className="hero">
-        <div className="hero-top">
+        <MobileConsultationHero />
+
+        <div className="hero-top hero-desktop">
           <div className="w-wide">
             <div className="hero-top-row">
               <span className="ml">Miso Legal Advisory</span>
@@ -42,7 +45,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="w-wide hero-inner">
+        <div className="w-wide hero-inner hero-desktop">
           <p className="hero-kicker fade d-1">Law Firm Standard</p>
 
           <h1 className="hero-h1">
@@ -86,7 +89,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="hero-scroll" aria-hidden>
+        <div className="hero-scroll hero-desktop" aria-hidden>
           <span>SCROLL</span>
         </div>
       </section>
