@@ -136,6 +136,7 @@ textOutput({
   consoleErrorCount: consoleErrors.length,
   consoleErrors: consoleErrors.map((message) => ({
     method: message.method,
+    url: message.params?.entry?.url,
     text:
       message.params?.entry?.text ??
       message.params?.exceptionDetails?.text ??

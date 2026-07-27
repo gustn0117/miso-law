@@ -850,7 +850,10 @@ textarea {
   }
 
   .hero {
-    min-height: calc(100svh - clamp(76px, 13.4vw, 114px));
+    min-height: min(
+      calc(100svh - clamp(76px, 13.4vw, 114px)),
+      99.3vw
+    );
     align-items: stretch;
     text-align: left;
     color: rgb(var(--c-fg));
@@ -880,12 +883,12 @@ textarea {
     min-height: inherit;
     width: 100%;
     flex-direction: column;
-    justify-content: space-between;
-    gap: clamp(28px, 5vw, 46px);
+    justify-content: flex-start;
+    gap: 0;
     padding:
-      clamp(42px, 6.3vw, 58px)
+      clamp(42px, 8.1vw, 69px)
       clamp(20px, 4.7vw, 40px)
-      clamp(22px, 4.2vw, 38px);
+      clamp(22px, 4.1vw, 35px);
   }
 
   .mobile-hero-copy {
@@ -937,10 +940,11 @@ textarea {
 
   .mobile-hero-actions {
     display: flex;
-    width: min(684px, calc(100vw - 48px));
+    width: min(80.3vw, 684px);
     align-self: center;
     flex-direction: column;
     gap: clamp(10px, 1.85vw, 16px);
+    margin-top: clamp(46px, 8.3vw, 71px);
   }
 
   .mobile-hero-action {
