@@ -1042,6 +1042,188 @@ textarea {
   }
 }
 
+@media (min-width: 1024px) {
+  .hero {
+    height: clamp(700px, 52vw, 820px);
+    min-height: 700px;
+    align-items: stretch;
+    text-align: left;
+    color: rgb(var(--c-fg));
+    background: #eee7dc;
+  }
+
+  .hero::before {
+    background-image: url("/images/hero-consultation-desktop-v1.webp");
+    background-position: center center;
+    filter: saturate(0.88) contrast(0.97) brightness(1.02);
+    transform: scale(1.004);
+  }
+
+  .hero::after {
+    background: transparent;
+  }
+
+  .mobile-consultation-hero {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    width: 100%;
+    max-width: var(--w-wide);
+    height: 100%;
+    margin: 0 auto;
+    padding:
+      clamp(56px, 4.7vw, 76px)
+      clamp(52px, 7.2vw, 104px)
+      clamp(48px, 4.2vw, 68px);
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .mobile-hero-copy {
+    width: min(48vw, 620px);
+  }
+
+  .mobile-hero-copy h1 {
+    margin: 0;
+    font-family: "Pretendard Variable", Pretendard, var(--font-display),
+      ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-size: clamp(3.35rem, 4.35vw, 4.2rem);
+    font-weight: 800;
+    line-height: 1.16;
+    letter-spacing: -0.052em;
+    color: rgb(var(--c-fg));
+    text-shadow: 0 1px 22px rgb(255 255 255 / 0.42);
+  }
+
+  .mobile-hero-line,
+  .mobile-hero-cta {
+    display: block;
+  }
+
+  .mobile-hero-legal {
+    color: rgb(var(--c-legal));
+  }
+
+  .mobile-hero-finance {
+    color: rgb(var(--c-finance));
+  }
+
+  .mobile-hero-cta {
+    margin-top: 12px;
+    font-size: clamp(2.9rem, 3.8vw, 3.65rem);
+    color: rgb(var(--c-fg));
+  }
+
+  .mobile-hero-copy p {
+    margin: 20px 0 0;
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.025em;
+    color: rgb(var(--c-fg) / 0.82);
+  }
+
+  .mobile-hero-actions {
+    display: flex;
+    width: min(41vw, 540px);
+    flex-direction: column;
+    gap: 12px;
+    margin-top: clamp(34px, 3vw, 46px);
+  }
+
+  .mobile-hero-action {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) auto;
+    min-height: 94px;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 28px 16px 24px;
+    border-radius: 20px;
+    color: #ffffff;
+    box-shadow:
+      0 2px 4px rgb(19 33 49 / 0.1),
+      0 14px 34px rgb(19 33 49 / 0.13);
+    overflow: hidden;
+    transition:
+      transform 220ms var(--e-slow),
+      box-shadow 220ms var(--e-slow);
+  }
+
+  .mobile-hero-action:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+    box-shadow:
+      0 3px 6px rgb(19 33 49 / 0.13),
+      0 18px 40px rgb(19 33 49 / 0.17);
+  }
+
+  .mobile-hero-action:active {
+    transform: translateY(1px);
+  }
+
+  .mobile-hero-action:focus-visible {
+    border-radius: 20px;
+    outline: 3px solid #ffffff;
+    outline-offset: -6px;
+  }
+
+  .mobile-hero-action-legal {
+    background: rgb(var(--c-legal));
+  }
+
+  .mobile-hero-action-finance {
+    background: rgb(var(--c-finance));
+  }
+
+  .mobile-hero-action-diagnosis {
+    background: rgb(var(--c-diagnosis));
+  }
+
+  .mobile-hero-action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-hero-action-icon svg {
+    width: 52px;
+    height: 52px;
+  }
+
+  .mobile-hero-action-copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .mobile-hero-action-copy strong {
+    font-size: clamp(1.25rem, 1.7vw, 1.5rem);
+    font-weight: 750;
+    line-height: 1.28;
+    letter-spacing: -0.035em;
+  }
+
+  .mobile-hero-action-copy > span {
+    font-size: 0.92rem;
+    font-weight: 450;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+    color: rgb(255 255 255 / 0.82);
+  }
+
+  .mobile-hero-action-arrow {
+    width: 24px;
+    height: 24px;
+    transition: transform 220ms var(--e-slow);
+  }
+
+  .mobile-hero-action:hover .mobile-hero-action-arrow {
+    transform: translateX(4px);
+  }
+}
+
 @media (max-width: 767px) {
   .hero-top {
     top: var(--s-8);

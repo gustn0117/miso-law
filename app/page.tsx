@@ -30,68 +30,10 @@ export default function HomePage() {
   return (
     <SiteLayout>
       {/* =================================================================
-          1. HERO — Centered law-firm brand statement
+          1. HERO — Responsive consultation intake
           ================================================================= */}
       <section className="hero">
         <MobileConsultationHero />
-
-        <div className="hero-top hero-desktop">
-          <div className="w-wide">
-            <div className="hero-top-row">
-              <span className="ml">Miso Legal Advisory</span>
-              <span className="rule line-in d-1" aria-hidden />
-              <span className="ml">Seoul · Case Intake</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="w-wide hero-inner hero-desktop">
-          <p className="hero-kicker fade d-1">Law Firm Standard</p>
-
-          <h1 className="hero-h1">
-            <span className="line ko">
-              <span className="mask"><span className="d-2">미소 법률 · 대출 상담</span></span>
-            </span>
-          </h1>
-
-          <p className="hero-subtitle fade d-3">
-            법률 문제는 빠르게, 그러나 가볍지 않게.
-          </p>
-
-          <div className="hero-deck fade d-4">
-            <p className="hero-lede">
-              사기·형사·민사·이혼·회생까지, 흩어진 상황을 먼저 정리하고
-              필요한 절차와 상담 연결을 차분하게 안내합니다.
-            </p>
-            <div className="hero-actions">
-              <Link href="/inquiry" className="btn btn-primary btn-lg">
-                무료 법률상담 신청
-                <span className="btn-icon"><ArrowRight size={18} /></span>
-              </Link>
-              <Link href="/inquiry/money" className="btn btn-primary btn-lg btn-stack">
-                <span className="btn-main">
-                  무료 대출상담 신청
-                  <span className="btn-icon"><ArrowRight size={18} /></span>
-                </span>
-                <span className="btn-sub">고액 재택알바/부업 알아보기</span>
-              </Link>
-              <Link href="#search" className="btn btn-lg">
-                나의 사례 우선 진단하기
-              </Link>
-            </div>
-            <div className="hero-proof" aria-label="주요 상담 분야">
-              <span>Fraud</span>
-              <span>Criminal</span>
-              <span>Civil</span>
-              <span>Family</span>
-              <span>Recovery</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="hero-scroll hero-desktop" aria-hidden>
-          <span>SCROLL</span>
-        </div>
       </section>
 
       {/* =================================================================

@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: "미소 법률 · 대출 상담 — 정리되지 않은 고민, 한 줄로 정리해 드립니다",
   description:
     "사기·형사·음주운전·보이스피싱·민사·회생/파산·이혼·노동·대출까지, 법률·대출 고민을 입력하면 맞춤 안내와 함께 전문 상담으로 연결해 드립니다.",
+  icons: {
+    icon: "/images/trust-icon.jpg",
+  },
   keywords: [
     "법률상담",
     "대출상담",

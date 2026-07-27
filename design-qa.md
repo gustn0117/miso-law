@@ -1,77 +1,76 @@
-# Mobile Home Design QA
+# Responsive Consultation Hero Design QA
 
 ## Comparison target
 
-- Source visual truth path: user-provided conversation attachment, `852 × 960` pixels (the host did not expose a local attachment path).
-- Ratio feedback evidence: user-provided conversation attachment, `557 × 863` pixels.
-- Final implementation screenshot: `qa-home-852x960-ratio-pass1.png`.
-- Additional responsive screenshots: `qa-home-557x863-ratio-pass2.png` and `qa-home-390x844-ratio-pass1.png`.
-- Desktop regression screenshot: `qa-home-1440x1000-pass2.png`.
-- Viewport: source and primary implementation both `852 × 960`; implementation CSS viewport `852 × 960`; `deviceScaleFactor: 1`.
-- State: home route, mobile navigation closed, no authentication required.
-- Comparison input: the source attachment and final implementation screenshot were reviewed together in the current multimodal thread at matching pixel dimensions.
+- Source visual truth: the user-provided mobile reference in the conversation, represented by the previously approved `qa-home-852x960-ratio-pass1.png`, plus the approved mobile hero asset `public/images/hero-consultation-mobile-v1.webp`.
+- Desktop image source: `public/images/hero-consultation-desktop-v1.webp`, generated from the approved mobile hero photograph as a wide responsive extension.
+- Final implementation screenshots:
+  - `qa-home-1440x1000-desktop-hero-pass2.png`
+  - `qa-home-1024x900-desktop-hero-pass1.png`
+  - `qa-home-1920x1080-desktop-hero-pass1.png`
+  - `qa-home-852x960-desktop-hero-regression.png`
+- Combined visual comparison input: `qa-home-responsive-hero-comparison.png`.
+- Route and state: `/`, signed-out header, navigation closed, three consultation actions visible.
+- Density: all browser captures use `deviceScaleFactor: 1`.
+
+## Viewport and normalization
+
+- Mobile source and implementation: `852 × 960` source pixels and `852 × 960` implementation pixels at an `852 × 960` CSS viewport. The combined comparison scales both equally to `720px` wide without changing their relative density.
+- Primary desktop implementation: `1440 × 1000` pixels at a `1440 × 1000` CSS viewport.
+- Additional desktop resilience checks: `1024 × 900` and `1920 × 1080` CSS pixels.
+- The desktop view is an intentional responsive adaptation rather than a pixel-identical desktop mock: copy and the vertical action hierarchy are preserved on the left while the consultation subject occupies the right.
 
 ## Full-view comparison evidence
 
-- The header is `114px` tall at the primary viewport, matching the source region proportion.
-- The three action cards measure `684 × 126px` and sit at `x=84`, with top positions `508.3`, `650.0`, and `791.8px`. This stays within `8px` of the source placement while preserving the exact source width, height, and gaps.
-- The hero keeps the source hierarchy: two colored consultation lines, a separate 30-second CTA line, supporting copy, then three high-contrast actions over the consultation photograph.
-- The generated photograph preserves the source composition and art direction: bright neutral office, attorney on the right, client hands at lower left, legal desk props at lower right, and quiet negative space behind the headline.
-- The user-reported `557 × 863` viewport now scales directly from the source: cards are `447.3 × 82.4px`, start at `x=54.9`, and use top positions `345.7`, `438.4`, and `531.1px`.
-- The `390 × 844` capture has `body.scrollWidth === body.clientWidth === 390`; all cards remain fully inside the viewport at `x=38.4`, `width=313.2`, `right=351.6`.
-- The `1440 × 1000` capture confirms that the pre-existing desktop hero remains unchanged.
+- The approved mobile layout is unchanged: at `852px`, the three cards remain `684 × 126px` at `x=84`, with top positions `508.3`, `650.0`, and `791.8px`.
+- At `1440px`, the hero occupies `749px` below the `80px` header. The three cards are `540 × 94px`, aligned at `x=103.7`, with consistent `12px` gaps.
+- At `1024px`, the cards remain fully readable at `419.8 × 94px`; the headline, description, and actions do not collide with the attorney or the next section.
+- At `1920px`, content stays inside the existing `1440px` site container while the background image continues to fill the viewport without stretching or visible seams.
+- All four tested widths have `body.scrollWidth === body.clientWidth`; no horizontal overflow is present.
 
 ## Focused region comparison evidence
 
-- Header: the final hamburger is a three-line Phosphor icon and measures `44 × 44px`, positioned at `x=768`, `right=812` in the `852px` viewport. The logo lockup and English caption use the source's left alignment and expanded tracking.
-- Hero type: Pretendard is retained for Korean optical weight and wrapping. The headline left edge is aligned to the source at approximately `70px` in the primary viewport.
-- Actions: all icons use one library and consistent stroke treatment. Text, icons, and carets remain vertically centered, with source-like radii and restrained multi-layer elevation.
-- A separate crop was not needed because the `852 × 960` full-view capture renders the header text and action copy sharply enough for direct inspection.
+- Typography: the two colored consultation phrases preserve the mobile source hierarchy and Pretendard optical weight. Desktop line breaks remain deliberate and no text truncates.
+- Imagery: the wide asset keeps the same attorney, navy suit, warm office, writing hand, clipboard, client hands, gavel, and books while adding clean negative space for live UI copy.
+- Actions: all three cards keep the same legal navy, finance green, and diagnosis blue-black tokens, Phosphor icon family, white carets, rounded corners, and hierarchy from the mobile source.
+- A separate crop was not required because the combined comparison renders the header, hero type, card copy, icons, and image crop sharply enough for direct inspection.
 
 ## Required fidelity surfaces
 
-- Fonts and typography: passed. Pretendard Variable is loaded, weights and hierarchy match, all source copy is present, and no truncation or unintended wrapping appears at either tested width.
-- Spacing and layout rhythm: passed. Cards use the source's `80.3%` viewport-width ratio, hero height is capped to the source's `99.3%` width ratio, the header action is correctly right-aligned, and all tested phone viewports have no horizontal overflow.
-- Colors and visual tokens: passed. Warm off-white, legal navy, finance green, and blue-black are defined as project tokens. White contrast is `10.96:1`, `5.37:1`, and `16.28:1` respectively.
-- Image quality and asset fidelity: passed. The custom hero photo is a sharp `1122 × 1402` source encoded as a `68KB` WebP, with no embedded text, logo, watermark, or visible compression issue.
-- Copy and content: passed. The three CTA titles and support lines follow the supplied reference and link to the appropriate existing product routes.
-- Icons: passed. Phosphor icons replace ad hoc approximations for the new hero and mobile menu.
-- Behavior and accessibility: passed. Tap targets exceed `44px`, visible focus treatment is present, reduced-motion behavior is inherited, the mobile menu opens, and all three destination routes return HTTP `200`.
+- Fonts and typography: passed. Pretendard Variable, `800` headline weight, restrained negative tracking, line height, wrapping, and supporting-copy hierarchy remain coherent from `1024px` through `1920px`.
+- Spacing and layout rhythm: passed. Desktop uses a stable left content column, consistent `12px` action gaps, `20px` radii, and container-aligned horizontal margins. Mobile measurements remain unchanged.
+- Colors and visual tokens: passed. Existing `--c-legal`, `--c-finance`, and `--c-diagnosis` values are reused without introducing a competing palette.
+- Image quality and asset fidelity: passed. The desktop hero is a sharp `1672 × 941` source encoded as a `70KB` WebP, with no text, logos, watermarks, visible seams, duplicated hands, or malformed legal props.
+- Copy and content: passed. The mobile copy and all three destination labels remain unchanged and link to the existing product routes.
+- Icons and surfaces: passed. Phosphor icons remain aligned and consistent at desktop sizes; no placeholder, custom SVG, CSS drawing, or text-glyph substitute was introduced.
+- Responsiveness and accessibility: passed. No overflow or overlap appears at the tested breakpoints, focus styles remain available, cards are keyboard links, and all CTA routes return HTTP `200`.
+
+## Findings
+
+- No actionable P0, P1, or P2 differences remain.
 
 ## Comparison history
 
-### Iteration 1
+### Desktop pass 1
 
-- Evidence: `qa-home-852x960-pass1.png`.
-- [P1] The hamburger was auto-placed in the second grid column instead of the right edge.
-- [P2] The headline began too close to the left edge compared with the source.
-- [P2] Action titles were optically undersized at the primary viewport.
-- Fixes: assigned the menu toggle to grid column 3, added the source-aligned headline inset, increased responsive title sizing, and switched the menu to a three-line library icon.
+- Evidence: `qa-home-1440x1000-desktop-hero-pass1.png`.
+- Visual result: the first full desktop render preserved the mobile hierarchy and produced no P0/P1/P2 design finding.
+- Runtime finding: the browser reported a missing default favicon request. This did not affect the hero visual but was corrected by declaring the existing trust icon in site metadata.
 
-### Final iteration
+### Final pass
 
-- Evidence: `qa-home-852x960-pass3.png` and `qa-home-390x844-pass3.png`.
-- Post-fix result: the header control is at the expected right edge, source-region spacing is restored, action hierarchy is stronger, and no P0/P1/P2 issue remains.
-
-### Ratio feedback iteration
-
-- Evidence before fix: `qa-home-557x863-ratio-pass0.png` and the user's `557 × 863` attachment.
-- [P1] The hero used viewport height and `space-between`, pushing the first card to `y=572.8` instead of maintaining the source's width-scaled vertical rhythm.
-- [P2] Cards measured `509px`, or `91.4%` of the viewport, instead of the source's `80.3%` proportion.
-- Fixes: replaced full-height distribution with a `99.3vw` hero cap, changed the content flow to `flex-start`, set the source-derived `8.3vw` copy-to-action gap, and changed card width to `80.3vw`.
-- Post-fix evidence: `qa-home-557x863-ratio-pass2.png`, `qa-home-852x960-ratio-pass1.png`, and `qa-home-390x844-ratio-pass1.png`.
-- Post-fix result: at the reported viewport, the first card moved from `y=572.8` to `y=345.7`, card width changed from `509px` to `447.3px`, and the hero now ends immediately after the card stack like the source. No actionable P0/P1/P2 issue remains.
+- Evidence: `qa-home-1440x1000-desktop-hero-pass2.png`, `qa-home-1024x900-desktop-hero-pass1.png`, `qa-home-1920x1080-desktop-hero-pass1.png`, and `qa-home-852x960-desktop-hero-regression.png`.
+- Post-fix result: browser console errors are `0`, all three CTA routes return `200`, desktop layout remains stable across the tested range, and the mobile source composition is unchanged.
 
 ## Interaction and runtime checks
 
-- Mobile menu: `aria-expanded="true"` after activation; drawer rendered.
 - CTA routes: `/inquiry`, `/inquiry/money`, and `/chat` each returned HTTP `200`.
-- Browser console: `0` page console errors during the final Chrome CDP capture.
-- Production build: Next.js compile, lint, type check, and static generation passed.
+- Browser console: `0` errors in the final desktop captures.
+- Production build: Next.js compilation, linting, type checking, page generation, and build tracing passed.
 
 ## Follow-up polish
 
-- [P3] The reference uses slightly more luminous button fills and a money-bag metaphor. The implementation intentionally uses flatter, calmer brand fills and the closest coherent Phosphor finance icon to match the requested restrained mood.
+- No blocking follow-up remains. A future brand pass could provide a dedicated square favicon, but the current existing trust icon is functional and does not affect the hero.
 
 ## Final result
 
