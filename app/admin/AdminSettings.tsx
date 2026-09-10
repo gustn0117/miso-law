@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const FIELDS: { key: string; label: string; help?: string; type?: "url" | "text" }[] = [
+const FIELDS: { key: string; label: string; help?: string; type?: "url" | "text" | "tel" }[] = [
   {
     key: "cafe_url",
     label: "네이버 카페 URL",
@@ -29,6 +29,12 @@ const FIELDS: { key: string; label: string; help?: string; type?: "url" | "text"
   {
     key: "money_banner_desc",
     label: "메인 대출상담 배너 설명",
+  },
+  {
+    key: "sms_notify_to",
+    label: "문의 접수 문자 알림 번호",
+    type: "tel",
+    help: "법률문의·대출문의 접수 시 이 번호로 문자 발송. 여러 명은 콤마로 구분 (예: 01011112222,01033334444). 비우면 발송 안 함",
   },
 ];
 
@@ -67,9 +73,9 @@ export default function AdminSettings({
 
   return (
     <form className="admin-card" onSubmit={save}>
-      <h3>외부 링크 · 사이트 문구</h3>
+      <h3>외부 링크 · 사이트 문구 · 알림</h3>
       <p style={{ color: "var(--ink-soft)", margin: "0 0 14px" }}>
-        카페·쇼츠·카카오톡 URL과 메인 배너 문구를 한 곳에서 관리합니다.
+        카페·쇼츠·카카오톡 URL, 메인 배너 문구, 문의 접수 문자 알림 번호를 한 곳에서 관리합니다.
       </p>
 
       <div style={{ display: "grid", gap: 14 }}>
@@ -78,7 +84,7 @@ export default function AdminSettings({
             <label className="form-label">{f.label}</label>
             <input
               className="form-input"
-              type={f.type === "url" ? "url" : "text"}
+              type={f.type ?? "text"}
               value={form[f.key] || ""}
               onChange={(e) =>
                 setForm((s) => ({ ...s, [f.key]: e.target.value }))

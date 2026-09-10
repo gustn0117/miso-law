@@ -1,16 +1,26 @@
 // 상담 접수 시 운영자 알림.
 // - 이메일(SMTP_*): SMTP env가 모두 설정된 경우에만 발송 (nodemailer 동적 import)
-// - SMS(SOLAPI_*): SOLAPI env가 모두 설정된 경우에만 발송 (lib/sms)
+// - SMS(SOLAPI_*): 법률문의·대출문의만 발송. 수신번호는 관리자 설정 sms_notify_to (lib/sms)
 // 두 채널은 병렬(Promise.allSettled)로 발송되며 하나가 실패해도 다른 하나는 진행됨.
 
 import { sendAdminInquirySms } from "./sms";
 
+export type InquiryKind = "legal" | "loan" | "job";
+
+const SMS_LABELS: Partial<Record<InquiryKind, string>> = {
+  legal: "법률문의",
+  loan: "대출문의",
+};
+
 type InquiryNotifyInput = {
   id: number;
+  kind: InquiryKind;
   name: string;
   phone: string;
   email?: string | null;
   category_slug?: string | null;
+  /** 사람이 읽는 분야명 (예: "회생 / 파산"). 없으면 slug 사용 */
+  category_name?: string | null;
   content?: string | null;
   source?: string | null;
 };
@@ -42,7 +52,7 @@ async function sendEmail(input: InquiryNotifyInput): Promise<void> {
       `이름: ${input.name}`,
       `연락처: ${input.phone}`,
       `이메일: ${input.email || "-"}`,
-      `분야: ${input.category_slug || "-"}`,
+      `분야: ${input.category_name || input.category_slug || "-"}`,
       `유입경로: ${input.source || "-"}`,
       ``,
       `내용:`,
@@ -62,13 +72,18 @@ async function sendEmail(input: InquiryNotifyInput): Promise<void> {
 export async function notifyNewInquiry(
   input: InquiryNotifyInput,
 ): Promise<void> {
-  await Promise.allSettled([
-    sendEmail(input),
-    sendAdminInquirySms({
-      id: input.id,
-      name: input.name,
-      phone: input.phone,
-      category: input.category_slug,
-    }),
-  ]);
+  const tasks: Promise<void>[] = [sendEmail(input)];
+  const smsLabel = SMS_LABELS[input.kind];
+  if (smsLabel) {
+    tasks.push(
+      sendAdminInquirySms({
+        id: input.id,
+        label: smsLabel,
+        name: input.name,
+        phone: input.phone,
+        category: input.category_name || input.category_slug,
+      }),
+    );
+  }
+  await Promise.allSettled(tasks);
 }

@@ -214,6 +214,8 @@ export function getDb(): Database.Database {
     "money_banner_desc",
     "회생/파산·압류·채무조정·민사 채권회수까지, 상황별 대응 안내",
   );
+  // 법률·대출 문의 접수 시 문자 알림 받을 번호 (콤마로 여러 명)
+  insertSetting.run("sms_notify_to", "01057841824");
 
   dbInstance = db;
   return db;

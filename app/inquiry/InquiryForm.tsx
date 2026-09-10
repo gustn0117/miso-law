@@ -19,6 +19,7 @@ export default function InquiryForm({
   defaultName,
   defaultPhone,
   lockedCategorySlug,
+  inquiryKind = "legal",
   contentLabel = "간단한 내용",
   contentPlaceholder = "상황을 간단히 적어 주세요. (피해 시점, 금액, 진행 상황 등)",
   contentHelp,
@@ -30,6 +31,8 @@ export default function InquiryForm({
   defaultPhone?: string;
   /** 지정 시 카테고리 select 숨김 + 해당 slug로 고정 (사용자가 변경 불가) */
   lockedCategorySlug?: string;
+  /** 접수 알림(문자)에서 법률문의/대출문의 구분용 */
+  inquiryKind?: "legal" | "loan";
   contentLabel?: string;
   contentPlaceholder?: string;
   contentHelp?: string;
@@ -74,7 +77,7 @@ export default function InquiryForm({
       const res = await fetch("/api/inquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, kind: inquiryKind }),
       });
       const data = await res.json();
       if (!res.ok || !data.ok) {

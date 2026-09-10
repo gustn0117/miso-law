@@ -34,6 +34,8 @@ export async function POST(req: NextRequest) {
     const source =
       sourceRaw && ALLOWED_SOURCES.includes(sourceRaw) ? sourceRaw : sourceRaw || null;
     const agree = !!body.agree;
+    // 대출상담 탭(/inquiry/money)은 "loan", 그 외 법률상담 폼은 "legal"
+    const kind = body.kind === "loan" ? "loan" : "legal";
 
     // ---- 검증 ----
     if (!name) return NextResponse.json(fail("이름을 입력해 주세요."), { status: 400 });
@@ -50,8 +52,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(fail("상담 분야를 선택해 주세요."), {
         status: 400,
       });
-    const cats = listCategories();
-    if (!cats.some((c) => c.slug === category_slug))
+    const category = listCategories().find((c) => c.slug === category_slug);
+    if (!category)
       return NextResponse.json(fail("올바르지 않은 상담 분야입니다."), {
         status: 400,
       });
@@ -75,13 +77,15 @@ export async function POST(req: NextRequest) {
       source: source || null,
     });
 
-    // 알림 (SMTP 미설정 시 조용히 스킵)
+    // 알림 (이메일 + 문자. 각 채널 미설정 시 조용히 스킵)
     notifyNewInquiry({
       id,
+      kind,
       name,
       phone,
       email,
       category_slug,
+      category_name: category.name,
       content,
       source,
     }).catch((e) => console.error("[inquiries] notify failed:", e));

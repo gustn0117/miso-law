@@ -1,13 +1,15 @@
 // 상담 접수 SMS 알림 (Solapi · CoolSMS)
-// 환경변수 4개가 모두 채워졌을 때만 동작. 미설정 시 조용히 스킵.
+// 환경변수 3개(KEY·SECRET·FROM)가 채워졌을 때만 동작. 미설정 시 조용히 스킵.
 //   SOLAPI_API_KEY     — 콘솔 > API Keys > 발급
 //   SOLAPI_API_SECRET  — 동일
 //   SOLAPI_FROM        — 등록된 발신번호 (예: 01098857010 — 하이픈/공백 자동 제거)
-//   SOLAPI_TO_ADMIN    — 알림 받을 관리자 번호. 콤마로 여러 명 가능 (예: "01011112222,01033334444")
+// 수신번호는 관리자 > 설정의 "문의 접수 문자 알림 번호"(app_settings.sms_notify_to).
+//   SOLAPI_TO_ADMIN    — 위 설정 행이 없을 때만 쓰는 대체값 (콤마로 여러 명)
 //
 // 90byte(한글 ~45자) 초과 시 Solapi가 자동 LMS로 전환.
 
 import crypto from "node:crypto";
+import { getSetting } from "./db";
 
 const API_URL = "https://api.solapi.com/messages/v4/send-many";
 
@@ -61,8 +63,32 @@ async function sendBatch(
   }
 }
 
+// 수신번호: 관리자 설정(app_settings.sms_notify_to)이 우선.
+// 설정 행이 아예 없을 때만 SOLAPI_TO_ADMIN env로 대체. 빈 값으로 저장하면 발송 중지.
+function resolveRecipients(): string[] {
+  let raw: string | null = null;
+  try {
+    raw = getSetting("sms_notify_to");
+  } catch (e) {
+    console.error("[sms] 수신번호 설정 조회 실패:", e);
+  }
+  if (raw === null) raw = process.env.SOLAPI_TO_ADMIN || "";
+  return raw
+    .split(",")
+    .map((s) => normalizePhone(s))
+    .filter((s) => s.length >= 9 && s.length <= 11);
+}
+
+function formatPhone(n: string): string {
+  if (n.length === 11) return `${n.slice(0, 3)}-${n.slice(3, 7)}-${n.slice(7)}`;
+  if (n.length === 10) return `${n.slice(0, 3)}-${n.slice(3, 6)}-${n.slice(6)}`;
+  return n;
+}
+
 export type InquirySmsInput = {
   id: number;
+  /** 문자 첫 줄 구분 라벨 (예: "법률문의", "대출문의") */
+  label: string;
   name: string;
   phone: string;
   category?: string | null;
@@ -72,21 +98,17 @@ export async function sendAdminInquirySms(
   input: InquirySmsInput,
 ): Promise<void> {
   const from = process.env.SOLAPI_FROM;
-  const toRaw = process.env.SOLAPI_TO_ADMIN;
-  if (!from || !toRaw) return; // 미설정 → 조용히 스킵
-  const recipients = toRaw
-    .split(",")
-    .map((s) => normalizePhone(s))
-    .filter((s) => s.length >= 9 && s.length <= 11);
+  if (!from) return; // 미설정 → 조용히 스킵
+  const recipients = resolveRecipients();
   if (recipients.length === 0) return;
 
   // SMS 90byte 한도 내 핵심만 (한글 ~30자). 초과 시 자동 LMS로 전환됨.
   const category = (input.category || "기타").slice(0, 12);
   const name = (input.name || "이름미상").slice(0, 12);
   const text =
-    `[미소법률] 신규상담 #${input.id}\n` +
+    `[미소법률] ${input.label} #${input.id}\n` +
     `${category} · ${name}\n` +
-    `${input.phone}`;
+    `${formatPhone(normalizePhone(input.phone))}`;
 
   const fromNorm = normalizePhone(from);
   const messages = recipients.map((to) => ({ to, from: fromNorm, text }));

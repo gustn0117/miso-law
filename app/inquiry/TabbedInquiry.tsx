@@ -94,6 +94,7 @@ export default function TabbedInquiry({
           <InquiryForm
             categories={categories}
             lockedCategorySlug="recovery"
+            inquiryKind="loan"
             contentLabel="필요자금 및 상담 내용"
             contentPlaceholder="예: 필요자금 5,000만원 / 현재 채무 1억 원 (제2금융권 6건) / 신용등급 6등급 / 연체 3개월 / 직장 재직 중·월 소득 350만 원 — 개인회생 가능 여부 검토 요청"
             contentHelp="필요자금·현재 채무 규모·소득·연체 여부를 적어 주시면 더 정확한 안내가 가능합니다."

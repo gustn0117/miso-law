@@ -59,8 +59,10 @@ export async function POST(req: NextRequest) {
       source: "재택알바문의",
     });
 
+    // 재택알바 신청은 문자 알림 대상 아님 (법률·대출 문의만) — 이메일만
     notifyNewInquiry({
       id,
+      kind: "job",
       name,
       phone,
       email: null,
